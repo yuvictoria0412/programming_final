@@ -1,10 +1,5 @@
 #include "MenuWindow.h"
-#include "global.h"
 #include <string>
-extern std::string username;
-extern ALLEGRO_USTR *username2;
-extern bool usermode;
-extern bool usersound;
 
 #include <iostream>
 using namespace std;
@@ -21,12 +16,18 @@ using namespace std;
 #define max(a, b) ((a) > (b)? (a) : (b))
 
 const int rec_x1 = 250;
-const int rec_y1 = 200;
+const int rec_y1 = 300;
 const int rec_h1 = 50;
-const int rec_y2 = 300;
+const int rec_y2 = 400;
 const int rec_h2 = 50;
-const int rec_y3 = 400;
+const int rec_y3 = 500;
 const int rec_h3 = 50;
+int button_x;
+int button_y;
+int button_h;
+int button_w;
+int play_w;
+int play_h;
 
 //enum {NOTHING = 0, ENTERNAME, CHOOSEMODE, SETSOUND};
 
@@ -78,10 +79,18 @@ void MenuWindow::game_init() {
     al_draw_text(Medium_font, BLACK, W/2, rec_y2 + rec_h2/2 - 12, ALLEGRO_ALIGN_CENTRE, "P L A Y E R  M O D E");
     al_draw_rectangle(rec_x1, rec_y3, W-rec_x1, rec_y3 + rec_h3, BLACK, 2);
     al_draw_text(Medium_font, BLACK, W/2, rec_y3 + rec_h3/2 - 12, ALLEGRO_ALIGN_CENTRE, "S O U N D  O N");
-//    al_draw_bitmap(playbutton, W-40, H-40, 0);
+
+    playbutton = al_load_bitmap("./pictures/start.jpg");
+    play_w = al_get_bitmap_width(playbutton);
+    play_h = al_get_bitmap_height(playbutton);
+    button_h = play_h*0.2;
+    button_w = play_w*0.2;
+    button_x = W-play_w*0.2-15;
+    button_y = H-play_h*0.2-15;
+    al_draw_scaled_bitmap(playbutton, 0, 0, play_w, play_h, button_x, button_y, button_w, button_h, 0);
     al_flip_display();
     // might need to delete
-    al_rest(5);
+//    al_rest(5);
     return;
 }
 
@@ -109,7 +118,6 @@ void MenuWindow::game_begin() {
     usersound = 0;
     username2 = al_ustr_new("");
     al_start_timer(timer);
-    playbutton = al_load_bitmap("./pictures/start.jpg");
 }
 
 
@@ -119,25 +127,36 @@ int MenuWindow::game_update() {
 
 
 void MenuWindow::game_destroy() {
+    al_destroy_display(display);
+    al_destroy_event_queue(event_queue);
+    al_destroy_font(font);
+    al_destroy_font(Medium_font);
+    al_destroy_font(Large_font);
+    al_destroy_timer(timer);
+    al_destroy_bitmap(playbutton);
 }
 
 // each drawing scene function
 void MenuWindow::draw_running_map() {
 }
 
-void MenuWindow::draw_menu() {
+void MenuWindow::draw_menu(bool before_enter) {
 
     al_set_window_position(display, 0, 0);
     al_clear_to_color(WHITE);
 
     al_draw_text(Large_font, BLACK, W/2, 80, ALLEGRO_ALIGN_CENTRE, "C A T S  A R E  C U T E");
 
+
     // USER NAME
     al_draw_rectangle(rec_x1, rec_y1, W-rec_x1, rec_y1 + rec_h1, BLACK, 2);
-    if (!al_ustr_length(username2))
+    if (before_enter == 0 && !al_ustr_length(username2)) {
         al_draw_text(Medium_font, BLACK, W/2, rec_y1 + rec_h1/2 - 12, ALLEGRO_ALIGN_CENTRE, "O W N E R ' S    N A M E");
-    else
+    }
+    else if (before_enter == 0 && al_ustr_length(username2) != 0) {
         al_draw_textf(Medium_font, BLACK, W/2, rec_y1 + rec_h1/2 - 12, ALLEGRO_ALIGN_CENTRE, "%s", al_cstr(username2));
+    }
+
 
     // USER MODE
     al_draw_rectangle(rec_x1, rec_y2, W-rec_x1, rec_y2 + rec_h2, BLACK, 2);
@@ -152,7 +171,9 @@ void MenuWindow::draw_menu() {
     else
         al_draw_text(Medium_font, BLACK, W/2, rec_y3 + rec_h3/2 - 12, ALLEGRO_ALIGN_CENTRE, "B E  Q U I E T >:(");
     // PLAY BUTTON
-    al_draw_bitmap(playbutton, W-40, H-40, 0);
+    al_draw_scaled_bitmap(playbutton, 0, 0, play_w, play_h, button_x, button_y, button_w, button_h, 0);
+
+    al_flip_display();
 
     // OUTPUT DISPLAY
     al_flip_display();
@@ -161,10 +182,11 @@ void MenuWindow::draw_menu() {
 }
 
 bool MenuWindow::entering_name() {
+    bool before_enter = 1;
     cout << "entering name" << endl;
-//    ALLEGRO_USTR *input = al_ustr_new("");
+
     while (1) {
-        redraw = false;
+        redraw = true;
         al_wait_for_event(event_queue, &event);
 
         if (event.type == ALLEGRO_EVENT_KEY_CHAR) {
@@ -173,7 +195,7 @@ bool MenuWindow::entering_name() {
                 cout << "input enter" << endl;
                 username.assign(al_cstr(username2));
                 cout << username << endl;
-                draw_menu();
+                draw_menu(0);
                 return 1;
             }
             else if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
@@ -192,10 +214,11 @@ bool MenuWindow::entering_name() {
             else {
                 al_ustr_append_chr(username2, event.keyboard.unichar);
                 redraw = true;
+                before_enter = 0;
             }
         }
         if (redraw) {
-            draw_menu();
+            draw_menu(before_enter);
         }
     }
 
@@ -204,7 +227,7 @@ bool MenuWindow::entering_name() {
 // process of updated event
 int MenuWindow::process_event() {
     int instruction = GAME_CONTINUE;
-    int draw_condition = 0;
+//    int draw_condition = 0;
 
     al_wait_for_event(event_queue, &event);
     redraw = false;
@@ -244,10 +267,15 @@ int MenuWindow::process_event() {
                     redraw = 1;
                 }
             }
+            else if (event.mouse.x >= button_x && event.mouse.x <= button_x + button_w && event.mouse.y >= button_y && event.mouse.y <= button_y + button_h) {
+                cout << "click button" << endl;
+                instruction = GAME_EXIT;
+            }
+
         }
     }
     if (redraw) {
-        draw_menu();
+        draw_menu(0);
     }
     return instruction;
 }

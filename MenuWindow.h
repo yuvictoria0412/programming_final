@@ -2,6 +2,7 @@
 #define MENUWINDOE_H_INCLUDED
 
 #include "Window.h"
+
 #include <stdio.h>
 class MenuWindow : protected Window {
 public:
@@ -14,8 +15,10 @@ public:
     void game_destroy();
     void draw_running_map();
     int process_event();
-    void draw_menu();
+    void draw_menu(bool);
     bool entering_name();
+
+
 private:
     ALLEGRO_BITMAP *playbutton;
 };

@@ -18,5 +18,5 @@ void Window::show_err_msg(int msg) {
         fprintf(stderr, "unexpected msg: %d", msg);
 
     game_destroy();
-    exit(9);
+//    exit(9);
 }

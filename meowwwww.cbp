@@ -37,11 +37,20 @@
 			<Add option="-fexceptions" />
 			<Add directory="allegro/include" />
 		</Compiler>
+		<Unit filename="Circle.cpp" />
+		<Unit filename="Circle.h" />
 		<Unit filename="GameWindow.cpp" />
 		<Unit filename="GameWindow.h" />
+		<Unit filename="MenuWindow.cpp" />
+		<Unit filename="MenuWindow.h" />
 		<Unit filename="Object.h" />
+		<Unit filename="Shop.cpp" />
+		<Unit filename="Shop.h" />
+		<Unit filename="Status.cpp" />
+		<Unit filename="Status.h" />
 		<Unit filename="Window.cpp" />
 		<Unit filename="Window.h" />
+		<Unit filename="global.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<lib_finder disable_auto="1" />

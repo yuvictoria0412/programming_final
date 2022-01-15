@@ -9,15 +9,15 @@
 #define grid_height 40
 
 #define window_width 800
-#define window_height 600
-#define field_width 600
-#define field_height 600
+#define window_height 800
+//#define field_width 00
+//#define field_height 1000
 
+extern std::string username;
+extern ALLEGRO_USTR *username2;
+extern bool usermode;
+extern bool usersound;
 
-std::string username;
-ALLEGRO_USTR *username2;
-bool usermode;
-bool usersound;
 
 #endif // GLOBAL_H_INCLUDED
 

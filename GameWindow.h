@@ -2,8 +2,12 @@
 #define GAMEWINDOW_H_INCLUDED
 
 #include "Window.h"
+#include "Status.h"
+#include "Shop.h"
 
-class GameWindow : public Window {
+#include <queue>
+#include <stdio.h>
+class GameWindow : protected Window {
 public:
     GameWindow();
     void game_init();
@@ -14,6 +18,13 @@ public:
     void game_destroy();
     void draw_running_map();
     int process_event();
+private:
+    Status *status = NULL;
+    Shop *shop = NULL;
+    int mouse_x, mouse_y;
+    bool redraw = false;
+
+
 };
 
-#endif // GAMEWINDOW_H_INCLUDED
+#endif // WINDOW_H_INCLUDED

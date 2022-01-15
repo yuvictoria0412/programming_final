@@ -1,10 +1,9 @@
-#include "GameWindow.h"
+#include "MenuWindow.h"
 
 int main(int argc, char *argv[])
 {
-//    GameWindow *TowerGame= new GameWindow();
-//
-//    TowerGame->game_play();
+    MenuWindow *Menu= new MenuWindow();
+    Menu->game_play();
 //
 //    delete TowerGame;
     return 0;

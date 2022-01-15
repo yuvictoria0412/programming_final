@@ -1,11 +1,11 @@
-#ifndef GAMEWINDOW_H_INCLUDED
-#define GAMEWINDOW_H_INCLUDED
+#ifndef MENUWINDOW_H_INCLUDED
+#define MENUWINDOE_H_INCLUDED
 
 #include "Window.h"
-
-class GameWindow : public Window {
+#include <stdio.h>
+class MenuWindow : public Window {
 public:
-    GameWindow();
+    MenuWindow();
     void game_init();
     void game_reset();
     void game_play();
@@ -14,6 +14,8 @@ public:
     void game_destroy();
     void draw_running_map();
     int process_event();
+//private:
+
 };
 
-#endif // GAMEWINDOW_H_INCLUDED
+#endif // MENUWINDOW_H_INCLUDED

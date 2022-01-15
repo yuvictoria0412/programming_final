@@ -2,6 +2,7 @@
 #include <stdio.h>
 
 int Window::game_run() {
+//    printf("game_run\n");
     int error = GAME_CONTINUE;
 
     if (!al_is_event_queue_empty(event_queue)) {
@@ -16,6 +17,6 @@ void Window::show_err_msg(int msg) {
     else
         fprintf(stderr, "unexpected msg: %d", msg);
 
-//    game_destroy();
+    game_destroy();
     exit(9);
 }

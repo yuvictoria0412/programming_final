@@ -14,6 +14,7 @@
 #include <list>
 #include <time.h>
 
+
 #define GAME_INIT -1
 #define GAME_SETTING 0
 #define GAME_SELECT 1

@@ -1,13 +1,13 @@
 # depslib dependency file v1.0
-1642183126 source:d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\main.cpp
-	"GameWindow.h"
+1642250941 source:d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\main.cpp
+	"MenuWindow.h"
 
 1518073262 source:d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\circle.cpp
 	"Circle.h"
 
 1519028628 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\circle.h
 
-1642228694 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\gamewindow.h
+1642250072 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\gamewindow.h
 	"Window.h"
 
 1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\allegro_audio.h
@@ -311,7 +311,7 @@
 1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\allegro_image.h
 	"allegro5/base.h"
 
-1642228694 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\window.h
+1642255601 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\window.h
 	<allegro5/allegro_audio.h>
 	<allegro5/allegro_acodec.h>
 	<allegro5/allegro.h>
@@ -323,11 +323,41 @@
 	<list>
 	<time.h>
 
-1642228611 source:d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\gamewindow.cpp
+1642255644 source:d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\gamewindow.cpp
 	"GameWindow.h"
+	"global.h"
 	<iostream>
 
-1642228351 source:d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\window.cpp
+1642255306 source:d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\window.cpp
 	"Window.h"
 	<stdio.h>
+
+1642265210 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\global.h
+	<allegro5/allegro_font.h>
+	<string>
+
+1642246131 source:d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\memuwindow.cpp
+	"MemuWindow.h"
+	<iostream>
+
+1642245772 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\memuwindow.h
+	"Window.h"
+	<stdio.h>
+
+1642270055 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\menuwindow.h
+	"Window.h"
+	<stdio.h>
+
+1642265691 source:d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\menuwindow.cpp
+	"MenuWindow.h"
+	"global.h"
+	<string>
+	<iostream>
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\allegro_video.h
+	"allegro5/allegro5.h"
+	"allegro5/allegro_audio.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\allegro5.h
+	"allegro.h"
 

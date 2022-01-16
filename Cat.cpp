@@ -9,6 +9,7 @@ ALLEGRO_BITMAP* Cat::cat_status_touchme = al_load_bitmap("./pictures/touch.jpg")
 ALLEGRO_BITMAP* Cat::cat_status_seeme = al_load_bitmap("./pictures/cat.jpg");
 //ALLEGRO_BITMAP* Cat::cat_breed_1 = al_load_bitmap("./breed/cat1.jpg");
 const int gapX = 40, gapY = 30;
+
 Cat::Cat() {
     circle = new Circle(0, 0, 10);
     cat_status[HUNGRY] = 0;
@@ -48,6 +49,14 @@ Cat::Cat() {
         for (int i = 1; i <= 5; i++) {
             sprintf(pic_name, "./touch_me/%d.png", i);
             cat_touch[i-1] = al_load_bitmap(pic_name);
+        }
+    }
+    if (r_p_y_game.empty()) {
+        char pic_name[19];
+        r_p_y_game.reserve(3);
+        for (int i = 1; i <= 3; i++) {
+            sprintf(pic_name, "./rock/%d.png", i);
+            r_p_y_game[i-1] = al_load_bitmap(pic_name);
         }
     }
 }
@@ -100,14 +109,21 @@ bool Cat::touch_me() {
     return 1;
 }
 bool Cat::see_me(){
-    if ((rand() % 10 - 8) && cat_status[SEEME] != -1){
+    if ((rand() % 100 - 95) && cat_status[SEEME] != -1){
 //        cout << "push boredf\n";
         status_queue.push(SEEME);
         cat_status[SEEME] = -1;
     }
     return 1;
 };
-
+bool Cat::getting_bored(){
+    if ((rand() % 10 - 8) && cat_status[BORING] != -1){
+//        cout << "push boredf\n";
+        status_queue.push(BORING);
+        cat_status[BORING] = -1;
+    }
+    return 1;
+}
 
 void Cat::draw_cat_status(int i) {
     switch(i) {

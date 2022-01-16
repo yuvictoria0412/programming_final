@@ -19,7 +19,7 @@
 
 #define WHITE al_map_rgb(255, 255, 255)
 #define BLACK al_map_rgb(0, 0, 0)
-
+#define super_user_score 900
 class Status : public Object
 {
 public:

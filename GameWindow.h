@@ -10,6 +10,8 @@
 #include <vector>
 
 #define feed_food 10
+#define max_score 1000
+#define min_score -100
 
 class GameWindow : protected Window {
 public:

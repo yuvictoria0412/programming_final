@@ -17,7 +17,7 @@ Status::Status(){
     else{
         Coin = Initial_Coin;
         Score = Initial_Score;
-        Food = 0;
+        Food = super_user_score;
     }
 
 
@@ -32,7 +32,7 @@ Status::~Status(){
 void Status::Reset(){
     if( usermode ){
         Coin = -1;
-        Score = -1;
+        Score = 950;
         Food = -1;
     }
     else{

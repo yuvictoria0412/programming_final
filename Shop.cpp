@@ -17,12 +17,7 @@ static char const *filename_3;
 static char const *filename_4;
 static char const *filename_5;
 static char const *filename_6;
-//ALLEGRO_VIDEO *video;
-//ALLEGRO_EVENT video_event;
-//ALLEGRO_TIMER *video_timer;
-//static ALLEGRO_DISPLAY* video_display = NULL;
-//ALLEGRO_BITMAP *frame;
-//ALLEGRO_EVENT_QUEUE *video_event_queue;
+
 struct GIF{
     double start_time = 0;
     ALGIF_ANIMATION *gif = NULL;

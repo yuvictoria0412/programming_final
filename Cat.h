@@ -47,6 +47,7 @@ public:
     int reward(int i){ return cat_score[i];};//reward for fufilling cat's need
     ALLEGRO_BITMAP *cat_pic(int i){ return cat_breed_1[i];};
     ALLEGRO_BITMAP *touch_pic(int i){ return cat_touch[i];};
+    ALLEGRO_BITMAP *r_p_y_pic(int i){ return r_p_y_game[i];};
     bool cat_queue_empty(){ return status_queue.empty();}
 //    void hungry();
 //    void game_hungry();
@@ -66,6 +67,8 @@ private:
     int number;//for cat draw gif
     std::vector<ALLEGRO_BITMAP*> cat_breed_1;
     std::vector<ALLEGRO_BITMAP*> cat_touch;
+    std::vector<ALLEGRO_BITMAP*> r_p_y_game;
+
 };
 
 #endif // CAT_H_INCLUDED

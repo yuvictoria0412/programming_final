@@ -10,6 +10,7 @@ const int ThumbWidth = 5;
 const int ThumbHeight = 5;
 ALLEGRO_BITMAP *pop_cat_open = NULL;
 ALLEGRO_BITMAP *pop_cat_close = NULL;
+char RPY[4];
 GameWindow::GameWindow() {
     if (!al_init())
         show_err_msg(-1);
@@ -51,6 +52,9 @@ GameWindow::GameWindow() {
     game_init();
 }
 void GameWindow::game_init() {
+    RPY[0] = 'R';
+    RPY[1] = 'P';
+    RPY[2] = 'Y';
     al_set_window_position(display, 0, 0);
     status = new Status();
     shop = new Shop();
@@ -293,71 +297,165 @@ void GameWindow::hungry_cat(int cat_index){
         shop->change_window_open(true);
     }
 }
-void GameWindow::rock_paper_scissors(int index){
-    while( 1 ){
+
+void GameWindow::rock_paper_scissors(int cat_index){
+    int scene = 1;
+    static int number = 0;
+    int user_choice = -1, cat_choice;
+    cat_choice = rand() % 2;
+
+    cout << "r p y game : "<<cat_choice<<endl;
+    al_clear_to_color( WHITE );
+     //rock_papper_scissors
+    char tmp[2];
+    al_draw_filled_rectangle(window_width/2 - 125 , window_height/2-300, window_width/2 +125, window_height/2-30, WHITE);
+    al_draw_text(Large_font, BLACK,  window_width/2 , window_height/2-150, ALLEGRO_ALIGN_CENTRE, "T Y P E");
+    for( int i = 0; i < 3; i ++){
+        tmp[0] = RPY[i];
+        al_draw_text(Large_font, BLACK,  window_width/3 * (i+1) -130 , window_height/2-20, ALLEGRO_ALIGN_CENTRE, tmp);
+        al_draw_scaled_bitmap(cats[cat_index]->r_p_y_pic(i), 0, 0,al_get_bitmap_width(cats[cat_index]->r_p_y_pic(i)),
+                              al_get_bitmap_width(cats[cat_index]->r_p_y_pic(i)),
+                              window_width/3 * (i+1) -235, window_height/2+50, 200, 200, 0);
+    }
+    //choose rock paper scissors
+    while( scene == 1 ){
+     //cat
+     // to cover cat's background
+        al_draw_filled_rectangle(window_width/2 - 125 , window_height/2-300, window_width/2 +125, window_height/2-80, WHITE);
+        al_draw_text(Large_font, BLACK,  window_width/2 , window_height/2-150, ALLEGRO_ALIGN_CENTRE, "T Y P E");
+        int frequency = cats[cat_index]->cat_freq();
+        al_flip_display();
+        switch (cats[cat_index]->cat_breed()) {
+        case 1:
+            al_draw_scaled_bitmap(cats[cat_index]->cat_pic(number/frequency), 0, 0,al_get_bitmap_width(cats[cat_index]->cat_pic(number/frequency)),
+                                  al_get_bitmap_width(cats[cat_index]->cat_pic(number/frequency)),
+                                  window_width/2 - 70 , window_height/2-300, 150, 150, 0);
+
+        break;
+        case 2:
+            al_draw_scaled_bitmap(cats[cat_index]->cat_pic(number/frequency), 0, 0,al_get_bitmap_width(cats[cat_index]->cat_pic(number/frequency)),
+                                  al_get_bitmap_width(cats[cat_index]->cat_pic(number/frequency)),
+                                  window_width/2 - 70 , window_height/2-300, 150, 150, 0);
+        break;
+        }
+        if (number == 4*frequency-1) number = 0;
+        else number++;
+
+
+        al_flip_display();
+
         al_wait_for_event(event_queue, &event);
         if(event.type == ALLEGRO_EVENT_KEY_DOWN) {
             switch(event.keyboard.keycode) {
             case ALLEGRO_KEY_ESCAPE:
                 if(usermode){
-                  status->Gain_Score(cats[index]->reward(BORING));
-                  return;
+                  scene++;
+                  user_choice = 1;
+                  cat_choice = 0;
                 }
                 break;
+            case ALLEGRO_KEY_R:
+                scene++;
+                user_choice = 0;
+                break;
+            case ALLEGRO_KEY_P:
+                scene++;
+                user_choice = 1;
+                break;
+            case ALLEGRO_KEY_Y:
+                scene++;
+                user_choice = 2;
+                break;
             }
-        }
-        else if(event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
-            if(event.mouse.button == 1) {
-
-
-                al_draw_scaled_bitmap(pop_cat_close,0,0,al_get_bitmap_width(pop_cat_open), al_get_bitmap_height(pop_cat_open),
-                          0, 0, window_width, window_height, 0);
-                al_draw_filled_rectangle(window_width/2 - 125 , window_height/2 +170, window_width/2 +125, window_height/2 +320, WHITE);
-                al_draw_text(Large_font, BLACK,  window_width/2 , window_height/2+180, ALLEGRO_ALIGN_CENTRE, "A T E");
-
-                char tmp[3];
-                if( feed_count >= 10){
-                    tmp[0] = feed_count /10+ '0';
-                    tmp[1] = feed_count %10+ '0';
-                }
-                else tmp[0] = feed_count + '0';
-                al_draw_text(Large_font, BLACK,  window_width/2 , window_height/2+240, ALLEGRO_ALIGN_CENTRE, tmp);
-                al_flip_display();
-                al_rest(0.3);
-                feed_count ++;
-                al_draw_scaled_bitmap(pop_cat_open,0,0,al_get_bitmap_width(pop_cat_open), al_get_bitmap_height(pop_cat_open),
-                                  0, 0, window_width, window_height, 0);
-                al_draw_filled_rectangle(window_width/2 - 125 , window_height/2 +170, window_width/2 +125, window_height/2 +320, WHITE);
-                al_draw_text(Large_font, BLACK,  window_width/2 , window_height/2+180, ALLEGRO_ALIGN_CENTRE, "A T E");
-
-//                    char tmp[2];
-                if( feed_count >= 10){
-                    tmp[0] = feed_count /10+ '0';
-                    tmp[1] = feed_count %10+ '0';
-                }
-                else tmp[0] = feed_count + '0';
-                if( feed_count<= feed_food) al_draw_text(Large_font, BLACK,  window_width/2 , window_height/2+240, ALLEGRO_ALIGN_CENTRE, tmp);
-            }
-        }
         al_flip_display();
+        }
     }
 
-    status->Gain_Score(cats[index]->reward(BORING));
+    al_clear_to_color( WHITE );
+
+    al_draw_circle(window_width/2, window_height/4+20, 120, BLACK, 5);//outline
+    al_draw_circle(window_width/2, window_height/4*3-30, 120, BLACK, 5);//outline
+    double now_time = al_get_time(), start_time = now_time;
+    int count_down;
+    tmp[2] = '\0';
+    while( now_time - start_time < 3.1){
+        now_time = al_get_time();
+        count_down = 4 - (now_time - start_time);
+        tmp[0] = count_down + '0';
+        al_draw_filled_circle(window_width/2, window_height/4+20, 100, WHITE);
+        al_draw_text(Large_font, BLACK,  window_width/2, window_height/4+20-20, ALLEGRO_ALIGN_CENTRE, tmp);
+        al_draw_filled_circle(window_width/2, window_height/4*3 -30, 100, WHITE);
+        al_draw_text(Large_font, BLACK,  window_width/2, window_height/4*3-30-20, ALLEGRO_ALIGN_CENTRE, tmp);
+        al_flip_display();
+    }
+    scene++;
+
+    //scene 3 reveal choice
+    al_clear_to_color( WHITE );
+    //cat's choice
+    al_draw_text(Large_font, BLACK,  window_width/2, 35, ALLEGRO_ALIGN_CENTRE, "C A T");
+    al_draw_scaled_bitmap(cats[cat_index]->r_p_y_pic(cat_choice), 0, 0,al_get_bitmap_width(cats[cat_index]->r_p_y_pic(cat_choice)),
+                          al_get_bitmap_width(cats[cat_index]->r_p_y_pic(cat_choice)),
+                          window_width/2-122, window_height/4-100, 243, 243, 0);
+    //your choice
+    al_draw_text(Large_font, BLACK,  window_width/2, window_height-100, ALLEGRO_ALIGN_CENTRE, "Y O U");
+    al_draw_scaled_bitmap(cats[cat_index]->r_p_y_pic(user_choice), 0, 0,al_get_bitmap_width(cats[cat_index]->r_p_y_pic(user_choice)),
+                          al_get_bitmap_width(cats[cat_index]->r_p_y_pic(user_choice)),
+                          window_width/2-122, window_height/4*3-150, 243, 243, 0);
+    al_flip_display();
+    al_rest(2);
+
+    char *result;
+    //scene 4 result
+    if( cat_choice == 1){//paper
+        if( user_choice == 1) result = "T I E\0";
+        else if (user_choice == 2){
+            status->Gain_Score(cats[cat_index]->reward(BORING));
+            result = "Y O U   W I N\0";
+        }
+        else if (user_choice == 0) result = "Y O U   L O S S\0";
+    }
+    else{
+        if( user_choice == 0) result = "T I E\0";
+        else if (user_choice == 1){
+            status->Gain_Score(cats[cat_index]->reward(BORING));
+            result = "Y O U   W I N\0";
+        }
+        else if (user_choice == 2) result = "Y O U   L O S S\0";
+    }
+
+    al_draw_filled_rectangle(window_width/2 - 200 , window_height/2 -40, window_width/2 +200, window_height/2 +40, RED);
+    al_draw_text(Large_font, WHITE,  window_width/2, window_height/2-28, ALLEGRO_ALIGN_CENTRE, result);
+    al_flip_display();
+    al_rest(2);
+
+    draw_running_map();
 }
 // process of updated event
 int GameWindow::process_event() {
     int instruction = GAME_CONTINUE;
     al_wait_for_event(event_queue, &event);
     redraw = false;
-
+    if( status->getScore() >= max_score){
+        users_performance = true;
+        final_score = status->getScore();
+        instruction = GAME_EXIT;
+        return instruction;
+    }
+    else if( status->getScore() <= min_score){
+        users_performance = false;
+        instruction = GAME_EXIT;
+        final_score = status->getScore();
+        return instruction;
+    }
     if(event.type == ALLEGRO_EVENT_TIMER) {
         if(event.timer.source == timer) {
             redraw = true;
              for( int c = 0, s = cats.size(); c < s; c++ ){
                 cats[c]->getting_dirty();
                 cats[c]->getting_hungry();
-//                cats[c]->getting_bored();
-//                cats[c]->see_me();
+                cats[c]->getting_bored();
+                cats[c]->see_me();
                 cats[c]->touch_me();
             }
         }
@@ -414,6 +512,7 @@ int GameWindow::process_event() {
                             case DIRTY: cats[i]->change_cat_status(DIRTY, 0);
                                 break;
                             case BORING: cats[i]->change_cat_status(BORING, 0);
+                                rock_paper_scissors(i);
                                 break;
                             case TOUCHME: cats[i]->change_cat_status(TOUCHME, 0);
                                 touch_me(i);

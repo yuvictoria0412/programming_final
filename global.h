@@ -17,6 +17,9 @@ extern std::string username;
 extern ALLEGRO_USTR *username2;
 extern bool usermode;
 extern bool usersound;
+//from game window
+extern bool users_performance;
+extern int final_score;
 
 
 #endif // GLOBAL_H_INCLUDED

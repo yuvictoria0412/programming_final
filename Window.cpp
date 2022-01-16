@@ -1,6 +1,9 @@
 #include "Window.h"
 #include <stdio.h>
 
+Window::Window(){
+    srand( time(NULL) ); //for randon
+}
 int Window::game_run() {
 //    printf("game_run\n");
     int error = GAME_CONTINUE;

@@ -8,7 +8,6 @@
 const int ThumbWidth = 5;
 const int ThumbHeight = 5;
 GameWindow::GameWindow() {
-    srand( time(NULL) ); //for randon
     if (!al_init())
         show_err_msg(-1);
 

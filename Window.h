@@ -31,7 +31,7 @@ const float FPS = 60;
 class Window {
 public:
     // constructor
-    Window() {}
+    Window();
     ~Window() {}
     virtual void game_init() = 0;
     virtual void game_reset() = 0;

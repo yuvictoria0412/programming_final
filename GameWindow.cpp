@@ -8,6 +8,8 @@ using namespace std;
 #define max(a, b) ((a) > (b)? (a) : (b))
 const int ThumbWidth = 5;
 const int ThumbHeight = 5;
+ALLEGRO_BITMAP *pop_cat_open = NULL;
+ALLEGRO_BITMAP *pop_cat_close = NULL;
 GameWindow::GameWindow() {
     if (!al_init())
         show_err_msg(-1);
@@ -36,15 +38,16 @@ GameWindow::GameWindow() {
     al_install_audio();    // install audio event
 
     font = al_load_ttf_font("./font/Cute Letters.ttf",36,0); // load small font
-//    Medium_font = al_load_ttf_font("Caviar_Dreams_Bold.ttf",24,0); //load medium font
-//    Large_font = al_load_ttf_font("Caviar_Dreams_Bold.ttf",36,0); //load large font
+    Medium_font = al_load_ttf_font("./font/Cute Letters.ttf", 24, 0); //load medium font
+    Large_font = al_load_ttf_font("./font/Cute Letters.ttf", 60, 0); //load large font
 
     al_register_event_source(event_queue, al_get_display_event_source(display));
     al_register_event_source(event_queue, al_get_keyboard_event_source());
     al_register_event_source(event_queue, al_get_mouse_event_source());
 
     al_register_event_source(event_queue, al_get_timer_event_source(timer));
-
+    pop_cat_open = al_load_bitmap("./popcat/open.jpg");
+    pop_cat_close = al_load_bitmap("./popcat/close.jpg");
     game_init();
 }
 void GameWindow::game_init() {
@@ -179,7 +182,7 @@ void GameWindow::draw_running_map() {
         for (auto meow : cats) {
             meow->Draw();
             if (!meow->cat_queue_empty()) {
-                cout << "cat status "<<meow->cat_queue_top()<<endl;
+//                cout << "cat status "<<meow->cat_queue_top()<<endl;
                 meow->draw_cat_status(meow->cat_queue_top());
             }
         }
@@ -191,7 +194,156 @@ void GameWindow::draw_running_map() {
     }
     al_flip_display();
 }
+void GameWindow::touch_me(int cur) {
+    int i = 0;
+    int a = 0;
+    int b = 0;
 
+    while (1) {
+        al_clear_to_color(WHITE);
+        a = al_get_bitmap_width(cats[cur]->touch_pic(i));
+        b = al_get_bitmap_height(cats[cur]->touch_pic(i));
+        al_draw_scaled_bitmap(cats[cur]->touch_pic(i), 0, 0, a, b, window_width/2-360, window_height/2-300, 800, 600, 0);
+        al_flip_display();
+
+        al_wait_for_event(event_queue, &event);
+        if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
+            if (event.mouse.button == 1) {
+                if (event.mouse.x >= 100 && event.mouse.x <= window_width - 100) {
+                    if (event.mouse.y >= 100 && event.mouse.y <= window_height - 100) {
+                        cout << "touch me little game clicked" << endl;
+                        if (++i == 5) break;
+                    }
+                }
+            }
+        }
+        else if(event.type == ALLEGRO_EVENT_KEY_DOWN) {
+            switch(event.keyboard.keycode) {
+            case ALLEGRO_KEY_ESCAPE:
+                if( usermode){
+                    status->Gain_Score(cats[cur]->reward(TOUCHME));
+                    return;
+                }
+                break;
+            }
+        }
+    }
+    status->Gain_Score(cats[cur]->reward(TOUCHME));
+}
+void GameWindow::hungry_cat(int cat_index){
+    int picture = 1;
+    int feed_count = 0;
+    if( status->Enough_Food(feed_food)){
+        al_draw_scaled_bitmap(pop_cat_open,0,0,
+                              al_get_bitmap_width(pop_cat_open), al_get_bitmap_height(pop_cat_open),
+                                      0  , 0, window_width, window_height, 0);
+        al_flip_display();
+        while( feed_count <= feed_food){
+            al_wait_for_event(event_queue, &event);
+            if(event.type == ALLEGRO_EVENT_KEY_DOWN) {
+                switch(event.keyboard.keycode) {
+                case ALLEGRO_KEY_ESCAPE:
+                    if(usermode) feed_count += 10;
+                    break;
+                }
+            }
+            else if(event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
+                if(event.mouse.button == 1) {
+
+
+                    al_draw_scaled_bitmap(pop_cat_close,0,0,al_get_bitmap_width(pop_cat_open), al_get_bitmap_height(pop_cat_open),
+                              0, 0, window_width, window_height, 0);
+                    al_draw_filled_rectangle(window_width/2 - 125 , window_height/2 +170, window_width/2 +125, window_height/2 +320, WHITE);
+                    al_draw_text(Large_font, BLACK,  window_width/2 , window_height/2+180, ALLEGRO_ALIGN_CENTRE, "A T E");
+
+                    char tmp[3];
+                    if( feed_count >= 10){
+                        tmp[0] = feed_count /10+ '0';
+                        tmp[1] = feed_count %10+ '0';
+                    }
+                    else tmp[0] = feed_count + '0';
+                    al_draw_text(Large_font, BLACK,  window_width/2 , window_height/2+240, ALLEGRO_ALIGN_CENTRE, tmp);
+                    al_flip_display();
+                    al_rest(0.3);
+                    feed_count ++;
+                    al_draw_scaled_bitmap(pop_cat_open,0,0,al_get_bitmap_width(pop_cat_open), al_get_bitmap_height(pop_cat_open),
+                                      0, 0, window_width, window_height, 0);
+                    al_draw_filled_rectangle(window_width/2 - 125 , window_height/2 +170, window_width/2 +125, window_height/2 +320, WHITE);
+                    al_draw_text(Large_font, BLACK,  window_width/2 , window_height/2+180, ALLEGRO_ALIGN_CENTRE, "A T E");
+
+//                    char tmp[2];
+                    if( feed_count >= 10){
+                        tmp[0] = feed_count /10+ '0';
+                        tmp[1] = feed_count %10+ '0';
+                    }
+                    else tmp[0] = feed_count + '0';
+                    if( feed_count<= feed_food) al_draw_text(Large_font, BLACK,  window_width/2 , window_height/2+240, ALLEGRO_ALIGN_CENTRE, tmp);
+                }
+            }
+            al_flip_display();
+        }
+        status->Change_Food(feed_food);
+        status->Gain_Score(cats[cat_index]->reward(HUNGRY));
+    }
+    else{
+        al_draw_filled_rectangle(window_width/2 - 125 , window_height/2 - 10, window_width/2 +125, window_height/2 +50, BLACK);
+        al_draw_text(font, WHITE,  window_width/2 , window_height/2, ALLEGRO_ALIGN_CENTRE, "B U Y   F O O D");
+        al_flip_display();
+        al_rest(1.5);
+        shop->change_window_open(true);
+    }
+}
+void GameWindow::rock_paper_scissors(int index){
+    while( 1 ){
+        al_wait_for_event(event_queue, &event);
+        if(event.type == ALLEGRO_EVENT_KEY_DOWN) {
+            switch(event.keyboard.keycode) {
+            case ALLEGRO_KEY_ESCAPE:
+                if(usermode){
+                  status->Gain_Score(cats[index]->reward(BORING));
+                  return;
+                }
+                break;
+            }
+        }
+        else if(event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
+            if(event.mouse.button == 1) {
+
+
+                al_draw_scaled_bitmap(pop_cat_close,0,0,al_get_bitmap_width(pop_cat_open), al_get_bitmap_height(pop_cat_open),
+                          0, 0, window_width, window_height, 0);
+                al_draw_filled_rectangle(window_width/2 - 125 , window_height/2 +170, window_width/2 +125, window_height/2 +320, WHITE);
+                al_draw_text(Large_font, BLACK,  window_width/2 , window_height/2+180, ALLEGRO_ALIGN_CENTRE, "A T E");
+
+                char tmp[3];
+                if( feed_count >= 10){
+                    tmp[0] = feed_count /10+ '0';
+                    tmp[1] = feed_count %10+ '0';
+                }
+                else tmp[0] = feed_count + '0';
+                al_draw_text(Large_font, BLACK,  window_width/2 , window_height/2+240, ALLEGRO_ALIGN_CENTRE, tmp);
+                al_flip_display();
+                al_rest(0.3);
+                feed_count ++;
+                al_draw_scaled_bitmap(pop_cat_open,0,0,al_get_bitmap_width(pop_cat_open), al_get_bitmap_height(pop_cat_open),
+                                  0, 0, window_width, window_height, 0);
+                al_draw_filled_rectangle(window_width/2 - 125 , window_height/2 +170, window_width/2 +125, window_height/2 +320, WHITE);
+                al_draw_text(Large_font, BLACK,  window_width/2 , window_height/2+180, ALLEGRO_ALIGN_CENTRE, "A T E");
+
+//                    char tmp[2];
+                if( feed_count >= 10){
+                    tmp[0] = feed_count /10+ '0';
+                    tmp[1] = feed_count %10+ '0';
+                }
+                else tmp[0] = feed_count + '0';
+                if( feed_count<= feed_food) al_draw_text(Large_font, BLACK,  window_width/2 , window_height/2+240, ALLEGRO_ALIGN_CENTRE, tmp);
+            }
+        }
+        al_flip_display();
+    }
+
+    status->Gain_Score(cats[index]->reward(BORING));
+}
 // process of updated event
 int GameWindow::process_event() {
     int instruction = GAME_CONTINUE;
@@ -204,9 +356,9 @@ int GameWindow::process_event() {
              for( int c = 0, s = cats.size(); c < s; c++ ){
                 cats[c]->getting_dirty();
                 cats[c]->getting_hungry();
-                cats[c]->getting_bored();
-                cats[c]->see_me();
-                cats[c]->want_petting();
+//                cats[c]->getting_bored();
+//                cats[c]->see_me();
+                cats[c]->touch_me();
             }
         }
     }
@@ -257,12 +409,14 @@ int GameWindow::process_event() {
                                                                          status_image_size + 100, status_image_size + 100)){
                             switch (cats[i]->cat_queue_top()) {
                             case HUNGRY: cats[i]->change_cat_status(HUNGRY, 0);
+                                hungry_cat(i);
                                 break;
                             case DIRTY: cats[i]->change_cat_status(DIRTY, 0);
                                 break;
                             case BORING: cats[i]->change_cat_status(BORING, 0);
                                 break;
                             case TOUCHME: cats[i]->change_cat_status(TOUCHME, 0);
+                                touch_me(i);
                                 break;
                             case SEEME: cats[i]->change_cat_status(SEEME, 0);
                                 see_cat(i);
@@ -272,7 +426,7 @@ int GameWindow::process_event() {
                         }
                     }
                 }
-                cout << "out\n";
+//                cout << "out\n";
             }
         }
     }
@@ -288,7 +442,7 @@ int GameWindow::process_event() {
     if(redraw) {
         // update each object in game
         instruction = game_update();
-                std::cout << "find bug redraq\n";
+//                std::cout << "find bug redraq\n";
         // Re-draw map
         draw_running_map();
         redraw = false;

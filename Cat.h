@@ -31,7 +31,7 @@ public:
     bool getting_hungry();  // update as timer counts
     bool getting_dirty();   // update as timer counts
     bool getting_bored();
-    bool want_petting();
+    bool touch_me();
     bool see_me();
 
     int get_cat_status( int index ){ return cat_status[index];}
@@ -46,6 +46,7 @@ public:
     int cat_freq(){return frequency;};
     int reward(int i){ return cat_score[i];};//reward for fufilling cat's need
     ALLEGRO_BITMAP *cat_pic(int i){ return cat_breed_1[i];};
+    ALLEGRO_BITMAP *touch_pic(int i){ return cat_touch[i];};
     bool cat_queue_empty(){ return status_queue.empty();}
 //    void hungry();
 //    void game_hungry();
@@ -64,6 +65,7 @@ private:
     static ALLEGRO_BITMAP *cat_status_seeme;
     int number;//for cat draw gif
     std::vector<ALLEGRO_BITMAP*> cat_breed_1;
+    std::vector<ALLEGRO_BITMAP*> cat_touch;
 };
 
 #endif // CAT_H_INCLUDED

@@ -9,6 +9,8 @@
 #include <stdio.h>
 #include <vector>
 
+#define feed_food 10
+
 class GameWindow : protected Window {
 public:
     GameWindow();
@@ -26,6 +28,9 @@ public:
 
     //little games
     void see_cat(int);
+    void hungry_cat(int);
+    void touch_me(int);
+    void rock_paper_scissors(int);
 protected:
     Status *status = NULL;
     Shop *shop = NULL;

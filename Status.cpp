@@ -66,4 +66,5 @@ void Status::Gain_Score(int scoreWorth){
 bool Status::Enough_Food(int cost){
     if ( usermode ) return true;
     else return(Food - cost >= 0);
+//    return(Food - cost >= 0);
 }

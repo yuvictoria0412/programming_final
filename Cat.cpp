@@ -32,6 +32,24 @@ Cat::Cat() {
 //    cout << "breed" << breed << endl;
 
     number = 0;
+
+    if (cat_breed_1.empty()) {
+        char pic_name[19];
+        cat_breed_1.reserve(4);
+        for (int i = 1; i <= 4; i++) {
+            sprintf(pic_name, "./breed/cat1-%d.jpg", i);
+            cat_breed_1[i-1] = al_load_bitmap(pic_name);
+        }
+    }
+
+    if (cat_touch.empty()) {
+        char pic_name[19];
+        cat_touch.reserve(5);
+        for (int i = 1; i <= 5; i++) {
+            sprintf(pic_name, "./touch_me/%d.png", i);
+            cat_touch[i-1] = al_load_bitmap(pic_name);
+        }
+    }
 }
 
 void Cat::setXY(int x, int y, bool put) {
@@ -74,20 +92,22 @@ bool Cat::getting_dirty() {
     }
     else return 1;
 }
-bool Cat::getting_bored(){
-//    cat_status[BORING] =   (rand() % (1 - 0 + 1) + 0);
-//    status_queue.push(BORING);
-//    return 1;
-};
+bool Cat::touch_me() {
+    if ((rand() % 6) == 1 && cat_status[TOUCHME] != -1){
+        status_queue.push(TOUCHME);
+        cat_status[TOUCHME] = -1;
+    }
+    return 1;
+}
 bool Cat::see_me(){
-    if ((rand() % 10+1) && cat_status[SEEME] != -1){
-        cout << "push boredf\n";
+    if ((rand() % 10 - 8) && cat_status[SEEME] != -1){
+//        cout << "push boredf\n";
         status_queue.push(SEEME);
         cat_status[SEEME] = -1;
     }
     return 1;
 };
-bool Cat::want_petting(){};
+
 
 void Cat::draw_cat_status(int i) {
     switch(i) {
@@ -131,19 +151,8 @@ void Cat::Draw() {
         else number++;
     }
     else {
-        char pic_name[20];
         switch (breed) {
         case 1:
-            if (cat_breed_1.empty()) {
-                cat_breed_1.reserve(4);
-//                cout << "load cat"<< endl;
-//                    sprintf(pic_name, "./breed/cat1-1.jpg");
-//                    cat_breed_1[0] = al_load_bitmap(pic_name);
-                for (int i = 1; i <= 4; i++) {
-                    sprintf(pic_name, "./breed/cat1-%d.jpg", i);
-                    cat_breed_1[i-1] = al_load_bitmap(pic_name);
-                }
-            }
             al_draw_scaled_bitmap(cat_breed_1[0], 0, 0,al_get_bitmap_width(cat_breed_1[0]),al_get_bitmap_width(cat_breed_1[0]),circle->x-20, circle->y-35, 100, 100, 0);
             break;
         }

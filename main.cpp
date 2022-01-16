@@ -8,6 +8,7 @@ bool usersound;
 
 int main(int argc, char *argv[])
 {
+
     MenuWindow *Menu= new MenuWindow();
     if (Menu->game_play()) {
         std::cout << "MEOW" << std::endl;
@@ -15,6 +16,7 @@ int main(int argc, char *argv[])
         std::cout << al_cstr(username2) << std::endl;
         std::cout << usermode << std::endl;
         std::cout << usersound << std::endl;
+//        usermode = true;
         GameWindow *Meow_Game = new GameWindow();
         Meow_Game->game_play();
         delete Meow_Game;

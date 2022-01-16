@@ -122,8 +122,17 @@ void GameWindow::draw_running_map() {
         al_clear_to_color( WHITE );
         status->Draw();
         shop->Draw();
-        for (auto meow : cats)
+        for (auto meow : cats) {
             meow->Draw();
+//            meow->draw_cat_status(SEEME);
+
+            if (meow->getting_dirty() == 0);
+//                meow->draw_cat_status(DIRTY);
+            if( meow->getting_hungry() == 0)
+                meow->draw_cat_status(BORING);
+//                meow->draw_cat_status(HUNGRY);
+        }
+
     }
     else{ // shop opened
         al_clear_to_color( WHITE );
@@ -142,6 +151,12 @@ int GameWindow::process_event() {
     if(event.type == ALLEGRO_EVENT_TIMER) {
         if(event.timer.source == timer) {
             redraw = true;
+            for( int c = 0, s = cats.size(); c < s; c++ ){
+                if(cats[c]->getting_dirty()); //std::cout<< "cat not dirty\n";
+//                else cats[c]->draw_cat_status(DIRTY);
+                if(cats[c]->getting_hungry()); //std::cout<< "cat not hungry\n";
+//                else cats[c]->draw_cat_status(HUNGRY);
+            }
         }
     }
     else if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {

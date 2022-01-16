@@ -1,7 +1,7 @@
 #ifndef CAT_H_INCLUDED
 #define CAT_H_INCLUDED
-#define not_hungry 1000
-#define not_dirty 1000
+#define not_hungry 100
+#define not_dirty 100000
 #define want_to_play 3
 #define want_to_touch 4
 #define want

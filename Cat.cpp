@@ -13,6 +13,7 @@ Cat::Cat() {
     circle = new Circle(0, 0, 10);
     cat_status[HUNGRY] = 0;
     cat_status[DIRTY] = 0;
+    cat_status[SEEME] = 0;
     breed = rand()%1 + 1;
     already_put = 0;
     frequency = 50;
@@ -29,6 +30,8 @@ Cat::Cat() {
     if(cat_status_touchme == NULL)
         cat_status_touchme = al_load_bitmap("./pictures/touch.jpg");
 //    cout << "breed" << breed << endl;
+
+    number = 0;
 }
 
 void Cat::setXY(int x, int y, bool put) {
@@ -41,38 +44,50 @@ void Cat::setXY(int x, int y, bool put) {
 bool Cat::getting_hungry() {
     if (cat_status[HUNGRY] >= not_hungry ) {
         cat_status[HUNGRY] = -1; // play game
-
+        status_queue.push(HUNGRY);
         return 0;
     }
-    else if ( cat_status[HUNGRY] == -1 && cat_status[DIRTY] != -1) return 0;
-    else {
+    else if (cat_status[HUNGRY] == -1 && status_queue.empty()) {
+        cat_status[HUNGRY] = 1;
+        return 1;
+    }
+    else if (cat_status[HUNGRY] >= 0) {
         cat_status[HUNGRY]++;
         return 1;
     }
+    else return 1;
 }
 
 bool Cat::getting_dirty() {
-//    std::cout << "getting dirty : " << cat_status[DIRTY] << std::endl;
-    if (cat_status[DIRTY] >= not_dirty && cat_status[HUNGRY] != -1) {
-//        std::cout << "case 1" << std::endl;
+    if (cat_status[DIRTY] >= not_dirty ) {
         cat_status[DIRTY] = -1; // play game
-//        draw_cat_status(DIRTY);
+        status_queue.push(DIRTY);
         return 0;
     }
-    else if (cat_status[DIRTY] >= not_dirty && cat_status[HUNGRY] == -1) {
-//        std::cout << "case 2" << std::endl;
+    else if (cat_status[DIRTY] == -1 && status_queue.empty()) {
+        cat_status[DIRTY] = 1;
         return 1;
     }
-    else if (cat_status[DIRTY] >= 0){
-//        std::cout << "case 3" << std::endl;
+    else if (cat_status[DIRTY] >= 0) {
         cat_status[DIRTY]++;
         return 1;
     }
-    else if (cat_status[DIRTY] == -1) {
-//        draw_cat_status(DIRTY);
-        return 0;
-    }
+    else return 1;
 }
+bool Cat::getting_bored(){
+//    cat_status[BORING] =   (rand() % (1 - 0 + 1) + 0);
+//    status_queue.push(BORING);
+//    return 1;
+};
+bool Cat::see_me(){
+    if ((rand() % 10+1) && cat_status[SEEME] != -1){
+        cout << "push boredf\n";
+        status_queue.push(SEEME);
+        cat_status[SEEME] = -1;
+    }
+    return 1;
+};
+bool Cat::want_petting(){};
 
 void Cat::draw_cat_status(int i) {
     switch(i) {
@@ -101,7 +116,7 @@ void Cat::draw_cat_status(int i) {
 }
 
 void Cat::Draw() {
-    static int number = 0;
+
 //    cout << "draw cat" << endl;
 
     if (already_put) {

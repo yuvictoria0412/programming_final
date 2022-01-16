@@ -1,6 +1,7 @@
 #include "GameWindow.h"
 #include <iostream>
 #include <time.h>
+using namespace std;
 #define WHITE al_map_rgb(255, 255, 255)
 #define BLACK al_map_rgb(0, 0, 0)
 #define min(a, b) ((a) < (b)? (a) : (b))
@@ -34,7 +35,7 @@ GameWindow::GameWindow() {
     al_install_mouse();    // install mouse event
     al_install_audio();    // install audio event
 
-    font = al_load_ttf_font("./font/Cute Letters.ttf",12,0); // load small font
+    font = al_load_ttf_font("./font/Cute Letters.ttf",36,0); // load small font
 //    Medium_font = al_load_ttf_font("Caviar_Dreams_Bold.ttf",24,0); //load medium font
 //    Large_font = al_load_ttf_font("Caviar_Dreams_Bold.ttf",36,0); //load large font
 
@@ -77,7 +78,6 @@ bool GameWindow::game_play() {
 void GameWindow::game_begin() {
     draw_running_map();
     al_start_timer(timer);
-
 }
 
 
@@ -98,7 +98,59 @@ void GameWindow::game_destroy() {
 
     delete status;
     delete shop;
+}
+void GameWindow::see_cat(int cat_index){
+    cout<<"see me\n";
+    double start_time = al_get_time(), now_time = start_time;
+    static int number = 0;
+    int state = 1;
+//    cout << "time "<< start_time << " "<< now_time<<endl;
+    while( state && (now_time - start_time)<5.0){
+        now_time = al_get_time();
+//        cout << "now time "<< now_time<<endl;
+        al_wait_for_event(event_queue, &event);
+        if(event.type == ALLEGRO_EVENT_KEY_DOWN) {
+            switch(event.keyboard.keycode) {
+            case ALLEGRO_KEY_ESCAPE:
+                if(usermode) state = 0;
+                break;
+            }
+        }
+        else{//draw
+            al_clear_to_color( WHITE );
+            al_draw_rectangle(window_width/2 - 125 , window_height/2 - 50, window_width/2 +125, window_height/2 +80, BLACK, 2);
+            al_draw_text(font, BLACK,  window_width/2 , window_height/2-20, ALLEGRO_ALIGN_CENTRE, "W A T C H   M E");
+            int count_down = 5 - (now_time - start_time);
+            char tmp[1];
+            tmp[0] = count_down + '0';
+            al_draw_text(font, BLACK,  window_width/2 , window_height/2+20, ALLEGRO_ALIGN_CENTRE, tmp);
 
+            //cat
+            int frequency = cats[cat_index]->cat_freq();
+
+            switch (cats[cat_index]->cat_breed()) {
+            case 1:
+                al_draw_scaled_bitmap(cats[cat_index]->cat_pic(number/frequency), 0, 0,al_get_bitmap_width(cats[cat_index]->cat_pic(number/frequency)),
+                                      al_get_bitmap_width(cats[cat_index]->cat_pic(number/frequency)),
+                                      window_width/2 - 70 , window_height/2-200, 150, 150, 0);
+
+            break;
+            case 2:
+                al_draw_scaled_bitmap(cats[cat_index]->cat_pic(number/frequency), 0, 0,al_get_bitmap_width(cats[cat_index]->cat_pic(number/frequency)),
+                                      al_get_bitmap_width(cats[cat_index]->cat_pic(number/frequency)),
+                                      window_width/2 - 70 , window_height/2-200, 150, 150, 0);
+            break;
+            }
+            if (number == 4*frequency-1) number = 0;
+            else number++;
+            al_flip_display();
+        }
+    }
+    cats[cat_index]->change_cat_status(SEEME, 1);
+    status->Gain_Score(cats[cat_index]->reward(SEEME));
+
+    draw_running_map();
+//    cout <<"fini\n";
 }
 bool GameWindow::isInRange(int point, int startPos, int length){
     if(point >= startPos - length && point <= startPos + length)
@@ -117,16 +169,19 @@ bool GameWindow::clicked(int mouse_x, int mouse_y, int x, int y, int w, int h){
 }
 // each drawing scene function
 void GameWindow::draw_running_map() {
+//    cout << "in draw map0\n";
     if( !shop->shop_status() ){ // shop closed
         al_clear_to_color( WHITE );
+//        cout << "in draw map1\n";
         status->Draw();
         shop->Draw();
+//        cout << "in draw map\n";
         for (auto meow : cats) {
             meow->Draw();
-            if (meow->getting_dirty() == 0);
-                meow->draw_cat_status(DIRTY);
-            if( meow->getting_hungry() == 0)
-                meow->draw_cat_status(HUNGRY);
+            if (!meow->cat_queue_empty()) {
+                cout << "cat status "<<meow->cat_queue_top()<<endl;
+                meow->draw_cat_status(meow->cat_queue_top());
+            }
         }
     }
     else{ // shop opened
@@ -146,11 +201,12 @@ int GameWindow::process_event() {
     if(event.type == ALLEGRO_EVENT_TIMER) {
         if(event.timer.source == timer) {
             redraw = true;
-            for( int c = 0, s = cats.size(); c < s; c++ ){
-                if(cats[c]->getting_dirty()); //std::cout<< "cat not dirty\n";
-//                else cats[c]->draw_cat_status(DIRTY);
-                if(cats[c]->getting_hungry()); //std::cout<< "cat not hungry\n";
-//                else cats[c]->draw_cat_status(HUNGRY);
+             for( int c = 0, s = cats.size(); c < s; c++ ){
+                cats[c]->getting_dirty();
+                cats[c]->getting_hungry();
+                cats[c]->getting_bored();
+                cats[c]->see_me();
+                cats[c]->want_petting();
             }
         }
     }
@@ -195,30 +251,28 @@ int GameWindow::process_event() {
             }
             else{ // shop closed
                 if( shop->shop_clicked( mouse_x, mouse_y, SHOP_ICON)) shop->change_window_open(true);
-                else if( cats.size() ){
+                else {
                     for( int i = 0, s = cats.size(); i < s; i++){
-                        if( clicked(mouse_x, mouse_y, cats[i]->cat_x(), cats[i]->cat_y(), status_image_size, status_image_size)){
-                            for( int j = 0; j < cat_status_num; j++ ){
-                                if( cats[i]->get_cat_status(j) < 0 ){
-                                    switch( j ){
-                                    case HUNGRY:
-                                        break;
-                                    case DIRTY:
-                                        break;
-                                    case BORING:
-                                        break;
-                                    case SEEME:
-                                        break;
-                                    case TOUCHME:
-                                        break;
-                                    }
-                                }
+                        if(  cats[i]->cat_queue_empty() == 0 && clicked(mouse_x, mouse_y, cats[i]->cat_x(), cats[i]->cat_y(),
+                                                                         status_image_size + 100, status_image_size + 100)){
+                            switch (cats[i]->cat_queue_top()) {
+                            case HUNGRY: cats[i]->change_cat_status(HUNGRY, 0);
+                                break;
+                            case DIRTY: cats[i]->change_cat_status(DIRTY, 0);
+                                break;
+                            case BORING: cats[i]->change_cat_status(BORING, 0);
+                                break;
+                            case TOUCHME: cats[i]->change_cat_status(TOUCHME, 0);
+                                break;
+                            case SEEME: cats[i]->change_cat_status(SEEME, 0);
+                                see_cat(i);
+                                break;
                             }
+                            cats[i]->cat_queue_pop();
                         }
-
-
                     }
                 }
+                cout << "out\n";
             }
         }
     }
@@ -234,7 +288,7 @@ int GameWindow::process_event() {
     if(redraw) {
         // update each object in game
         instruction = game_update();
-//                std::cout << "find bug redraq\n";
+                std::cout << "find bug redraq\n";
         // Re-draw map
         draw_running_map();
         redraw = false;

@@ -23,6 +23,9 @@ public:
     bool clicked(int, int, int, int,  int, int);
     bool isInRange(int, int, int);
     bool put_a_cat();
+
+    //little games
+    void see_cat(int);
 protected:
     Status *status = NULL;
     Shop *shop = NULL;

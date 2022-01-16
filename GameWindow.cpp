@@ -35,7 +35,7 @@ GameWindow::GameWindow() {
     al_install_mouse();    // install mouse event
     al_install_audio();    // install audio event
 
-    font = al_load_ttf_font("./font/Beauty Dream.ttf",12,0); // load small font
+    font = al_load_ttf_font("./font/Cute Letters.ttf",12,0); // load small font
 //    Medium_font = al_load_ttf_font("Caviar_Dreams_Bold.ttf",24,0); //load medium font
 //    Large_font = al_load_ttf_font("Caviar_Dreams_Bold.ttf",36,0); //load large font
 
@@ -124,15 +124,11 @@ void GameWindow::draw_running_map() {
         shop->Draw();
         for (auto meow : cats) {
             meow->Draw();
-//            meow->draw_cat_status(SEEME);
-
             if (meow->getting_dirty() == 0);
-//                meow->draw_cat_status(DIRTY);
+                meow->draw_cat_status(DIRTY);
             if( meow->getting_hungry() == 0)
-                meow->draw_cat_status(BORING);
-//                meow->draw_cat_status(HUNGRY);
+                meow->draw_cat_status(HUNGRY);
         }
-
     }
     else{ // shop opened
         al_clear_to_color( WHITE );
@@ -259,11 +255,11 @@ bool GameWindow::put_a_cat() {
 
         if (event.type == ALLEGRO_EVENT_MOUSE_AXES && cnt % 5 == 0) {
             cnt /= 5;
-            new_cat->setXY(event.mouse.x, event.mouse.y);
+            new_cat->setXY(event.mouse.x, event.mouse.y, 0);
             redraw = true;
         }
         else if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
-            new_cat->setXY(event.mouse.x, event.mouse.y);
+            new_cat->setXY(event.mouse.x, event.mouse.y, 1);
             redraw = true;
             draw_running_map();
             break;

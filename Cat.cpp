@@ -1,18 +1,22 @@
 #include "Cat.h"
 #include "Window.h"
 #include <iostream>
+using namespace std;
 ALLEGRO_BITMAP* Cat::cat_status_hungry = al_load_bitmap("./pictures/hungry.jpg");
 ALLEGRO_BITMAP* Cat::cat_status_dirty = al_load_bitmap("./pictures/dirty.jpg");
 ALLEGRO_BITMAP* Cat::cat_status_boring = al_load_bitmap("./pictures/play.jpg");
 ALLEGRO_BITMAP* Cat::cat_status_touchme = al_load_bitmap("./pictures/touch.jpg");
 ALLEGRO_BITMAP* Cat::cat_status_seeme = al_load_bitmap("./pictures/cat.jpg");
-ALLEGRO_BITMAP* Cat::cat_breed_1 = al_load_bitmap("./breed/cat1.jpg");
+//ALLEGRO_BITMAP* Cat::cat_breed_1 = al_load_bitmap("./breed/cat1.jpg");
 const int gapX = 40, gapY = 30;
 Cat::Cat() {
     circle = new Circle(0, 0, 10);
     cat_status[HUNGRY] = 0;
     cat_status[DIRTY] = 0;
     breed = rand()%1 + 1;
+    already_put = 0;
+    frequency = 50;
+
     cat_status_hungry = al_load_bitmap("./pictures/hungry.jpg");
     if(cat_status_seeme == NULL)
         cat_status_seeme = al_load_bitmap("./pictures/cat.jpg");
@@ -27,7 +31,10 @@ Cat::Cat() {
 //    cout << "breed" << breed << endl;
 }
 
-void Cat::setXY(int x, int y) {
+void Cat::setXY(int x, int y, bool put) {
+    if (put) {
+        already_put = 1;
+    }
     circle->x = x;
     circle->y = y;
 }
@@ -94,12 +101,39 @@ void Cat::draw_cat_status(int i) {
 }
 
 void Cat::Draw() {
-    switch (breed) {
-    case 1:
-        if (cat_breed_1 == NULL)
-            cat_breed_1 = al_load_bitmap("./breed/cat1.jpg");
-        al_draw_scaled_bitmap(cat_breed_1, 0,0,al_get_bitmap_width(cat_breed_1),al_get_bitmap_width(cat_breed_1),circle->x-20, circle->y-35, 100, 100, 0);
-        break;
+    static int number = 0;
+//    cout << "draw cat" << endl;
+
+    if (already_put) {
+//        cout << "already_put" << endl;
+        switch (breed) {
+            case 1:
+                al_draw_scaled_bitmap(cat_breed_1[number/frequency], 0, 0,al_get_bitmap_width(cat_breed_1[number/frequency]),al_get_bitmap_width(cat_breed_1[number/frequency]),circle->x-20, circle->y-35, 100, 100, 0);
+            case 2:
+                al_draw_scaled_bitmap(cat_breed_1[number/frequency], 0, 0,al_get_bitmap_width(cat_breed_1[number/frequency]),al_get_bitmap_width(cat_breed_1[number/frequency]),circle->x-20, circle->y-35, 100, 100, 0);
+        }
+        if (number == 4*frequency-1) number = 0;
+        else number++;
     }
+    else {
+        char pic_name[20];
+        switch (breed) {
+        case 1:
+            if (cat_breed_1.empty()) {
+                cat_breed_1.reserve(4);
+//                cout << "load cat"<< endl;
+//                    sprintf(pic_name, "./breed/cat1-1.jpg");
+//                    cat_breed_1[0] = al_load_bitmap(pic_name);
+                for (int i = 1; i <= 4; i++) {
+                    sprintf(pic_name, "./breed/cat1-%d.jpg", i);
+                    cat_breed_1[i-1] = al_load_bitmap(pic_name);
+                }
+            }
+            al_draw_scaled_bitmap(cat_breed_1[0], 0, 0,al_get_bitmap_width(cat_breed_1[0]),al_get_bitmap_width(cat_breed_1[0]),circle->x-20, circle->y-35, 100, 100, 0);
+            break;
+        }
+    }
+
     return;
 }
+

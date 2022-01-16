@@ -15,6 +15,8 @@
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
 #include <allegro5/allegro_primitives.h>
+
+#include <queue>
 // too hungry minus score
 // buy food minus food
 
@@ -23,13 +25,15 @@ enum {HUNGRY, DIRTY, BORING, TOUCHME, SEEME};
 class Cat : protected Object {
 public:
     Cat();
-    void setXY(int, int);
+    void setXY(int, int, bool);
     void Draw();    // draw cat itself
     void draw_cat_status(int); // draw the button of cat's condition
     bool getting_hungry();  // update as timer counts
     bool getting_dirty();   // update as timer counts
     int get_cat_status( int index ){ return cat_status[index];}
-
+    int cat_queue_top(){ return status_queue.front();}
+    void cat_queue_pop(){ status_queue.pop();};
+    void cat_queue_push(int i){ status_queue.push(i);};
     //new
     int cat_x(){ return circle->x;}
     int cat_y(){ return circle->y;}
@@ -38,6 +42,9 @@ public:
 private:
     int cat_status[5];
     int breed;
+    bool already_put;
+    int frequency;
+    std::queue<int> status_queue;
     /*adjust*/
     static ALLEGRO_BITMAP *cat_status_hungry;
     static ALLEGRO_BITMAP *cat_status_dirty;
@@ -45,7 +52,7 @@ private:
     static ALLEGRO_BITMAP *cat_status_touchme;
     static ALLEGRO_BITMAP *cat_status_seeme;
 
-    static ALLEGRO_BITMAP *cat_breed_1;
+    std::vector<ALLEGRO_BITMAP*> cat_breed_1;
 };
 
 #endif // CAT_H_INCLUDED

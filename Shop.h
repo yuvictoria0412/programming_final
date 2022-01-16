@@ -10,6 +10,7 @@
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
 #include <allegro5/allegro_primitives.h>
+#include "algif5/src/algif.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -41,7 +42,6 @@ public:
     // If so, return its type
     // Otherwise, return -1
     int MouseIn(int, int);
-
     // static function that detect if one point is on a line
     // This function is just used to simplify "MouseIn"
     static bool isInRange(int, int, int);
@@ -53,7 +53,8 @@ public:
 
     int costCoin(int type) { return need_coin[type]; }
     int selectedItem = -1;
-    void play_video( int video_index );
+    void play_video( int video_index,  ALLEGRO_DISPLAY* display );
+    void play_gif( int gif_index,  ALLEGRO_DISPLAY* display, ALLEGRO_EVENT_QUEUE *gif_event_queue );
 
 private:
     ALLEGRO_BITMAP *Shop_icon = NULL;

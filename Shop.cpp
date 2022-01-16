@@ -17,11 +17,22 @@ static char const *filename_3;
 static char const *filename_4;
 static char const *filename_5;
 static char const *filename_6;
-ALLEGRO_VIDEO *video;
-ALLEGRO_EVENT video_event;
-ALLEGRO_TIMER *video_timer;
-ALLEGRO_DISPLAY* video_display = NULL;
-ALLEGRO_EVENT_QUEUE *video_event_queue;
+//ALLEGRO_VIDEO *video;
+//ALLEGRO_EVENT video_event;
+//ALLEGRO_TIMER *video_timer;
+//static ALLEGRO_DISPLAY* video_display = NULL;
+//ALLEGRO_BITMAP *frame;
+//ALLEGRO_EVENT_QUEUE *video_event_queue;
+struct GIF{
+    double start_time = 0;
+    ALGIF_ANIMATION *gif = NULL;
+    double get_time( double time ){
+        if( start_time == 0) start_time = time;
+        return time - start_time;
+    }
+}obj;
+ALLEGRO_VIDEO *video1;
+ALLEGRO_VIDEO *video2;
 Shop::Shop(){
     shop_window_open = false;
     Shop_icon = al_load_bitmap("./Shop/shop.png");
@@ -52,9 +63,15 @@ Shop::Shop(){
 
     al_init_video_addon();
     al_install_audio( );
-//    al_init_image_addon(); // initialize the image addon
+    al_init_image_addon(); // initialize the image addon
     al_init_acodec_addon(); // initialize acodec addon
 
+//    obj.gif = algif_load_animation("./Shop/video/cat1.gif");
+//    ALGIF_ANIMATION *gif = algif_load_animation("./Shop/video/cat1.gif");
+
+
+//    video1 = al_open_video("./Shop/video/5.ogv");
+//    video2 = al_open_video("./Shop/video/6.ogv");
 
 }
 Shop::~Shop(){
@@ -64,104 +81,112 @@ Shop::~Shop(){
 void Shop::Reset(){
     shop_window_open = false;
 }
-void video_init( int index ){
-    //video addonm
-
-    video_display = al_create_display(window_width, window_height);
-    video_event_queue = al_create_event_queue();
-    video_timer = al_create_timer(1.0 / FPS);
-    al_set_window_position(video_display, 0, 0);
-
-    al_start_timer(video_timer);
-    filename_1 = "./Shop/video/1.ogv";
-    filename_2 = "./Shop/video/2.ogv";
-    filename_3 = "./Shop/video/3.ogv";
-    filename_4 = "./Shop/video/4.ogv";
-    filename_5 = "./Shop/video/5.ogv";
-    filename_6 = "./Shop/video/6.ogv";
-    const char *open_file;
-    switch(index){
-    case 1:
-        open_file = filename_1;
-        break;
-    case 2:
-        open_file = filename_2;
-        break;
-    case 3:
-        open_file = filename_3;
-        break;
-    case 4:
-        open_file = filename_4;
-        break;
-    case 5:
-        open_file = filename_5;
-        break;
-    case 6:
-        open_file = filename_6;
-        break;
+void Shop::play_gif( int gif_index, ALLEGRO_DISPLAY* display, ALLEGRO_EVENT_QUEUE *gif_event_queue ){
+    ALLEGRO_EVENT gif_event;
+    ALLEGRO_BITMAP *frame = algif_get_bitmap( obj.gif, obj.get_time( al_get_time()));
+    int count_gif = 0;
+    while( frame && ++count_gif <1){
+        al_wait_for_event(gif_event_queue, &gif_event);
+        if(gif_event.type == ALLEGRO_EVENT_KEY_DOWN) {
+            switch(gif_event.keyboard.keycode) {
+            case ALLEGRO_KEY_ESCAPE:
+                count_gif = 1001;
+                break;
+            }
+        }
+        else{
+            frame = algif_get_bitmap( obj.gif, obj.get_time( al_get_time()));
+            al_draw_scaled_bitmap(frame, 0, 0, al_get_bitmap_width(frame), al_get_bitmap_height(frame),0, 0, al_get_display_width(display),al_get_display_height(display), 0);
+            al_flip_display();
+        }
     }
-    video = al_open_video(open_file);
-    if( video )
-        printf("read video succeed\n");
-    else
-        printf("read video fail!!!!\n");
-
-    al_register_event_source(video_event_queue, al_get_display_event_source(video_display));
-    al_register_event_source(video_event_queue, al_get_keyboard_event_source());
-    al_register_event_source(video_event_queue, al_get_mouse_event_source());
-    al_register_event_source( video_event_queue,  al_get_video_event_source(video));
-    al_register_event_source(video_event_queue, al_get_timer_event_source(video_timer));
+//    al_destroy_display(video_display);
 }
-void video_begin(){
-    al_reserve_samples(1);
-    al_start_video(video, al_get_default_mixer());
-    al_start_timer(video_timer);
-}
-void destroy_video(){
-    al_destroy_display(video_display);
-    al_destroy_event_queue(video_event_queue);
-//    video_display = NULL;
-//    video_event_queue = NULL;
-//    video_event = NULL;
-//    video_timer = NULL;
-}
-void video_flip_display() {
-    ALLEGRO_BITMAP *frame = al_get_video_frame(video);
-    // check if we get the frame successfully
-    // Note the this code is necessary
-    if ( !frame )
+void video_flip_display( ALLEGRO_VIDEO *video_local, ALLEGRO_DISPLAY* video_display_local,ALLEGRO_BITMAP *frame) {
+    frame = al_get_video_frame(video_local);
+    if ( !frame ){
+//        std::cout << "find bug bitmap\n";
         return;
-    // Display the frame.
-    // rescale the frame into the size of screen
-    al_draw_scaled_bitmap(frame,
-                          // the rescale position of the frame
-                          0, 0,
-                          // the width and height you want to rescale
-                          al_get_bitmap_width(frame),
+    }
+//    else std::cout << "normal\n";
+    if ( !video_local ){
+//        std::cout << "find bug video\n";
+        return;
+    }
+    al_draw_scaled_bitmap(frame, 0, 0,al_get_bitmap_width(frame),
                           al_get_bitmap_height(frame),
                           // the position of result image
                           0, 0,
                           // the width and height of result image
-                          al_get_display_width(video_display),
-                          al_get_display_height(video_display), 0);
+                          al_get_display_width(video_display_local),
+                          al_get_display_height(video_display_local), 0);
     al_flip_display();
+
 }
 
-void Shop::play_video( int index ){
-    video_init(index);
-    video_begin();
-    while( 1 ){
+void Shop::play_video( int index,  ALLEGRO_DISPLAY* video_display  ){
+    ALLEGRO_VIDEO *video;
+    ALLEGRO_EVENT video_event;
+    ALLEGRO_TIMER *video_timer;
+    ALLEGRO_BITMAP *frame;
+    ALLEGRO_EVENT_QUEUE *video_event_queue;
+
+    video_event_queue = al_create_event_queue();
+    video_timer = al_create_timer(1.0 / FPS);
+
+    al_start_timer(video_timer);
+    switch(index){
+    case 1:
+        video = al_open_video("./Shop/video/1.ogv");
+        break;
+    case 2:
+        video = al_open_video("./Shop/video/2.ogv");
+        break;
+    case 3:
+        video = al_open_video("./Shop/video/3.ogv");
+        break;
+    case 4:
+        video = al_open_video("./Shop/video/4.ogv");
+        break;
+    case 5:
+        video = al_open_video("./Shop/video/5.ogv");
+        break;
+    case 6:
+        video = al_open_video("./Shop/video/6.ogv");
+        break;
+    }
+    if( video )
+        printf("read video succeed\n");
+    else
+        printf("read video fail!!!!\n");
+    ALLEGRO_EVENT_SOURCE *temp = al_get_video_event_source(video);
+    al_register_event_source(video_event_queue, al_get_display_event_source(video_display));
+    al_register_event_source(video_event_queue, al_get_keyboard_event_source());
+    al_register_event_source(video_event_queue, al_get_mouse_event_source());
+    al_register_event_source( video_event_queue,  temp);
+    al_register_event_source(video_event_queue, al_get_timer_event_source(video_timer));
+    al_reserve_samples(1);
+    al_start_video(video, al_get_default_mixer());
+    int state = 1;
+    while( state ){
         al_wait_for_event(video_event_queue, &video_event);
         if( video_event.type == ALLEGRO_EVENT_TIMER ) {
-            video_flip_display();
-        } else if( video_event.type == ALLEGRO_EVENT_DISPLAY_CLOSE ) {
-            video_flip_display();
-            break;
-        } else if( video_event.type == ALLEGRO_EVENT_VIDEO_FINISHED ) {
+            video_flip_display(video, video_display, frame);
+        }
+        else if(video_event.type == ALLEGRO_EVENT_KEY_DOWN) {
+            switch(video_event.keyboard.keycode) {
+            case ALLEGRO_KEY_ESCAPE:
+                state = 0;
+                break;
+            }
+        }
+        else if( video_event.type == ALLEGRO_EVENT_VIDEO_FINISHED ) {
             break;
         }
     }
-    destroy_video();
+    al_close_video(video);
+    al_destroy_event_queue(video_event_queue);
+    al_destroy_timer(video_timer);
 }
 void Shop::Draw(){
     char buffer[50];
@@ -224,3 +249,4 @@ bool Shop::Enough_Coin(int current_coin, int type){
     if( usermode ) return true;
     else return (current_coin + need_coin[type] >= 0);
 }
+

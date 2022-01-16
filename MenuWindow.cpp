@@ -1,5 +1,10 @@
 #include "MenuWindow.h"
+#include "global.h"
 #include <string>
+//extern std::string username;
+//extern ALLEGRO_USTR *username2;
+//extern bool usermode;
+//extern bool usersound;
 
 #include <iostream>
 using namespace std;
@@ -16,11 +21,11 @@ using namespace std;
 #define max(a, b) ((a) > (b)? (a) : (b))
 
 const int rec_x1 = 250;
-const int rec_y1 = 300;
+const int rec_y1 = 250;
 const int rec_h1 = 50;
 const int rec_y2 = 400;
 const int rec_h2 = 50;
-const int rec_y3 = 500;
+const int rec_y3 = 550;
 const int rec_h3 = 50;
 int button_x;
 int button_y;
@@ -32,7 +37,7 @@ int play_h;
 //enum {NOTHING = 0, ENTERNAME, CHOOSEMODE, SETSOUND};
 
 MenuWindow::MenuWindow() {
-
+    correct_return = 1;
     if (!al_init())
         show_err_msg(-1);
 
@@ -94,14 +99,9 @@ void MenuWindow::game_init() {
     return;
 }
 
-void MenuWindow::game_reset() {
-
-}
-
-void MenuWindow::game_play() {
+bool MenuWindow::game_play() {
     int msg = -1;
 
-    srand(time(NULL));
     game_reset();
     game_begin();
 
@@ -111,6 +111,7 @@ void MenuWindow::game_play() {
             cout << "game_exit" << endl;
     }
     show_err_msg(msg);
+    return correct_return;
 }
 
 void MenuWindow::game_begin() {
@@ -118,11 +119,6 @@ void MenuWindow::game_begin() {
     usersound = 0;
     username2 = al_ustr_new("");
     al_start_timer(timer);
-}
-
-
-int MenuWindow::game_update() {
-    return 0;
 }
 
 
@@ -134,6 +130,11 @@ void MenuWindow::game_destroy() {
     al_destroy_font(Large_font);
     al_destroy_timer(timer);
     al_destroy_bitmap(playbutton);
+    if (al_ustr_length(username2) == 0) {
+        al_ustr_assign_cstr(username2, "USER");
+        username = "USER";
+    }
+
 }
 
 // each drawing scene function
@@ -190,7 +191,7 @@ bool MenuWindow::entering_name() {
         al_wait_for_event(event_queue, &event);
 
         if (event.type == ALLEGRO_EVENT_KEY_CHAR) {
-                cout << "input: "  << event.keyboard.keycode << endl;
+            cout << "input: "  << event.keyboard.keycode << endl;
             if (event.keyboard.keycode == ALLEGRO_KEY_ENTER) {
                 cout << "input enter" << endl;
                 username.assign(al_cstr(username2));
@@ -200,15 +201,13 @@ bool MenuWindow::entering_name() {
             }
             else if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
                 cout << "input escape" << endl;
+                correct_return = 0;
                 return 0;
             }
             else if (event.keyboard.keycode == ALLEGRO_KEY_BACKSPACE) {
                 cout << "input backspace" << endl;
                 if (al_ustr_length(username2))
                     al_ustr_remove_chr(username2, al_ustr_length(username2) - 1);
-//                if (!username.empty())
-//                    username.pop_back();
-
                 redraw = true;
             }
             else {
@@ -227,7 +226,6 @@ bool MenuWindow::entering_name() {
 // process of updated event
 int MenuWindow::process_event() {
     int instruction = GAME_CONTINUE;
-//    int draw_condition = 0;
 
     al_wait_for_event(event_queue, &event);
     redraw = false;
@@ -235,10 +233,15 @@ int MenuWindow::process_event() {
     if (event.type == ALLEGRO_EVENT_TIMER) {
         redraw = true;
     }
+    else if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
+        correct_return = 0;
+        return GAME_EXIT;
+    }
     else if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
         switch(event.keyboard.keycode) {
             case ALLEGRO_KEY_ESCAPE:
                 cout << "key_input" << endl;
+                correct_return = 0;
                 if (al_get_timer_started(timer))
                     al_stop_timer(timer);
                 instruction = GAME_EXIT;
@@ -278,6 +281,13 @@ int MenuWindow::process_event() {
         draw_menu(0);
     }
     return instruction;
+}
+
+void MenuWindow::game_reset() {
+    return;
+}
+int MenuWindow::game_update() {
+    return 0;
 }
 
 

@@ -6,7 +6,7 @@ ALLEGRO_BITMAP* Cat::cat_status_hungry = al_load_bitmap("./pictures/hungry.png")
 ALLEGRO_BITMAP* Cat::cat_status_dirty = al_load_bitmap("./pictures/dirty.png");
 ALLEGRO_BITMAP* Cat::cat_status_boring = al_load_bitmap("./pictures/play.png");
 ALLEGRO_BITMAP* Cat::cat_status_touchme = al_load_bitmap("./pictures/touch.png");
-ALLEGRO_BITMAP* Cat::cat_status_seeme = al_load_bitmap("./pictures/cat.png");
+ALLEGRO_BITMAP* Cat::cat_status_seeme = al_load_bitmap("./pictures/boring.png");
 //ALLEGRO_BITMAP* Cat::cat_breed_1 = al_load_bitmap("./breed/cat1.jpg");
 #define kind_of_cat 5
 #define gif_count 2
@@ -28,9 +28,9 @@ Cat::Cat() {
     frequency2 = 10;
     see_cat = 0;
 
-    cat_status_hungry = al_load_bitmap("./pictures/hungry.png");
+//    cat_status_hungry = al_load_bitmap("./pictures/hungry.png");
     if(cat_status_seeme == NULL)
-        cat_status_seeme = al_load_bitmap("./pictures/cat.png");
+        cat_status_seeme = al_load_bitmap("./pictures/boring.png");
     if(cat_status_dirty == NULL)
         cat_status_dirty = al_load_bitmap("./pictures/dirty.png");
     if(cat_status_hungry == NULL)
@@ -66,9 +66,10 @@ Cat::Cat() {
         cat_breeds.reserve(kind_of_cat);
         for (int i = 1; i <= kind_of_cat; i++) {
             cat_breeds[i-1] = new std::vector<ALLEGRO_BITMAP*>(gif_count);
-            cout << "i" << endl;
+//            cout << "i" << endl;
+            cout << "loading..." << endl;
             for (int j = 1; j <= gif_count; j++) {
-                cout << "j" << endl;
+//                cout << "j" << endl;
                 char pic_name[19];
                 sprintf(pic_name, "./breed/h%d-%d.png", i, j);
                 (*cat_breeds[i-1])[j-1] = al_load_bitmap(pic_name);
@@ -79,9 +80,9 @@ Cat::Cat() {
         cat_see_cat.reserve(index_i);
         for (int i = 1; i <= index_i; i++) {
             cat_see_cat[i-1] = new std::vector<ALLEGRO_BITMAP*>(index_j);
-            cout << "i" << endl;
+            cout << "loading..." << endl;
             for (int j = 1; j <= index_j; j++) {
-                cout << "j" << endl;
+//                cout << "loading..." << endl;
                 char pic_name[19];
                 sprintf(pic_name, "./breed/%d-%d.png", i, j);
                 (*cat_see_cat[i-1])[j-1] = al_load_bitmap(pic_name);
@@ -91,7 +92,7 @@ Cat::Cat() {
 
         init = 1;
     }
-
+    cout << "finished loading" << endl;
 }
 
 void Cat::setXY(int x, int y, bool put) {
@@ -193,7 +194,7 @@ void Cat::Draw() {
         else number2++;
     }
     else if (already_put) {
-        cout << "already put" << endl;
+//        cout << "already put" << endl;
         al_draw_scaled_rotated_bitmap((*cat_breeds[breed])[number/frequency], al_get_bitmap_width((*cat_breeds[breed])[number/frequency])/2, al_get_bitmap_height((*cat_breeds[breed])[number/frequency])/2, circle->x, circle->y, 0.3, 0.3, 0, 0);
         if (number == gif_count*frequency-1) number = 0;
         else number++;

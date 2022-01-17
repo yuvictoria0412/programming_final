@@ -9,12 +9,15 @@
 #include "Tree.h"
 #include <queue>
 #include <stdio.h>
+#include <string>
 #include <vector>
 
 #define feed_food 10
 #define max_score 10000
 #define min_score -100
-
+#define WHITE al_map_rgb(255, 255, 255)
+#define BLACK al_map_rgb(0, 0, 0)
+#define YELLOW al_map_rgb(245,199,26)
 class GameWindow : protected Window {
 public:
     GameWindow();

@@ -24,6 +24,8 @@
 #define WHITE al_map_rgb(255, 255, 255)
 #define BLACK al_map_rgb(0, 0, 0)
 #define RED al_map_rgb(205,92,92)
+#define WHITE al_map_rgb(255, 255, 255)
+#define YELLOW al_map_rgb(245,199,26)
 #define Num_ITEM 5
 #define ADD_FOOD 100
 

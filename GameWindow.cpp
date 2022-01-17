@@ -2,9 +2,7 @@
 #include <iostream>
 #include <time.h>
 using namespace std;
-#define WHITE al_map_rgb(255, 255, 255)
-#define BLACK al_map_rgb(0, 0, 0)
-#define YELLOW al_map_rgb(245,199,26)
+
 #define min(a, b) ((a) < (b)? (a) : (b))
 #define max(a, b) ((a) > (b)? (a) : (b))
 const int ThumbWidth = 5;
@@ -87,12 +85,15 @@ bool GameWindow::game_play() {
 void GameWindow::game_begin() {
     draw_running_map();
     al_start_timer(timer);
+    draw_running_map();
+    al_draw_text(Large_font, BLACK,  window_width/2 , window_height/2, ALLEGRO_ALIGN_CENTRE, "L O A D   G A M E ...");
+    al_flip_display();
     for (int i = 0; i < tree_size; i++) {
 //        cout << "i" << endl;
         Tree *new_tree = new Tree(rand() % 400 + 400, rand() % 400 + 400);
         trees.push_back(new_tree);
     }
-    draw_running_map();
+//    draw_running_map();
     Cat *temp = new Cat();
     delete temp;
 }
@@ -166,10 +167,9 @@ bool GameWindow::clicked(int mouse_x, int mouse_y, int x, int y, int w, int h){
 }
 // each drawing scene function
 void GameWindow::draw_running_map() {
-//    cout << "in draw map0\n";
     if( !shop->shop_status() ){ // shop closed
         al_clear_to_color( WHITE );
-//        cout << "in draw map1\n";
+
         for (auto tree : trees) {
             tree->Draw();
         }
@@ -226,7 +226,6 @@ void GameWindow::touch_me(int cur) {
     status->Gain_Score(cats[cur]->reward(TOUCHME));
 }
 void GameWindow::hungry_cat(int cat_index){
-    int picture = 1;
     int feed_count = 0;
     if( status->Enough_Food(feed_food)){
         al_draw_scaled_bitmap(pop_cat_open,0,0,
@@ -301,14 +300,14 @@ void GameWindow::hungry_cat(int cat_index){
 
 void GameWindow::rock_paper_scissors(int cat_index){
     int scene = 1;
-    static int number = 0;
+//    static int number = 0;
     int user_choice = -1, cat_choice;
     cat_choice = rand() % 2;
 
     cout << "r p y game : "<<cat_choice<<endl;
     al_clear_to_color( WHITE );
      //rock_papper_scissors
-    char tmp[2];
+    char tmp[1];
     al_draw_filled_rectangle(window_width/2 - 125 , window_height/2-300, window_width/2 +125, window_height/2-30, WHITE);
     al_draw_text(Large_font, BLACK,  window_width/2 , window_height/2-150, ALLEGRO_ALIGN_CENTRE, "T Y P E");
     for( int i = 0; i < 3; i ++){
@@ -324,7 +323,7 @@ void GameWindow::rock_paper_scissors(int cat_index){
      // to cover cat's background
         al_draw_filled_rectangle(window_width/2 - 125 , window_height/2-300, window_width/2 +125, window_height/2-80, WHITE);
         al_draw_text(Large_font, BLACK,  window_width/2 , window_height/2-150, ALLEGRO_ALIGN_CENTRE, "T Y P E");
-        int frequency = cats[cat_index]->cat_freq();
+//        int frequency = cats[cat_index]->cat_freq();
         al_flip_display();
 //        switch (cats[cat_index]->cat_breed()) {
 //        case 1:
@@ -339,12 +338,11 @@ void GameWindow::rock_paper_scissors(int cat_index){
 //                                  window_width/2 - 70 , window_height/2-300, 150, 150, 0);
 //        break;
 //        }
-        if (number == 4*frequency-1) number = 0;
-        else number++;
+//        if (number == 4*frequency-1) number = 0;
+//        else number++;
 
 
-        al_flip_display();
-
+//        al_flip_display();
         al_wait_for_event(event_queue, &event);
         if(event.type == ALLEGRO_EVENT_KEY_DOWN) {
             switch(event.keyboard.keycode) {
@@ -370,7 +368,7 @@ void GameWindow::rock_paper_scissors(int cat_index){
                 user_choice = 2;
                 break;
             }
-        al_flip_display();
+//        al_flip_display();
         }
     }
 
@@ -380,7 +378,7 @@ void GameWindow::rock_paper_scissors(int cat_index){
     al_draw_circle(window_width/2, window_height/4*3-30, 120, BLACK, 5);//outline
     double now_time = al_get_time(), start_time = now_time;
     int count_down;
-    tmp[2] = '\0';
+//    tmp[2] = '\0';
     while( now_time - start_time < 3.1){
         now_time = al_get_time();
         count_down = 4 - (now_time - start_time);
@@ -391,7 +389,7 @@ void GameWindow::rock_paper_scissors(int cat_index){
         al_draw_text(Large_font, BLACK,  window_width/2, window_height/4*3-30-20, ALLEGRO_ALIGN_CENTRE, tmp);
         al_flip_display();
     }
-    scene++;
+//    scene++;
 
     //scene 3 reveal choice
     al_clear_to_color( WHITE );
@@ -408,31 +406,33 @@ void GameWindow::rock_paper_scissors(int cat_index){
     al_flip_display();
     al_rest(2);
 
-    char *result;
+//    char result[25] = {0};
+    string result;
     //scene 4 result
     if( cat_choice == 1){//paper
-        if( user_choice == 1) result = "T I E\0";
+        if( user_choice == 1) result = "T I E";
         else if (user_choice == 2){
             status->Gain_Score(cats[cat_index]->reward(BORING));
-            result = "Y O U   W I N\0";
+            result = "Y O U   W I N";
         }
-        else if (user_choice == 0) result = "Y O U   L O S S\0";
+        else if (user_choice == 0) result = "Y O U   L O S S";
     }
     else{
-        if( user_choice == 0) result = "T I E\0";
+        if( user_choice == 0) result = "T I E";
         else if (user_choice == 1){
             status->Gain_Score(cats[cat_index]->reward(BORING));
-            result = "Y O U   W I N\0";
+            result = "Y O U   W I N";
         }
-        else if (user_choice == 2) result = "Y O U   L O S S\0";
+        else if (user_choice == 2) result = "Y O U   L O S S";
     }
 
     al_draw_filled_rectangle(window_width/2 - 200 , window_height/2 -40, window_width/2 +200, window_height/2 +40, RED);
-    al_draw_text(Large_font, WHITE,  window_width/2, window_height/2-28, ALLEGRO_ALIGN_CENTRE, result);
+    al_draw_text(Large_font, WHITE,  window_width/2, window_height/2-28, ALLEGRO_ALIGN_CENTRE, result.c_str());
     al_flip_display();
     al_rest(2);
 
-    draw_running_map();
+//    draw_running_map();
+    cout << "end of rpy\n";
 }
 // process of updated event
 int GameWindow::process_event() {
@@ -456,10 +456,10 @@ int GameWindow::process_event() {
             redraw = true;
              for( int c = 0, s = cats.size(); c < s; c++ ){
                 cats[c]->getting_dirty();
-//                cats[c]->getting_hungry();
-//                cats[c]->getting_bored();
-//                cats[c]->see_me();
-//                cats[c]->touch_me();
+                cats[c]->getting_hungry();
+                cats[c]->getting_bored();
+                cats[c]->see_me();
+                cats[c]->touch_me();
             }
         }
     }
@@ -530,7 +530,9 @@ int GameWindow::process_event() {
                                 hungry_cat(i);
                                 break;
                             case DIRTY: cats[i]->change_cat_status(DIRTY, 0);
-                                clean_cat->game_play(event_queue);
+                                if(clean_cat->game_play(event_queue))
+                                    status->Gain_Score(cats[i]->reward(DIRTY));
+                                else status->Gain_Score(-1*cats[i]->reward(DIRTY));
                                 break;
                             case BORING: cats[i]->change_cat_status(BORING, 0);
                                 rock_paper_scissors(i);

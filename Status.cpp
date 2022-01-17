@@ -1,5 +1,6 @@
 #include "Status.h"
-
+#include <iostream>
+using namespace std;
 
 const int ThumbWidth = 50;
 const int ThumbHeight = 50;

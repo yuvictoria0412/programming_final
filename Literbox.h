@@ -27,15 +27,16 @@
 #define WHITE al_map_rgb(255, 255, 255)
 #define BLACK al_map_rgb(0, 0, 0)
 #define RED al_map_rgb(205,92,92)
-#define h_bound 100
-#define w_bound 100
+#define h_bound 300
+#define w_bound 300
 #define poop_state_num 2
+#define poop_how_many 5
 struct Poop{
-    int appearence;
+    int appearence; // -1 means cleaned
     int poop_pic_count;
     int x, y;
-    ALLEGRO_BITMAP *pic_buried;
-    ALLEGRO_BITMAP *pic_half_buried;
+//    ALLEGRO_BITMAP *pic_buried;
+//    ALLEGRO_BITMAP *pic_half_buried;
 };
 
 class Literbox : public Object
@@ -58,7 +59,7 @@ public:
     bool clicked(int, int, int, int, int, int); // check if shop object is being clicked
     bool literbox_status(){return literbox_window_open;};
     void change_window_open(bool change){ literbox_window_open = change;};
-    void game_play(ALLEGRO_EVENT_QUEUE  *event_queue);
+    bool game_play(ALLEGRO_EVENT_QUEUE  *event_queue);
 private:
     ALLEGRO_BITMAP *box = NULL;
     std::vector<Poop> poops;

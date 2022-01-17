@@ -22,6 +22,7 @@ struct GIF{
 }obj;
 ALLEGRO_VIDEO *video1;
 ALLEGRO_VIDEO *video2;
+ALLEGRO_BITMAP *food;
 Shop::Shop(){
     shop_window_open = false;
     Shop_icon = al_load_bitmap("./Shop/shop.png");
@@ -49,7 +50,7 @@ Shop::Shop(){
     object_position[WATCH_AD][1] = window_height/2 + 150;
     object_size[WATCH_AD][0] = box_w;
     object_size[WATCH_AD][1] = box_h/3;
-
+    food = al_load_bitmap("./Shop/food.png");
     al_init_video_addon();
     al_install_audio( );
     al_init_image_addon(); // initialize the image addon
@@ -117,7 +118,7 @@ void Shop::play_video( int index,  ALLEGRO_DISPLAY* video_display  ){
     ALLEGRO_VIDEO *video;
     ALLEGRO_EVENT video_event;
     ALLEGRO_TIMER *video_timer;
-    ALLEGRO_BITMAP *frame;
+    ALLEGRO_BITMAP *frame = NULL;
     ALLEGRO_EVENT_QUEUE *video_event_queue;
 
     video_event_queue = al_create_event_queue();
@@ -196,13 +197,18 @@ void Shop::Draw(){
         al_draw_line(window_width/2 +page_w/2 - 10, window_height/2-page_h/2-10, window_width/2 +page_w/2 + 10,  window_height/2-page_h/2+10,BLACK, 3);
 
         for( int box = GET_CAT; box <= WATCH_AD; box++ ){
+            if( box == WATCH_AD) al_draw_filled_rectangle(object_position[box][0]-object_size[box][0]/2, object_position[box][1]-object_size[box][1]/2,
+                              object_position[box][0]+ object_size[box][0]/2, object_position[box][1]+object_size[box][0]/2, YELLOW);
             al_draw_rectangle(object_position[box][0]-object_size[box][0]/2, object_position[box][1]-object_size[box][1]/2,
                               object_position[box][0]+ object_size[box][0]/2, object_position[box][1]+object_size[box][0]/2, BLACK, 2);
+
         }
         sprintf(buffer, "G E T   C A T");
         al_draw_text(shopFont, BLACK,  object_position[GET_CAT][0], object_position[GET_CAT][1] + gapY*2, ALLEGRO_ALIGN_CENTRE, buffer);
         sprintf(buffer, "B U Y   F O O D");
         al_draw_text(shopFont, BLACK,  object_position[BUY_FOOD][0], object_position[BUY_FOOD][1] + gapY*2, ALLEGRO_ALIGN_CENTRE, buffer);
+        al_draw_scaled_rotated_bitmap( food, al_get_bitmap_width(food)/2, al_get_bitmap_height(food)/2,
+                                       object_position[BUY_FOOD][0], object_position[BUY_FOOD][1]-20, 0.6, 0.6, 0, 0);
         sprintf(buffer, "W A T C H   A D");
         al_draw_text(shopFont, BLACK,  object_position[WATCH_AD][0], object_position[WATCH_AD][1] + gapY, ALLEGRO_ALIGN_CENTRE, buffer);
 

@@ -224,18 +224,21 @@ bool Shop::isInRange(int point, int startPos, int length){
     return false;
 }
 bool Shop::shop_clicked(int mouse_x, int mouse_y, int object){
-//    cout << "shop is opened\n";
-    if( isInRange( mouse_x, object_position[object][0], ThumbWidth + object_size[object][0]/2) &&
-       isInRange( mouse_y, object_position[object][1], ThumbHeight+object_size[object][1]/2)){
-        cout << "clciked "<< object<<"\n";
-//        if( object == SHOP_ICON) shop_window_open = true;
-//        else if( object == SHOP_EXIT) shop_window_open = false;
-        return true;
-    }
-    else{
-//        if( object == SHOP_ICON) shop_window_open = false;
+    cout << "shop is opened\n";
+    if (object == SHOP_ICON) {
+        if (mouse_x >= shop_X - 0.3 * al_get_bitmap_width(Shop_icon)/2 && mouse_x <= shop_X + 0.3 * al_get_bitmap_width(Shop_icon)/2) {
+            if (mouse_y >= shop_Y - 0.3 * al_get_bitmap_height(Shop_icon)/2 && mouse_y <= shop_Y + 0.3 * al_get_bitmap_height(Shop_icon)/2) {
+                return true;
+            }
+        }
         return false;
     }
+    else if( isInRange( mouse_x, object_position[object][0], ThumbWidth + object_size[object][0]/2) &&
+       isInRange( mouse_y, object_position[object][1], ThumbHeight+object_size[object][1]/2)){
+        cout << "clciked "<< object<<"\n";
+        return true;
+    }
+    else return false;
 }
 // Check if current coin is not less than needed coin
 bool Shop::Enough_Coin(int current_coin, int type){

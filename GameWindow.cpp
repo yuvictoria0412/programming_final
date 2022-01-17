@@ -193,14 +193,14 @@ void GameWindow::draw_running_map() {
         for (auto tree : trees) {
             tree->Draw();
         }
-        cout << "tree\n";
+//        cout << "tree\n";
         for (auto meow : cats) {
             meow->Draw();
             if (!meow->cat_queue_empty()) {
                 meow->draw_cat_status(meow->cat_queue_top());
             }
         }
-        cout << "cats\n";
+//        cout << "cats\n";
         if (error_message > 0) {
             error_message--;
             al_draw_filled_rectangle(rec_x1, rec_y1, window_width-rec_x1, rec_y1 + rec_h1, BLACK);
@@ -215,7 +215,7 @@ void GameWindow::draw_running_map() {
         shop->Draw();
         al_draw_scaled_rotated_bitmap(shop_cat[cnt/10], GETW(shop_cat[cnt/10]), GETH(shop_cat[cnt/10]), 350, 280, 0.5, 0.5, 0, 0);
     }
-    cout << "before flip\n";
+//    cout << "before flip\n";
     al_flip_display();
 }
 void GameWindow::touch_me(int cur) {

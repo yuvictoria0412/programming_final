@@ -151,7 +151,7 @@ bool Cat::see_me(){
     return 1;
 };
 bool Cat::getting_bored(){
-    if ((rand() % 10 - 8) && cat_status[BORING] != -1){
+    if ((rand() % 20 - 18) && cat_status[BORING] != -1){
 //        cout << "push boredf\n";
         status_queue.push(BORING);
         cat_status[BORING] = -1;

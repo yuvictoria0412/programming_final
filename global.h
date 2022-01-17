@@ -10,9 +10,9 @@
 
 #define window_width 800
 #define window_height 800
-//#define field_width 00
-//#define field_height 1000
-
+#define max_score 500
+#define min_score -100
+#define super_user_score 0
 extern std::string username;
 extern ALLEGRO_USTR *username2;
 extern bool usermode;

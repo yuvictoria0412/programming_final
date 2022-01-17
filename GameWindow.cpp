@@ -16,7 +16,23 @@ const int rec_y1 = 400;
 const int rec_h1 = 50;
 static std::vector<ALLEGRO_BITMAP*> shop_cat;
 int cnt;
+ALLEGRO_SAMPLE *popsample;
+ALLEGRO_SAMPLE_INSTANCE *popSound;
 
+ALLEGRO_SAMPLE *petsample;
+ALLEGRO_SAMPLE_INSTANCE *petSound;
+
+ALLEGRO_SAMPLE *meowsample;
+ALLEGRO_SAMPLE_INSTANCE *meowSound;
+
+ALLEGRO_SAMPLE *gamesample;
+ALLEGRO_SAMPLE_INSTANCE *gameSound;
+ALLEGRO_SAMPLE *winsample;
+ALLEGRO_SAMPLE_INSTANCE *winSound;
+ALLEGRO_SAMPLE *losesample;
+ALLEGRO_SAMPLE_INSTANCE *loseSound;
+
+ALLEGRO_SAMPLE_ID *ret_id;
 GameWindow::GameWindow() {
     if (!al_init())
         show_err_msg(-1);
@@ -55,6 +71,50 @@ GameWindow::GameWindow() {
     al_register_event_source(event_queue, al_get_timer_event_source(timer));
     pop_cat_open = al_load_bitmap("./popcat/open.jpg");
     pop_cat_close = al_load_bitmap("./popcat/close.jpg");
+
+
+    //sound
+    sample = al_load_sample("bgm.wav");
+    startSound = al_create_sample_instance(sample);
+    al_set_sample_instance_playmode(startSound, ALLEGRO_PLAYMODE_LOOP);
+    al_reserve_samples(1);
+    al_attach_sample_instance_to_mixer(startSound, al_get_default_mixer());
+
+    popsample = al_load_sample("./sound/pop.wav");
+    popSound = al_create_sample_instance(popsample);
+    al_set_sample_instance_playmode(popSound, ALLEGRO_PLAYMODE_ONCE);
+    al_reserve_samples(1);
+    al_attach_sample_instance_to_mixer(popSound, al_get_default_mixer());
+
+    petsample = al_load_sample("./sound/meow_pet.wav");
+    petSound = al_create_sample_instance(petsample);
+    al_set_sample_instance_playmode(petSound, ALLEGRO_PLAYMODE_ONCE);
+    al_reserve_samples(1);
+    al_attach_sample_instance_to_mixer(petSound, al_get_default_mixer());
+
+    meowsample = al_load_sample("./sound/meow.wav");
+    meowSound = al_create_sample_instance(meowsample);
+    al_set_sample_instance_playmode(meowSound, ALLEGRO_PLAYMODE_ONCE);
+    al_reserve_samples(1);
+    al_attach_sample_instance_to_mixer(meowSound, al_get_default_mixer());
+
+    gamesample = al_load_sample("./sound/game.wav");
+    gameSound = al_create_sample_instance(gamesample);
+    al_set_sample_instance_playmode(gameSound, ALLEGRO_PLAYMODE_ONCE);
+    al_reserve_samples(1);
+    al_attach_sample_instance_to_mixer(gameSound, al_get_default_mixer());
+    winsample = al_load_sample("./sound/win.wav");
+    winSound = al_create_sample_instance(winsample);
+    al_set_sample_instance_playmode(winSound, ALLEGRO_PLAYMODE_ONCE);
+    al_reserve_samples(1);
+    al_attach_sample_instance_to_mixer(winSound, al_get_default_mixer());
+
+    losesample = al_load_sample("./sound/lose.wav");
+    loseSound = al_create_sample_instance(losesample);
+    al_set_sample_instance_playmode(loseSound, ALLEGRO_PLAYMODE_ONCE);
+    al_reserve_samples(1);
+    al_attach_sample_instance_to_mixer(loseSound, al_get_default_mixer());
+
     game_init();
 }
 void GameWindow::game_init() {
@@ -110,13 +170,10 @@ void GameWindow::game_begin() {
 //    draw_running_map();
     Cat *temp = new Cat();
     delete temp;
-    sample = al_load_sample("bgm.wav");
-    startSound = al_create_sample_instance(sample);
-    al_set_sample_instance_playmode(startSound, ALLEGRO_PLAYMODE_LOOP);
-    al_reserve_samples(1);
 
-    al_attach_sample_instance_to_mixer(startSound, al_get_default_mixer());
-    al_play_sample_instance(startSound);
+
+
+    if(!usersound)al_play_sample_instance(startSound);
 }
 
 
@@ -143,6 +200,7 @@ void GameWindow::see_cat(int cat_index){
     double start_time = al_get_time(), now_time = start_time;
     int state = 1;
     cats[cat_index]->saw_cat(1);
+    if(!usersound) al_play_sample(meowsample, 50, 0.0, 1, ALLEGRO_PLAYMODE_LOOP, ret_id);
     while( state && (now_time - start_time)<5.0){
         now_time = al_get_time();
         al_wait_for_event(event_queue, &event);
@@ -165,12 +223,15 @@ void GameWindow::see_cat(int cat_index){
             char tmp[1];
             tmp[0] = count_down + '0';
             al_draw_text(font, BLACK,  window_width/2 , window_height/2+20, ALLEGRO_ALIGN_CENTRE, tmp);
-//            cats[cat_index]->Draw();
+            cats[cat_index]->Draw();
             al_flip_display();
         }
     }
     status->Gain_Score(cats[cat_index]->reward(SEEME));
-
+    if(!usersound){
+        al_stop_samples();
+        al_play_sample_instance(startSound);
+    }
     draw_running_map();
     cats[cat_index]->saw_cat(0);
 }
@@ -240,9 +301,10 @@ void GameWindow::touch_me(int cur) {
         al_wait_for_event(event_queue, &event);
         if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
             if (event.mouse.button == 1) {
+                if(!usersound &&i < 4) al_play_sample(petsample, 50, 0.0, 1, ALLEGRO_PLAYMODE_ONCE, ret_id);
                 if (event.mouse.x >= 100 && event.mouse.x <= window_width - 100) {
                     if (event.mouse.y >= 100 && event.mouse.y <= window_height - 100) {
-                        cout << "touch me little game clicked" << endl;
+//                        cout << "touch me little game clicked" << endl;
                         if (++i == 5) break;
                     }
                 }
@@ -272,6 +334,7 @@ void GameWindow::hungry_cat(int cat_index){
                               al_get_bitmap_width(pop_cat_open), al_get_bitmap_height(pop_cat_open),
                                       0  , 0, window_width, window_height, 0);
         al_flip_display();
+        char tmp[3];
         while( feed_count <= feed_food){
             al_wait_for_event(event_queue, &event);
             if(event.type == ALLEGRO_EVENT_KEY_DOWN) {
@@ -285,16 +348,24 @@ void GameWindow::hungry_cat(int cat_index){
                     break;
                 }
             }
+            else if(event.type == ALLEGRO_EVENT_TIMER) {
+                if(event.timer.source == timer) {
+                    al_draw_scaled_bitmap(pop_cat_open,0,0,al_get_bitmap_width(pop_cat_open), al_get_bitmap_height(pop_cat_open),
+                                          0, 0, window_width, window_height, 0);
+                al_draw_filled_rectangle(window_width/2 - 160 , window_height/2 +170, window_width/2 +160, window_height/2 +320, WHITE);
+                al_draw_text(Large_font, BLACK,  window_width/2 , window_height/2+180, ALLEGRO_ALIGN_CENTRE, "E A T E N");
+                al_draw_filled_circle( mouse_x, mouse_y, 25,YELLOW);
+                }
+            }
             else if(event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
                 if(event.mouse.button == 1) {
-
-
+//                    al_play_sample_instance(popSound);
+                    if(!usersound) al_play_sample(popsample, 2, 0.0, 1, ALLEGRO_PLAYMODE_ONCE, ret_id);
                     al_draw_scaled_bitmap(pop_cat_close,0,0,al_get_bitmap_width(pop_cat_open), al_get_bitmap_height(pop_cat_open),
                               0, 0, window_width, window_height, 0);
                     al_draw_filled_rectangle(window_width/2 - 160 , window_height/2 +170, window_width/2 +160, window_height/2 +320, WHITE);
                     al_draw_text(Large_font, BLACK,  window_width/2 , window_height/2+180, ALLEGRO_ALIGN_CENTRE, "E A T E N");
 
-                    char tmp[3];
                     if( feed_count >= 10){
                         tmp[0] = feed_count /10+ '0';
                         tmp[1] = feed_count %10+ '0';
@@ -307,15 +378,7 @@ void GameWindow::hungry_cat(int cat_index){
                     al_draw_scaled_bitmap(pop_cat_open,0,0,al_get_bitmap_width(pop_cat_open), al_get_bitmap_height(pop_cat_open),
                                       0, 0, window_width, window_height, 0);
                     al_draw_filled_rectangle(window_width/2 - 160 , window_height/2 +170, window_width/2 +160, window_height/2 +320, WHITE);
-                al_draw_text(Large_font, BLACK,  window_width/2 , window_height/2+180, ALLEGRO_ALIGN_CENTRE, "E A T E N");
-
-//                    char tmp[2];
-                    if( feed_count >= 10){
-                        tmp[0] = feed_count /10+ '0';
-                        tmp[1] = feed_count %10+ '0';
-                    }
-                    else tmp[0] = feed_count + '0';
-                    if( feed_count<= feed_food) al_draw_text(Large_font, BLACK,  window_width/2 , window_height/2+240, ALLEGRO_ALIGN_CENTRE, tmp);
+                        al_draw_text(Large_font, BLACK,  window_width/2 , window_height/2+180, ALLEGRO_ALIGN_CENTRE, "E A T E N");
                 }
             }
             else if(event.type == ALLEGRO_EVENT_MOUSE_AXES){
@@ -325,8 +388,13 @@ void GameWindow::hungry_cat(int cat_index){
                                           0, 0, window_width, window_height, 0);
                 al_draw_filled_rectangle(window_width/2 - 160 , window_height/2 +170, window_width/2 +160, window_height/2 +320, WHITE);
                 al_draw_text(Large_font, BLACK,  window_width/2 , window_height/2+180, ALLEGRO_ALIGN_CENTRE, "E A T E N");
-                al_draw_filled_circle( mouse_x, mouse_y, 25,YELLOW);
             }
+            if( feed_count >= 10){
+                tmp[0] = feed_count /10+ '0';
+                tmp[1] = feed_count %10+ '0';
+            }
+            else tmp[0] = feed_count + '0';
+            if( feed_count<= feed_food) al_draw_text(Large_font, BLACK,  window_width/2 , window_height/2+240, ALLEGRO_ALIGN_CENTRE, tmp);
             al_flip_display();
         }
 
@@ -344,11 +412,9 @@ void GameWindow::hungry_cat(int cat_index){
 
 void GameWindow::rock_paper_scissors(int cat_index){
     int scene = 1;
-//    static int number = 0;
     int user_choice = -1, cat_choice;
     cat_choice = rand() % 2;
     double time = 4.0;
-    cout << "r p y game : "<<cat_choice<<endl;
     al_clear_to_color( WHITE );
      //rock_papper_scissors
     char tmp[1];
@@ -366,27 +432,9 @@ void GameWindow::rock_paper_scissors(int cat_index){
      //cat
      // to cover cat's background
         al_draw_filled_rectangle(window_width/2 - 125 , window_height/2-300, window_width/2 +125, window_height/2-80, WHITE);
-        al_draw_text(Large_font, BLACK,  window_width/2 , window_height/2-150, ALLEGRO_ALIGN_CENTRE, "T Y P E");
-//        int frequency = cats[cat_index]->cat_freq();
+        al_draw_text(Large_font, BLACK,  window_width/2 , window_height/2-100, ALLEGRO_ALIGN_CENTRE, "T Y P E");
+        cats[cat_index]->Draw();
         al_flip_display();
-//        switch (cats[cat_index]->cat_breed()) {
-//        case 1:
-//            al_draw_scaled_bitmap(cats[cat_index]->cat_pic(number/frequency), 0, 0,al_get_bitmap_width(cats[cat_index]->cat_pic(number/frequency)),
-//                                  al_get_bitmap_width(cats[cat_index]->cat_pic(number/frequency)),
-//                                  window_width/2 - 70 , window_height/2-300, 150, 150, 0);
-//
-//        break;
-//        case 2:
-//            al_draw_scaled_bitmap(cats[cat_index]->cat_pic(number/frequency), 0, 0,al_get_bitmap_width(cats[cat_index]->cat_pic(number/frequency)),
-//                                  al_get_bitmap_width(cats[cat_index]->cat_pic(number/frequency)),
-//                                  window_width/2 - 70 , window_height/2-300, 150, 150, 0);
-//        break;
-//        }
-//        if (number == 4*frequency-1) number = 0;
-//        else number++;
-
-
-//        al_flip_display();
         al_wait_for_event(event_queue, &event);
         if(event.type == ALLEGRO_EVENT_KEY_DOWN) {
             switch(event.keyboard.keycode) {
@@ -396,14 +444,12 @@ void GameWindow::rock_paper_scissors(int cat_index){
                   user_choice = 1;
                   cat_choice = 0;
                   time = 0;
-//                  status->Gain_Score(cats[cat_index]->reward(BORING));
-//                  return;
                 }
                 else{
                     scene++;
-                      user_choice = 0;
-                      cat_choice = 1;
-                      time = 0;
+                    user_choice = 0;
+                    cat_choice = 1;
+                    time = 0;
                 }
                 break;
             case ALLEGRO_KEY_R:
@@ -421,6 +467,23 @@ void GameWindow::rock_paper_scissors(int cat_index){
             }
 //        al_flip_display();
         }
+        else if(event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
+            if(event.mouse.button == 1) {
+                for( int i = 0; i < 3; i ++){
+                    if( clicked( mouse_x, mouse_y, window_width/3 * (i+1) -235, window_height/2+50, al_get_bitmap_width(cats[cat_index]->r_p_y_pic(i))/2,
+                              al_get_bitmap_height(cats[cat_index]->r_p_y_pic(i)))){
+                        user_choice = i;
+                        cout << "click " << i << endl;
+                        scene++;
+                        i = 3;
+                    }
+                }
+            }
+        }
+        else if(event.type == ALLEGRO_EVENT_MOUSE_AXES){
+            mouse_x = event.mouse.x;
+            mouse_y = event.mouse.y;
+        }
     }
 
     al_clear_to_color( WHITE );
@@ -429,7 +492,7 @@ void GameWindow::rock_paper_scissors(int cat_index){
     al_draw_circle(window_width/2, window_height/4*3-30, 120, BLACK, 5);//outline
     double now_time = al_get_time(), start_time = now_time;
     int count_down;
-//    tmp[2] = '\0';
+    if(!usersound && time ) al_play_sample(gamesample, 50, 0.0, 1, ALLEGRO_PLAYMODE_ONCE, ret_id);
     while( now_time - start_time < time){
         now_time = al_get_time();
         count_down = 4 - (now_time - start_time);
@@ -440,7 +503,6 @@ void GameWindow::rock_paper_scissors(int cat_index){
         al_draw_text(Large_font, BLACK,  window_width/2, window_height/4*3-30-20, ALLEGRO_ALIGN_CENTRE, tmp);
         al_flip_display();
     }
-//    scene++;
 
     //scene 3 reveal choice
     al_clear_to_color( WHITE );
@@ -455,34 +517,26 @@ void GameWindow::rock_paper_scissors(int cat_index){
                           al_get_bitmap_width(cats[cat_index]->r_p_y_pic(user_choice)),
                           window_width/2-122, window_height/4*3-150, 243, 243, 0);
     al_flip_display();
-    al_rest(2);
-
-//    char result[25] = {0};
+    al_rest(1.2);
     string result;
     //scene 4 result
-    if( cat_choice == 1){//paper
-        if( user_choice == 1) result = "T I E";
-        else if (user_choice == 2){
-            status->Gain_Score(cats[cat_index]->reward(BORING));
-            result = "Y O U   W I N";
-        }
-        else if (user_choice == 0) result = "Y O U   L O S E";
+    if( user_choice == cat_choice){
+        if(!usersound) al_play_sample(meowsample, 50, 0.0, 1, ALLEGRO_PLAYMODE_ONCE, ret_id);
+        result = "T I E";
     }
-    else{
-        if( user_choice == 0) result = "T I E";
-        else if (user_choice == 1){
-            status->Gain_Score(cats[cat_index]->reward(BORING));
-            result = "Y O U   W I N";
-        }
-        else if (user_choice == 2) result = "Y O U   L O S S";
+    else if ((user_choice == 2 && cat_choice == 1) || ( !cat_choice && user_choice == 1)){
+        status->Gain_Score(cats[cat_index]->reward(BORING));
+        result = "Y O U   W I N";
+        if(!usersound) al_play_sample(winsample, 10, 0.0, 1, ALLEGRO_PLAYMODE_ONCE, ret_id);
     }
-
+    else if ((user_choice == 0 && cat_choice == 1) || ( !cat_choice && user_choice == 2)){
+        if(!usersound) al_play_sample(losesample, 20, 0.0, 1, ALLEGRO_PLAYMODE_ONCE, ret_id);
+        result = "Y O U   L O S S";
+    }
     al_draw_filled_rectangle(window_width/2 - 200 , window_height/2 -40, window_width/2 +200, window_height/2 +40, RED);
     al_draw_text(Large_font, WHITE,  window_width/2, window_height/2-28, ALLEGRO_ALIGN_CENTRE, result.c_str());
     al_flip_display();
     al_rest(2);
-
-//    draw_running_map();
     cout << "end of rpy\n";
 }
 // process of updated event
@@ -534,8 +588,10 @@ int GameWindow::process_event() {
                     }
                     else if ( buy_item == WATCH_AD ){
 //                           (rand() % (max - min + 1) + min);
+                        if(!usersound) al_stop_sample_instance(startSound);
                         shop->play_video((rand() % (6 - 1 + 1) + 1), display); // 5and 6 good
                         if( !usermode ) status->Change_Coin( shop->costCoin(buy_item));
+                        if(!usersound) al_play_sample_instance(startSound);
                     }
                     else if (buy_item == GET_CAT){
                         if( shop->Enough_Coin(status->getCoin(), buy_item)){
@@ -586,7 +642,9 @@ int GameWindow::process_event() {
                                 else status->Gain_Score(-1*cats[i]->reward(DIRTY));
                                 break;
                             case BORING: cats[i]->change_cat_status(BORING, 0);
+                                cats[i]->saw_cat(1);
                                 rock_paper_scissors(i);
+                                cats[i]->saw_cat(0);
                                 break;
                             case TOUCHME: cats[i]->change_cat_status(TOUCHME, 0);
                                 touch_me(i);
@@ -608,7 +666,7 @@ int GameWindow::process_event() {
         mouse_x = event.mouse.x;
         mouse_y = event.mouse.y;
 //        std::cout << "mouse "<< mouse_x << " " << mouse_y << std::endl;
-        shop->MouseIn(mouse_x, mouse_y);
+        // shop->MouseIn(mouse_x, mouse_y);
 
     }
     else if (event.type == ALLEGRO_EVENT_KEY_CHAR) {
@@ -704,4 +762,5 @@ bool GameWindow::put_a_cat() {
         if (redraw)
             draw_running_map();
     }
+    return true;
 }

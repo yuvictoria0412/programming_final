@@ -60,6 +60,14 @@ EndingWindow::EndingWindow() {
     poop = al_load_bitmap("./ending/poop.jpg");
     press_next = false;
 
+    sample = al_load_sample("bgm.wav");
+    startSound = al_create_sample_instance(sample);
+    al_set_sample_instance_playmode(startSound, ALLEGRO_PLAYMODE_LOOP);
+    al_reserve_samples(1);
+
+    al_attach_sample_instance_to_mixer(startSound, al_get_default_mixer());
+    if(!usersound) al_play_sample_instance(startSound);
+
     game_init();
 }
 
@@ -116,42 +124,6 @@ void EndingWindow::draw_running_map() {
     char buffer[50];
 
     sprintf(buffer, "S C O R E : %d", final_score);
-
-
-//    string sentence = "S C O R E : ";
-//    final_score = -19;
-//    if( final_score < 0 ){
-//        sentence += " -";
-//        final_score *=-1;
-//    }
-//    if ( final_score >= 1000){
-//        sentence += " ";
-//        sentence += final_score/1000 +'0';
-//        sentence += " ";
-//        sentence += final_score%1000/100 +'0';
-//        sentence += " ";
-//        sentence += final_score%100/10 +'0';
-//        sentence += " ";
-//        sentence += final_score%10 +'0';
-//    }
-//    else if( final_score >= 100){
-//        sentence += " ";
-//        sentence += final_score%1000/100 +'0';
-//        sentence += " ";
-//        sentence += final_score%100/10 +'0';
-//        sentence += " ";
-//        sentence += final_score%10 +'0';
-//    }
-//    else if( final_score >= 10){
-//        sentence += " ";
-//        sentence += final_score%100/10 +'0';
-//        sentence += " ";
-//        sentence += final_score%10 +'0';
-//    }
-//    else if( final_score < 10){
-//        sentence += " ";
-//        sentence += final_score%10 +'0';
-//    }
 
     al_draw_text(Large_font, BLACK, window_width/2, h, ALLEGRO_ALIGN_CENTRE, buffer);
     h += gap;
@@ -212,7 +184,10 @@ int EndingWindow::process_event() {
     else if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
         if (event.mouse.button == 1) {
             press_next = clicked( mouse_x, mouse_y, click_x, click_y, al_get_bitmap_width(gift), al_get_bitmap_height(gift));
-            if(press_next) cout << "pressed\n";
+            if(press_next){
+                cout << "pressed\n";
+                if(!usersound) al_stop_sample_instance(startSound);
+            }
 
         }
     }

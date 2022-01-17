@@ -6,8 +6,8 @@ const int ThumbWidth = 50;
 const int ThumbHeight = 50;
 const int gapX = 40, gapY = 30;
 const int offsetX = 80, offsetY = 150;
-const int Initial_Coin = 1000;
-const int Initial_Score = 100;
+const int Initial_Coin = 0;
+const int Initial_Score = 0;
 
 Status::Status(){
     if( usermode ){
@@ -18,7 +18,7 @@ Status::Status(){
     else{
         Coin = Initial_Coin;
         Score = Initial_Score;
-        Food = super_user_score;
+        Food = 0;
     }
 
 
@@ -33,7 +33,7 @@ Status::~Status(){
 void Status::Reset(){
     if( usermode ){
         Coin = -1;
-        Score = 950;
+        Score = super_user_score;
         Food = -1;
     }
     else{

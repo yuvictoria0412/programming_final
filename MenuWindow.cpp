@@ -242,8 +242,14 @@ bool MenuWindow::entering_name() {
                     }
                     else if (event.mouse.y >= rec_y3 && event.mouse.y <= rec_y3 + rec_h3) {
                         cout << "click sound" << endl;
-                        if (usersound == 0) usersound = 1;
-                        else usersound = 0;
+                        if (usersound == 0){
+                            usersound = 1;
+                            al_stop_sample_instance(startSound);
+                        }
+                        else{
+                            usersound = 0;
+                            al_play_sample_instance(startSound);
+                        }
                         redraw = 1;
                         return 1;
                     }
@@ -305,9 +311,14 @@ int MenuWindow::process_event() {
                 }
                 else if (event.mouse.y >= rec_y3 && event.mouse.y <= rec_y3 + rec_h3) {
                     cout << "click sound" << endl;
-                    if (usersound == 0) usersound = 1;
-                    else usersound = 0;
-                    redraw = 1;
+                    if (usersound == 0){
+                        usersound = 1;
+                        al_stop_sample_instance(startSound);
+                    }
+                    else{
+                        usersound = 0;
+                        al_play_sample_instance(startSound);
+                    }
                 }
             }
             else if (event.mouse.x >= button_x && event.mouse.x <= button_x + button_w && event.mouse.y >= button_y && event.mouse.y <= button_y + button_h) {

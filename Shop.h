@@ -26,11 +26,11 @@
 #define RED al_map_rgb(205,92,92)
 #define WHITE al_map_rgb(255, 255, 255)
 #define YELLOW al_map_rgb(245,199,26)
-#define Num_ITEM 5
+#define Num_ITEM 6
 #define ADD_FOOD 100
 
 
-enum {SHOP_ICON = 0, SHOP_EXIT, GET_CAT, BUY_FOOD, WATCH_AD};
+enum {SHOP_ICON = 0, SHOP_EXIT, GET_CAT, BUY_FOOD, WATCH_AD, SKIP_AD};
 class Shop : public Object
 {
 public:
@@ -57,7 +57,7 @@ public:
     int selectedItem = -1;
     void play_video( int video_index,  ALLEGRO_DISPLAY* display );
     void play_gif( int gif_index,  ALLEGRO_DISPLAY* display, ALLEGRO_EVENT_QUEUE *gif_event_queue );
-
+    void video_flip_display( ALLEGRO_VIDEO *video_local, ALLEGRO_DISPLAY* video_display_local,ALLEGRO_BITMAP *frame);
 private:
     ALLEGRO_BITMAP *Shop_icon = NULL;
     ALLEGRO_FONT *shopFont;

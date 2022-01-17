@@ -10,8 +10,8 @@ const int ThumbWidth = 5;
 const int ThumbHeight = 5;
 const int gapX = 40, gapY = 30;
 const int box_w = (page_w - 3*gapX)/2, box_h = 300; // size of the shop opened screen
-
-
+double start_time = 0, now_time= 0;
+int mouse_x = 0, mouse_y = 0;
 struct GIF{
     double start_time = 0;
     ALGIF_ANIMATION *gif = NULL;
@@ -23,6 +23,7 @@ struct GIF{
 ALLEGRO_VIDEO *video1;
 ALLEGRO_VIDEO *video2;
 ALLEGRO_BITMAP *food;
+
 Shop::Shop(){
     shop_window_open = false;
     Shop_icon = al_load_bitmap("./Shop/shop.png");
@@ -50,6 +51,11 @@ Shop::Shop(){
     object_position[WATCH_AD][1] = window_height/2 + 150;
     object_size[WATCH_AD][0] = box_w;
     object_size[WATCH_AD][1] = box_h/3;
+
+    object_position[SKIP_AD][0] = window_width/2 -page_w/2;
+    object_position[SKIP_AD][1] = window_height/2-page_h/2;
+    object_size[SKIP_AD][0] = 30;
+    object_size[SKIP_AD][1] = 30;
     food = al_load_bitmap("./Shop/food.png");
     al_init_video_addon();
     al_install_audio( );
@@ -92,8 +98,10 @@ void Shop::play_gif( int gif_index, ALLEGRO_DISPLAY* display, ALLEGRO_EVENT_QUEU
     }
 //    al_destroy_display(video_display);
 }
-void video_flip_display( ALLEGRO_VIDEO *video_local, ALLEGRO_DISPLAY* video_display_local,ALLEGRO_BITMAP *frame) {
+void Shop::video_flip_display( ALLEGRO_VIDEO *video_local, ALLEGRO_DISPLAY* video_display_local,ALLEGRO_BITMAP *frame) {
     frame = al_get_video_frame(video_local);
+
+    char buffer[50];
     if ( !frame ){
 //        std::cout << "find bug bitmap\n";
         return;
@@ -110,6 +118,25 @@ void video_flip_display( ALLEGRO_VIDEO *video_local, ALLEGRO_DISPLAY* video_disp
                           // the width and height of result image
                           al_get_display_width(video_display_local),
                           al_get_display_height(video_display_local), 0);
+    now_time = al_get_time();
+    int count_down = 5 - (now_time - start_time);
+
+    if( count_down > 0){
+        al_draw_filled_rectangle(window_width/2 -page_w/2-30, window_height/2-page_h/2,
+                              window_width/2 -page_w/2+200, window_height/2-page_h/2 + 50, WHITE);
+        al_draw_rectangle(window_width/2 -page_w/2-30, window_height/2-page_h/2,
+                                  window_width/2 -page_w/2+200, window_height/2-page_h/2 + 50, BLACK, 2);
+        sprintf(buffer, "S K I P   I N  %d", count_down);
+//        sprintf(buffer, "P R E S S   E S C");
+        al_draw_text(shopFont, BLACK, window_width/2 -page_w/2+80, window_height/2-page_h/2+10, ALLEGRO_ALIGN_CENTRE, buffer);
+
+    }
+    else{ //exit button
+        al_draw_filled_circle(object_position[SKIP_AD][0], object_position[SKIP_AD][1], object_size[SKIP_AD][0], RED);
+        al_draw_circle(object_position[SKIP_AD][0], object_position[SKIP_AD][1],object_size[SKIP_AD][0]+1, BLACK, 3);//outline
+        al_draw_line(window_width/2 -page_w/2 - 10, window_height/2-page_h/2+10, window_width/2 -page_w/2 + 10,  window_height/2-page_h/2-10,BLACK, 3);
+        al_draw_line(window_width/2 -page_w/2 - 10, window_height/2-page_h/2-10, window_width/2 -page_w/2 + 10,  window_height/2-page_h/2+10,BLACK, 3);
+    }
     al_flip_display();
 
 }
@@ -158,6 +185,8 @@ void Shop::play_video( int index,  ALLEGRO_DISPLAY* video_display  ){
     al_reserve_samples(1);
     al_start_video(video, al_get_default_mixer());
     int state = 1;
+    start_time = al_get_time();
+    now_time = start_time;
     while( state ){
         al_wait_for_event(video_event_queue, &video_event);
         if( video_event.type == ALLEGRO_EVENT_TIMER ) {
@@ -166,12 +195,23 @@ void Shop::play_video( int index,  ALLEGRO_DISPLAY* video_display  ){
         else if(video_event.type == ALLEGRO_EVENT_KEY_DOWN) {
             switch(video_event.keyboard.keycode) {
             case ALLEGRO_KEY_ESCAPE:
-                state = 0;
+                if( now_time - start_time >= 5 )state = 0;
+                else if( usermode )state = 0;
                 break;
             }
         }
         else if( video_event.type == ALLEGRO_EVENT_VIDEO_FINISHED ) {
             break;
+        }
+        else if(video_event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
+            if(video_event.mouse.button == 1) {
+                if(shop_clicked(mouse_x, mouse_y, SKIP_AD))
+                    state = 0;
+            }
+        }
+        else if(video_event.type == ALLEGRO_EVENT_MOUSE_AXES){
+            mouse_x = video_event.mouse.x;
+            mouse_y = video_event.mouse.y;
         }
     }
     al_close_video(video);
@@ -191,8 +231,8 @@ void Shop::Draw(){
         //page rectangle
         al_draw_rectangle(window_width/2 -page_w/2, window_height/2-page_h/2, window_width/2 +page_w/2, window_height/2 + page_h/2, BLACK, 2);
         //exit button
-        al_draw_filled_circle(window_width/2 +page_w/2, window_height/2-page_h/2, 30, RED);
-        al_draw_circle(window_width/2 +page_w/2, window_height/2-page_h/2, 31, BLACK, 3);//outline
+        al_draw_filled_circle(object_position[SHOP_EXIT][0], object_position[SHOP_EXIT][1] , object_size[SHOP_EXIT][0], RED);
+        al_draw_circle(object_position[SHOP_EXIT][0], object_position[SHOP_EXIT][1] , object_size[SHOP_EXIT][0]+1, BLACK, 3);//outline
         al_draw_line(window_width/2 +page_w/2 - 10, window_height/2-page_h/2+10, window_width/2 +page_w/2 + 10,  window_height/2-page_h/2-10,BLACK, 3);
         al_draw_line(window_width/2 +page_w/2 - 10, window_height/2-page_h/2-10, window_width/2 +page_w/2 + 10,  window_height/2-page_h/2+10,BLACK, 3);
 
@@ -224,7 +264,7 @@ bool Shop::isInRange(int point, int startPos, int length){
     return false;
 }
 bool Shop::shop_clicked(int mouse_x, int mouse_y, int object){
-    cout << "shop is opened\n";
+    // cout << "shop is opened\n";
     if (object == SHOP_ICON) {
         if (mouse_x >= shop_X - 0.3 * al_get_bitmap_width(Shop_icon)/2 && mouse_x <= shop_X + 0.3 * al_get_bitmap_width(Shop_icon)/2) {
             if (mouse_y >= shop_Y - 0.3 * al_get_bitmap_height(Shop_icon)/2 && mouse_y <= shop_Y + 0.3 * al_get_bitmap_height(Shop_icon)/2) {

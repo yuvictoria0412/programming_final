@@ -41,6 +41,8 @@ private:
     int mouse_x;
     int mouse_y;
     bool press_next;
+    ALLEGRO_SAMPLE *sample;
+    ALLEGRO_SAMPLE_INSTANCE *startSound;
 //    bool correct_return;
 };
 

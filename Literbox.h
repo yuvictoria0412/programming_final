@@ -70,6 +70,8 @@ private:
 //    int shop_X, shop_Y; // location of shop icon on the screen
 //    int need_coin[Num_ITEM] = {0, 0, -1000, -40, 500}; // cost of each item
     bool literbox_window_open = false;
+    ALLEGRO_SAMPLE_INSTANCE *shuffle_sound;
+    ALLEGRO_SAMPLE *sample;
 //    int object_position[Num_ITEM][2];
 //    int object_size[Num_ITEM][2];
 };

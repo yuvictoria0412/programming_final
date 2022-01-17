@@ -6,6 +6,7 @@ const int ThumbWidth = 5;
 const int ThumbHeight = 5;
 int size_poop[2] = {0};
 float pic_scale = 0.1;
+ALLEGRO_SAMPLE_ID *ret_id_l;
 Literbox::Literbox(){
     srand(time(NULL));
     al_install_audio( );
@@ -45,6 +46,13 @@ Literbox::Literbox(){
     ALLEGRO_BITMAP *shovel_tmp = al_load_bitmap("./literbox/shovel.png");
     shovel.push_back(shovel_tmp);
     shovel.push_back(shovel_tmp);
+    sample = al_load_sample("./sound/shovel.wav");
+    shuffle_sound = al_create_sample_instance(sample);
+    al_set_sample_instance_playmode(shuffle_sound, ALLEGRO_PLAYMODE_ONCE);
+    al_reserve_samples(1);
+
+    al_attach_sample_instance_to_mixer(shuffle_sound, al_get_default_mixer());
+
 
 }
 Literbox::~Literbox(){
@@ -100,15 +108,13 @@ bool Literbox::game_play(ALLEGRO_EVENT_QUEUE *event_queue){
         al_wait_for_event(event_queue, &event);
         if(event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
             if(event.mouse.button == 1) {
-//                for( auto popo : poops ){
+                if(!usersound)al_play_sample(sample, 4, 0.0, 1, ALLEGRO_PLAYMODE_ONCE, ret_id_l);
                 for( int i = 0, s = poops.size(); i < s; i ++ ){
-                    cout << "click\n";
                     if( poops[i].appearence != -1){
                         if(clicked( mouse_x, mouse_y, poops[i].x, poops[i].y, size_poop[poops[i].appearence] * 2,
                                                     size_poop[poops[i].appearence] * 2) ){
                             poops[i].poop_pic_count += 1;
-                            cout << "click poop"<< poops[i].poop_pic_count<<" "<< poops[i].appearence<<"\n";
-//                            poops[i].appearence = 0;
+//                            cout << "click poop"<< poops[i].poop_pic_count<<" "<< poops[i].appearence<<"\n";
                             if( poops[i].poop_pic_count == poop_state_num ){
                                 poops[i].appearence = -1;
                                 poops[i].poop_pic_count;

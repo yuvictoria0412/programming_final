@@ -12,7 +12,7 @@ ALLEGRO_BITMAP* Cat::cat_status_seeme = al_load_bitmap("./pictures/boring.png");
 #define gif_count 2
 std::vector<std::vector<ALLEGRO_BITMAP*>*> cat_breeds;
 std::vector<std::vector<ALLEGRO_BITMAP*>*> cat_see_cat;
-#define index_i 4
+#define index_i 5
 #define index_j 4
 bool init = 0;
 const int gapX = 40, gapY = 30;

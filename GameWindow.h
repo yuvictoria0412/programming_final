@@ -13,7 +13,7 @@
 #include <vector>
 
 #define feed_food 10
-#define max_score 10000
+#define max_score 1000
 #define min_score -100
 #define WHITE al_map_rgb(255, 255, 255)
 #define BLACK al_map_rgb(0, 0, 0)

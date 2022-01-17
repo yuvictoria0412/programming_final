@@ -113,43 +113,47 @@ void EndingWindow::draw_running_map() {
     al_set_window_position(display, 0, 0);
     al_clear_to_color(WHITE);
     int h = 110, gap = 80;
+    char buffer[50];
 
-    string sentence = "S C O R E : ";
+    sprintf(buffer, "S C O R E : %d", final_score);
+
+
+//    string sentence = "S C O R E : ";
 //    final_score = -19;
-    if( final_score < 0 ){
-        sentence += " -";
-        final_score *=-1;
-    }
-    if ( final_score >= 1000){
-        sentence += " ";
-        sentence += final_score/1000 +'0';
-        sentence += " ";
-        sentence += final_score%1000/100 +'0';
-        sentence += " ";
-        sentence += final_score%100/10 +'0';
-        sentence += " ";
-        sentence += final_score%10 +'0';
-    }
-    else if( final_score >= 100){
-        sentence += " ";
-        sentence += final_score%1000/100 +'0';
-        sentence += " ";
-        sentence += final_score%100/10 +'0';
-        sentence += " ";
-        sentence += final_score%10 +'0';
-    }
-    else if( final_score >= 10){
-        sentence += " ";
-        sentence += final_score%100/10 +'0';
-        sentence += " ";
-        sentence += final_score%10 +'0';
-    }
-    else if( final_score < 10){
-        sentence += " ";
-        sentence += final_score%10 +'0';
-    }
+//    if( final_score < 0 ){
+//        sentence += " -";
+//        final_score *=-1;
+//    }
+//    if ( final_score >= 1000){
+//        sentence += " ";
+//        sentence += final_score/1000 +'0';
+//        sentence += " ";
+//        sentence += final_score%1000/100 +'0';
+//        sentence += " ";
+//        sentence += final_score%100/10 +'0';
+//        sentence += " ";
+//        sentence += final_score%10 +'0';
+//    }
+//    else if( final_score >= 100){
+//        sentence += " ";
+//        sentence += final_score%1000/100 +'0';
+//        sentence += " ";
+//        sentence += final_score%100/10 +'0';
+//        sentence += " ";
+//        sentence += final_score%10 +'0';
+//    }
+//    else if( final_score >= 10){
+//        sentence += " ";
+//        sentence += final_score%100/10 +'0';
+//        sentence += " ";
+//        sentence += final_score%10 +'0';
+//    }
+//    else if( final_score < 10){
+//        sentence += " ";
+//        sentence += final_score%10 +'0';
+//    }
 
-    al_draw_text(Large_font, BLACK, window_width/2, h, ALLEGRO_ALIGN_CENTRE, sentence.c_str());
+    al_draw_text(Large_font, BLACK, window_width/2, h, ALLEGRO_ALIGN_CENTRE, buffer);
     h += gap;
     al_draw_text(Large_font, BLACK, window_width/2, h, ALLEGRO_ALIGN_CENTRE, username.c_str());
     h+= gap;

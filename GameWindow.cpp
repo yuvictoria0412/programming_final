@@ -2,7 +2,8 @@
 #include <iostream>
 #include <time.h>
 using namespace std;
-
+#define GETW al_get_bitmap_width
+#define GETH al_get_bitmap_height
 #define min(a, b) ((a) < (b)? (a) : (b))
 #define max(a, b) ((a) > (b)? (a) : (b))
 const int ThumbWidth = 5;
@@ -13,6 +14,9 @@ char RPY[4];
 const int rec_x1 = 250;
 const int rec_y1 = 400;
 const int rec_h1 = 50;
+static std::vector<ALLEGRO_BITMAP*> shop_cat;
+int cnt;
+
 GameWindow::GameWindow() {
     if (!al_init())
         show_err_msg(-1);
@@ -62,6 +66,12 @@ void GameWindow::game_init() {
     status = new Status();
     shop = new Shop();
     clean_cat = new Literbox();
+    char pic_name[19];
+    shop_cat.reserve(5);
+    for (int i = 1; i <= 5; i++) {
+        sprintf(pic_name, "./breed/cat1-%d.png", i);
+        shop_cat[i-1] = al_load_bitmap(pic_name);
+    }
 }
 
 void GameWindow::game_reset() {
@@ -133,6 +143,10 @@ void GameWindow::see_cat(int cat_index){
             switch(event.keyboard.keycode) {
             case ALLEGRO_KEY_ESCAPE:
                 if(usermode) state = 0;
+//                else{
+//                    state = 0;
+//                    status->Gain_Score(cats[cat_index]->reward(SEEME)*-2);
+//                }
                 break;
             }
         }
@@ -144,7 +158,7 @@ void GameWindow::see_cat(int cat_index){
             char tmp[1];
             tmp[0] = count_down + '0';
             al_draw_text(font, BLACK,  window_width/2 , window_height/2+20, ALLEGRO_ALIGN_CENTRE, tmp);
-            cats[cat_index]->Draw();
+//            cats[cat_index]->Draw();
             al_flip_display();
         }
     }
@@ -171,18 +185,22 @@ bool GameWindow::clicked(int mouse_x, int mouse_y, int x, int y, int w, int h){
 }
 // each drawing scene function
 void GameWindow::draw_running_map() {
+    cnt++;
+    if (cnt == 50) cnt = 0;
     if( !shop->shop_status() ){ // shop closed
         al_clear_to_color( WHITE );
 
         for (auto tree : trees) {
             tree->Draw();
         }
+        cout << "tree\n";
         for (auto meow : cats) {
             meow->Draw();
             if (!meow->cat_queue_empty()) {
                 meow->draw_cat_status(meow->cat_queue_top());
             }
         }
+        cout << "cats\n";
         if (error_message > 0) {
             error_message--;
             al_draw_filled_rectangle(rec_x1, rec_y1, window_width-rec_x1, rec_y1 + rec_h1, BLACK);
@@ -195,7 +213,9 @@ void GameWindow::draw_running_map() {
         al_clear_to_color( WHITE );
         status->Draw();
         shop->Draw();
+        al_draw_scaled_rotated_bitmap(shop_cat[cnt/10], GETW(shop_cat[cnt/10]), GETH(shop_cat[cnt/10]), 350, 280, 0.5, 0.5, 0, 0);
     }
+    cout << "before flip\n";
     al_flip_display();
 }
 void GameWindow::touch_me(int cur) {
@@ -228,6 +248,10 @@ void GameWindow::touch_me(int cur) {
                     status->Gain_Score(cats[cur]->reward(TOUCHME));
                     return;
                 }
+                else{
+                    status->Gain_Score(cats[cur]->reward(TOUCHME)*-1);
+                    return;
+                }
                 break;
             }
         }
@@ -247,6 +271,10 @@ void GameWindow::hungry_cat(int cat_index){
                 switch(event.keyboard.keycode) {
                 case ALLEGRO_KEY_ESCAPE:
                     if(usermode) feed_count += 10;
+                    else{
+                        status->Gain_Score(cats[cat_index]->reward(HUNGRY)*-2);
+                        feed_count += 10;
+                    }
                     break;
                 }
             }
@@ -312,7 +340,7 @@ void GameWindow::rock_paper_scissors(int cat_index){
 //    static int number = 0;
     int user_choice = -1, cat_choice;
     cat_choice = rand() % 2;
-
+    double time = 4.0;
     cout << "r p y game : "<<cat_choice<<endl;
     al_clear_to_color( WHITE );
      //rock_papper_scissors
@@ -360,8 +388,15 @@ void GameWindow::rock_paper_scissors(int cat_index){
                   scene++;
                   user_choice = 1;
                   cat_choice = 0;
+                  time = 0;
 //                  status->Gain_Score(cats[cat_index]->reward(BORING));
 //                  return;
+                }
+                else{
+                    scene++;
+                      user_choice = 0;
+                      cat_choice = 1;
+                      time = 0;
                 }
                 break;
             case ALLEGRO_KEY_R:
@@ -388,7 +423,7 @@ void GameWindow::rock_paper_scissors(int cat_index){
     double now_time = al_get_time(), start_time = now_time;
     int count_down;
 //    tmp[2] = '\0';
-    while( now_time - start_time < 3.1){
+    while( now_time - start_time < time){
         now_time = al_get_time();
         count_down = 4 - (now_time - start_time);
         tmp[0] = count_down + '0';
@@ -424,7 +459,7 @@ void GameWindow::rock_paper_scissors(int cat_index){
             status->Gain_Score(cats[cat_index]->reward(BORING));
             result = "Y O U   W I N";
         }
-        else if (user_choice == 0) result = "Y O U   L O S S";
+        else if (user_choice == 0) result = "Y O U   L O S E";
     }
     else{
         if( user_choice == 0) result = "T I E";
@@ -633,10 +668,25 @@ bool GameWindow::put_a_cat() {
                             error_message = 10;
                             can_put = 0;
                             redraw = true;
+                            break;
                         }
                     }
                 }
             }
+
+            if (can_put) {
+                for (auto t : trees) {
+                    if (x >= t->getX() + 200 && x <= t->getX() - 200) {
+                        if (y >= t->getY() + 200 && y <= t->getY() - 200) {
+                            error_message = 10;
+                            can_put = 0;
+                            redraw = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
             if (can_put) {
                 new_cat->setXY(x, y, 1);
                 redraw = true;

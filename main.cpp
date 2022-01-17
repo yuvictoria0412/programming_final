@@ -22,10 +22,10 @@ int main(int argc, char *argv[])
         std::cout << usermode << std::endl;
         std::cout << usersound << std::endl;
         std::cout << users_performance<< std::endl;
-        usermode = true;
+//        usermode = true;
         GameWindow *Meow_Game = new GameWindow();
         Meow_Game->game_play();
-
+        users_performance = false;
         EndingWindow *Ending = new EndingWindow();
         Ending->game_play();
 

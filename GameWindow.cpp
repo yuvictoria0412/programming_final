@@ -10,6 +10,9 @@ const int ThumbHeight = 5;
 ALLEGRO_BITMAP *pop_cat_open = NULL;
 ALLEGRO_BITMAP *pop_cat_close = NULL;
 char RPY[4];
+const int rec_x1 = 250;
+const int rec_y1 = 400;
+const int rec_h1 = 50;
 GameWindow::GameWindow() {
     if (!al_init())
         show_err_msg(-1);
@@ -54,6 +57,7 @@ void GameWindow::game_init() {
     RPY[0] = 'R';
     RPY[1] = 'P';
     RPY[2] = 'Y';
+    error_message = 0;
     al_set_window_position(display, 0, 0);
     status = new Status();
     shop = new Shop();
@@ -178,6 +182,11 @@ void GameWindow::draw_running_map() {
             if (!meow->cat_queue_empty()) {
                 meow->draw_cat_status(meow->cat_queue_top());
             }
+        }
+        if (error_message > 0) {
+            error_message--;
+            al_draw_filled_rectangle(rec_x1, rec_y1, window_width-rec_x1, rec_y1 + rec_h1, BLACK);
+            al_draw_text(Medium_font, WHITE, window_width/2, rec_y1 + rec_h1/2 - 12, ALLEGRO_ALIGN_CENTRE, "C A N ' T    P U T    H E R E ! ! !");
         }
         status->Draw();
         shop->Draw();
@@ -602,25 +611,40 @@ bool GameWindow::put_a_cat() {
 
     Cat *new_cat = new Cat();
     cats.push_back(new_cat);
+    bool can_put;
     int cnt = 0;
     while (1) {
+        can_put = 1;
         cnt++;
         redraw = false;
         al_wait_for_event(event_queue, &event);
-
         if (event.type == ALLEGRO_EVENT_MOUSE_AXES && cnt % 5 == 0) {
             cnt /= 5;
             new_cat->setXY(event.mouse.x, event.mouse.y, 0);
             redraw = true;
         }
         else if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
-            new_cat->setXY(event.mouse.x, event.mouse.y, 1);
-            redraw = true;
-            draw_running_map();
-            break;
+            int x = event.mouse.x;// - event.mouse.x % 200;
+            int y = event.mouse.y;// - event.mouse.y % 200;
+            for (auto c : cats) {
+                if (c != new_cat) {
+                    if (x >= c->cat_x()-200 && x <= c->cat_x()+200) {
+                        if (y >= c->cat_y()-200 && y <= c->cat_y()+200) {
+                            error_message = 10;
+                            can_put = 0;
+                            redraw = true;
+                        }
+                    }
+                }
+            }
+            if (can_put) {
+                new_cat->setXY(x, y, 1);
+                redraw = true;
+                draw_running_map();
+                break;
+            }
         }
         if (redraw)
             draw_running_map();
     }
-    return true;
 }

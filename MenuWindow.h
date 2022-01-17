@@ -18,6 +18,8 @@ public:
     bool entering_name();
 private:
     ALLEGRO_BITMAP *playbutton;
+    ALLEGRO_SAMPLE *sample;
+    ALLEGRO_SAMPLE_INSTANCE *startSound;
     bool correct_return;
 };
 

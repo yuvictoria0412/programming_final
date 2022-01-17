@@ -5,7 +5,8 @@
 //extern ALLEGRO_USTR *username2;
 //extern bool usermode;
 //extern bool usersound;
-
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_acodec.h>
 #include <iostream>
 using namespace std;
 // color
@@ -33,6 +34,7 @@ int button_h;
 int button_w;
 int play_w;
 int play_h;
+int instruction;
 
 //enum {NOTHING = 0, ENTERNAME, CHOOSEMODE, SETSOUND};
 
@@ -63,17 +65,22 @@ MenuWindow::MenuWindow() {
     Medium_font = al_load_ttf_font("./font/Cute Letters.ttf", 24, 0); //load medium font
     Large_font = al_load_ttf_font("./font/Cute Letters.ttf", 60, 0); //load large font
 
+    sample = al_load_sample("Cat_Republic.wav");
+    startSound = al_create_sample_instance(sample);
+    al_set_sample_instance_playmode(startSound, ALLEGRO_PLAYMODE_LOOP);
+//    al_attach_sample_instance_to_mixer(startSound, al_get_default_mixer());
+
     al_register_event_source(event_queue, al_get_display_event_source(display));
     al_register_event_source(event_queue, al_get_keyboard_event_source());
     al_register_event_source(event_queue, al_get_mouse_event_source());
     al_register_event_source(event_queue, al_get_timer_event_source(timer));
-
 
     game_init();
 }
 
 void MenuWindow::game_init() {
     cout << "Game_init" << endl;
+
     al_set_window_position(display, 0, 0);
     al_clear_to_color(WHITE);
 
@@ -104,7 +111,7 @@ bool MenuWindow::game_play() {
 
     game_reset();
     game_begin();
-
+    cout << "sound played" << endl;
     while (msg != GAME_EXIT) {
         msg = game_run();
         if (msg == GAME_EXIT)
@@ -119,6 +126,10 @@ void MenuWindow::game_begin() {
     usersound = 0;
     username2 = al_ustr_new("");
     al_start_timer(timer);
+    al_play_sample_instance(startSound);
+//    al_set_sample_instance_playing(startSound, true);
+    al_set_sample_instance_gain(startSound, 1);
+
 }
 
 
@@ -216,6 +227,32 @@ bool MenuWindow::entering_name() {
                 before_enter = 0;
             }
         }
+        else if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
+            if (event.mouse.button == 1) {
+                if (event.mouse.x >= rec_x1 && event.mouse.x <= W-rec_x1) {
+                    if (event.mouse.y >= rec_y2 && event.mouse.y <= rec_y2 + rec_h2) {
+                        cout << "click mode" << endl;
+                        if (usermode == 0) usermode = 1;
+                        else usermode = 0;
+                        redraw = 1;
+                        return 1;
+                    }
+                    else if (event.mouse.y >= rec_y3 && event.mouse.y <= rec_y3 + rec_h3) {
+                        cout << "click sound" << endl;
+                        if (usersound == 0) usersound = 1;
+                        else usersound = 0;
+                        redraw = 1;
+                        return 1;
+                    }
+                }
+                else if (event.mouse.x >= button_x && event.mouse.x <= button_x + button_w && event.mouse.y >= button_y && event.mouse.y <= button_y + button_h) {
+                    cout << "click button" << endl;
+                    instruction = GAME_EXIT;
+                    return 1;
+                }
+
+            }
+        }
         if (redraw) {
             draw_menu(before_enter);
         }
@@ -225,7 +262,7 @@ bool MenuWindow::entering_name() {
 
 // process of updated event
 int MenuWindow::process_event() {
-    int instruction = GAME_CONTINUE;
+    instruction = GAME_CONTINUE;
 
     al_wait_for_event(event_queue, &event);
     redraw = false;

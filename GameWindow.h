@@ -44,6 +44,7 @@ protected:
     Literbox *clean_cat = NULL;
     int mouse_x, mouse_y;
     std::vector<Tree*> trees;
+    int error_message;
     bool redraw = false;
     std::vector<Cat*> cats;
 

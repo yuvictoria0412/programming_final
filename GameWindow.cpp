@@ -59,6 +59,7 @@ void GameWindow::game_init() {
     al_set_window_position(display, 0, 0);
     status = new Status();
     shop = new Shop();
+    clean_cat = new Literbox();
 }
 
 void GameWindow::game_reset() {
@@ -86,6 +87,14 @@ bool GameWindow::game_play() {
 void GameWindow::game_begin() {
     draw_running_map();
     al_start_timer(timer);
+    for (int i = 0; i < tree_size; i++) {
+//        cout << "i" << endl;
+        Tree *new_tree = new Tree(rand() % 400 + 400, rand() % 400 + 400);
+        trees.push_back(new_tree);
+    }
+    draw_running_map();
+    Cat *temp = new Cat();
+    delete temp;
 }
 
 
@@ -161,16 +170,17 @@ void GameWindow::draw_running_map() {
     if( !shop->shop_status() ){ // shop closed
         al_clear_to_color( WHITE );
 //        cout << "in draw map1\n";
-        status->Draw();
-        shop->Draw();
-//        cout << "in draw map\n";
+        for (auto tree : trees) {
+            tree->Draw();
+        }
         for (auto meow : cats) {
             meow->Draw();
             if (!meow->cat_queue_empty()) {
-//                cout << "cat status "<<meow->cat_queue_top()<<endl;
                 meow->draw_cat_status(meow->cat_queue_top());
             }
         }
+        status->Draw();
+        shop->Draw();
     }
     else{ // shop opened
         al_clear_to_color( WHITE );
@@ -343,6 +353,8 @@ void GameWindow::rock_paper_scissors(int cat_index){
                   scene++;
                   user_choice = 1;
                   cat_choice = 0;
+//                  status->Gain_Score(cats[cat_index]->reward(BORING));
+//                  return;
                 }
                 break;
             case ALLEGRO_KEY_R:
@@ -444,10 +456,10 @@ int GameWindow::process_event() {
             redraw = true;
              for( int c = 0, s = cats.size(); c < s; c++ ){
                 cats[c]->getting_dirty();
-                cats[c]->getting_hungry();
-                cats[c]->getting_bored();
-                cats[c]->see_me();
-                cats[c]->touch_me();
+//                cats[c]->getting_hungry();
+//                cats[c]->getting_bored();
+//                cats[c]->see_me();
+//                cats[c]->touch_me();
             }
         }
     }
@@ -518,6 +530,7 @@ int GameWindow::process_event() {
                                 hungry_cat(i);
                                 break;
                             case DIRTY: cats[i]->change_cat_status(DIRTY, 0);
+                                clean_cat->game_play(event_queue);
                                 break;
                             case BORING: cats[i]->change_cat_status(BORING, 0);
                                 rock_paper_scissors(i);
@@ -550,18 +563,26 @@ int GameWindow::process_event() {
         if (event.keyboard.keycode == ALLEGRO_KEY_UP) {
             for (auto c : cats)
                 c->changeXY(0,-10);
+            for (auto t : trees)
+                t->changeXY(0,-10);
         }
         else if (event.keyboard.keycode == ALLEGRO_KEY_DOWN) {
             for (auto c : cats)
                 c->changeXY(0,10);
+            for (auto t : trees)
+                t->changeXY(0,10);
         }
         else if (event.keyboard.keycode == ALLEGRO_KEY_LEFT) {
             for (auto c : cats)
                 c->changeXY(-10,0);
+            for (auto t : trees)
+                t->changeXY(-10,0);
         }
         else if (event.keyboard.keycode == ALLEGRO_KEY_RIGHT) {
             for (auto c : cats)
                 c->changeXY(10,0);
+            for (auto t : trees)
+                t->changeXY(10,0);
         }
     }
     if(redraw) {
@@ -599,4 +620,5 @@ bool GameWindow::put_a_cat() {
         if (redraw)
             draw_running_map();
     }
+    return true;
 }

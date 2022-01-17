@@ -19,7 +19,6 @@ public:
 
 protected:
     Circle *circle;
-
 };
 
 #endif // OBJECT_H_INCLUDED

@@ -11,12 +11,6 @@ const int ThumbHeight = 5;
 const int gapX = 40, gapY = 30;
 const int box_w = (page_w - 3*gapX)/2, box_h = 300; // size of the shop opened screen
 
-static char const *filename_1;
-static char const *filename_2;
-static char const *filename_3;
-static char const *filename_4;
-static char const *filename_5;
-static char const *filename_6;
 
 struct GIF{
     double start_time = 0;
@@ -214,7 +208,7 @@ void Shop::Draw(){
 
     }
 }
-int Shop::MouseIn(int mouse_x, int mouse_y){}
+int Shop::MouseIn(int mouse_x, int mouse_y){return 0;}
 
 // static function that detect if one point is on a line
 // This function is just used to simplify "MouseIn"

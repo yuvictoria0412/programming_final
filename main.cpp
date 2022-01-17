@@ -11,7 +11,10 @@ int final_score;
 int main(int argc, char *argv[])
 {
 
+
+
     MenuWindow *Menu= new MenuWindow();
+
     if (Menu->game_play()) {
         std::cout << "MEOW" << std::endl;
         std::cout << username << std::endl;

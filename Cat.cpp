@@ -2,11 +2,11 @@
 #include "Window.h"
 #include <iostream>
 using namespace std;
-ALLEGRO_BITMAP* Cat::cat_status_hungry = al_load_bitmap("./pictures/hungry.jpg");
-ALLEGRO_BITMAP* Cat::cat_status_dirty = al_load_bitmap("./pictures/dirty.jpg");
-ALLEGRO_BITMAP* Cat::cat_status_boring = al_load_bitmap("./pictures/play.jpg");
-ALLEGRO_BITMAP* Cat::cat_status_touchme = al_load_bitmap("./pictures/touch.jpg");
-ALLEGRO_BITMAP* Cat::cat_status_seeme = al_load_bitmap("./pictures/cat.jpg");
+ALLEGRO_BITMAP* Cat::cat_status_hungry = al_load_bitmap("./pictures/hungry.png");
+ALLEGRO_BITMAP* Cat::cat_status_dirty = al_load_bitmap("./pictures/dirty.png");
+ALLEGRO_BITMAP* Cat::cat_status_boring = al_load_bitmap("./pictures/play.png");
+ALLEGRO_BITMAP* Cat::cat_status_touchme = al_load_bitmap("./pictures/touch.png");
+ALLEGRO_BITMAP* Cat::cat_status_seeme = al_load_bitmap("./pictures/cat.png");
 //ALLEGRO_BITMAP* Cat::cat_breed_1 = al_load_bitmap("./breed/cat1.jpg");
 #define kind_of_cat 5
 #define gif_count 2
@@ -28,17 +28,17 @@ Cat::Cat() {
     frequency2 = 10;
     see_cat = 0;
 
-    cat_status_hungry = al_load_bitmap("./pictures/hungry.jpg");
+    cat_status_hungry = al_load_bitmap("./pictures/hungry.png");
     if(cat_status_seeme == NULL)
-        cat_status_seeme = al_load_bitmap("./pictures/cat.jpg");
+        cat_status_seeme = al_load_bitmap("./pictures/cat.png");
     if(cat_status_dirty == NULL)
-        cat_status_dirty = al_load_bitmap("./pictures/dirty.jpg");
+        cat_status_dirty = al_load_bitmap("./pictures/dirty.png");
     if(cat_status_hungry == NULL)
-        cat_status_hungry = al_load_bitmap("./pictures/hungry.jpg");
+        cat_status_hungry = al_load_bitmap("./pictures/hungry.png");
     if(cat_status_boring == NULL)
-        cat_status_boring = al_load_bitmap("./pictures/play.jpg");
+        cat_status_boring = al_load_bitmap("./pictures/play.png");
     if(cat_status_touchme == NULL)
-        cat_status_touchme = al_load_bitmap("./pictures/touch.jpg");
+        cat_status_touchme = al_load_bitmap("./pictures/touch.png");
 //    cout << "breed" << breed << endl;
 
     number = 0;
@@ -159,26 +159,27 @@ bool Cat::getting_bored(){
 }
 
 void Cat::draw_cat_status(int i) {
+    float scale = 0.2;
     switch(i) {
         case HUNGRY:
             al_draw_scaled_rotated_bitmap( cat_status_hungry, al_get_bitmap_width(cat_status_hungry)/2, al_get_bitmap_height(cat_status_hungry)/2,
-                                           circle->x + gapX, circle->y - 45, 0.08, 0.08, 0, 0);
+                                           circle->x + gapX + 50, circle->y - 45*2, scale, scale, 0, 0);
             break;
         case DIRTY:
             al_draw_scaled_rotated_bitmap( cat_status_dirty, al_get_bitmap_width(cat_status_dirty)/2, al_get_bitmap_height(cat_status_dirty)/2,
-                                           circle->x + gapX, circle->y - 45, 0.08, 0.08, 0, 0);
+                                           circle->x + gapX  + 50, circle->y - 45*2, scale, scale, 0, 0);
             break;
         case BORING:
             al_draw_scaled_rotated_bitmap( cat_status_boring, al_get_bitmap_width(cat_status_boring)/2, al_get_bitmap_height(cat_status_boring)/2,
-                                           circle->x + gapX, circle->y - 45, 0.08, 0.08, 0, 0);
+                                           circle->x + gapX  + 50, circle->y - 45*2,  scale, scale, 0, 0);
             break;
         case TOUCHME:
             al_draw_scaled_rotated_bitmap(  cat_status_touchme, al_get_bitmap_width(cat_status_touchme)/2, al_get_bitmap_height(cat_status_touchme)/2,
-                                           circle->x + gapX, circle->y - 45, 0.08, 0.08, 0, 0);
+                                           circle->x + gapX  + 50, circle->y - 45*2,  scale, scale, 0, 0);
             break;
         case SEEME:
             al_draw_scaled_rotated_bitmap( cat_status_seeme, al_get_bitmap_width(cat_status_seeme)/2, al_get_bitmap_height(cat_status_seeme)/2,
-                                           circle->x + gapX, circle->y - 45, 0.08, 0.08, 0, 0);
+                                           circle->x + gapX + 50, circle->y - 45*2,  scale, scale, 0, 0);
             break;
     }
 

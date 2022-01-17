@@ -5,6 +5,8 @@
 #include "Status.h"
 #include "Shop.h"
 #include "Cat.h"
+#include "Literbox.h"
+#include "Tree.h"
 #include <queue>
 #include <stdio.h>
 #include <vector>
@@ -36,7 +38,9 @@ public:
 protected:
     Status *status = NULL;
     Shop *shop = NULL;
+    Literbox *clean_cat = NULL;
     int mouse_x, mouse_y;
+    std::vector<Tree*> trees;
     bool redraw = false;
     std::vector<Cat*> cats;
 

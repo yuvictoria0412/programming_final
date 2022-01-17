@@ -1,6 +1,6 @@
 #ifndef CAT_H_INCLUDED
 #define CAT_H_INCLUDED
-#define not_hungry 100
+#define not_hungry 200
 #define not_dirty 200
 #define want_to_play 3
 #define want_to_touch 4
@@ -22,7 +22,7 @@
 
 enum {HUNGRY, DIRTY, BORING, TOUCHME, SEEME};
 
-class Cat : protected Object {
+class Cat : public Object {
 public:
     Cat();
     void setXY(int, int, bool);
@@ -33,7 +33,7 @@ public:
     bool getting_bored();
     bool touch_me();
     bool see_me();
-
+    void saw_cat(int i) {see_cat = i;}
     int get_cat_status( int index ){ return cat_status[index];}
     void change_cat_status( int index, int change ){ cat_status[index] = change;}
     int cat_queue_top(){ return status_queue.front();}
@@ -45,7 +45,7 @@ public:
     int cat_breed(){return breed;};
     int cat_freq(){return frequency;};
     int reward(int i){ return cat_score[i];};//reward for fufilling cat's need
-    ALLEGRO_BITMAP *cat_pic(int i){ return cat_breed_1[i];};
+//    ALLEGRO_BITMAP *cat_pic(int i){ return cat_breed_1[i];};
     ALLEGRO_BITMAP *touch_pic(int i){ return cat_touch[i];};
     ALLEGRO_BITMAP *r_p_y_pic(int i){ return r_p_y_game[i];};
     bool cat_queue_empty(){ return status_queue.empty();}
@@ -56,7 +56,11 @@ private:
     int cat_score[5]= { 50, 40, 30, 20, 10};
     int breed;
     bool already_put;
+    bool see_cat;
     int frequency;
+    int frequency2;
+    int number;//for cat draw gif
+    int number2;
     std::queue<int> status_queue;
     /*adjust*/
     static ALLEGRO_BITMAP *cat_status_hungry;
@@ -64,8 +68,8 @@ private:
     static ALLEGRO_BITMAP *cat_status_boring;
     static ALLEGRO_BITMAP *cat_status_touchme;
     static ALLEGRO_BITMAP *cat_status_seeme;
-    int number;//for cat draw gif
-    std::vector<ALLEGRO_BITMAP*> cat_breed_1;
+
+//    std::vector<ALLEGRO_BITMAP*> cat_breed_1;
     std::vector<ALLEGRO_BITMAP*> cat_touch;
     std::vector<ALLEGRO_BITMAP*> r_p_y_game;
 

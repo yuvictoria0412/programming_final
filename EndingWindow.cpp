@@ -55,9 +55,9 @@ EndingWindow::EndingWindow() {
     al_register_event_source(event_queue, al_get_timer_event_source(timer));
 
     good_video = al_open_video("./ending/good_video.ogv");
-    bad_video = al_open_video("./ending/good_video.ogv");
+    bad_video = al_open_video("./ending/bad.ogv");
     gift = al_load_bitmap("./ending/gift.jpg");
-    poop = al_load_bitmap("./ending/gift.jpg");
+    poop = al_load_bitmap("./ending/poop.jpg");
     press_next = false;
 
     game_init();
@@ -67,26 +67,7 @@ void EndingWindow::game_init() {
     cout << "Game_init" << endl;
     al_set_window_position(display, 0, 0);
     al_clear_to_color(WHITE);
-
-//    al_draw_text(Large_font, BLACK, W/2, 80, ALLEGRO_ALIGN_CENTRE, "C A T S  A R E  C U T E");
-//    al_draw_rectangle(rec_x1, rec_y1, W-rec_x1, rec_y1 + rec_h1, BLACK, 2);
-//    al_draw_text(Medium_font, BLACK, W/2, rec_y1 + rec_h1/2 - 12, ALLEGRO_ALIGN_CENTRE, "O W N E R ' S    N A M E");
-//    al_draw_rectangle(rec_x1, rec_y2, W-rec_x1, rec_y2 + rec_h2, BLACK, 2);
-//    al_draw_text(Medium_font, BLACK, W/2, rec_y2 + rec_h2/2 - 12, ALLEGRO_ALIGN_CENTRE, "P L A Y E R  M O D E");
-//    al_draw_rectangle(rec_x1, rec_y3, W-rec_x1, rec_y3 + rec_h3, BLACK, 2);
-//    al_draw_text(Medium_font, BLACK, W/2, rec_y3 + rec_h3/2 - 12, ALLEGRO_ALIGN_CENTRE, "S O U N D  O N");
-
-//    playbutton = al_load_bitmap("./pictures/start.jpg");
-//    play_w = al_get_bitmap_width(playbutton);
-//    play_h = al_get_bitmap_height(playbutton);
-//    button_h = play_h*0.2;
-//    button_w = play_w*0.2;
-//    button_x = W-play_w*0.2-15;
-//    button_y = H-play_h*0.2-15;
-//    al_draw_scaled_bitmap(playbutton, 0, 0, play_w, play_h, button_x, button_y, button_w, button_h, 0);
     al_flip_display();
-    // might need to delete
-//    al_rest(5);
     return;
 }
 
@@ -190,7 +171,7 @@ void EndingWindow::draw_running_map() {
         click_x =  window_width/2;
         click_y =  h;
 
-        al_draw_scaled_rotated_bitmap(poop, al_get_bitmap_width(poop)/2, al_get_bitmap_height(poop)/2, click_x, click_y, 0.4,0.4,gift_angle, 0);
+        al_draw_scaled_rotated_bitmap(poop, al_get_bitmap_width(poop)/2, al_get_bitmap_height(poop)/2+50, click_x, click_y, 0.3,0.3,gift_angle, 0);
     }
     gift_angle+= add_angle;
     al_flip_display();

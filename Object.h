@@ -14,7 +14,7 @@ public:
     int getX() { return circle->x; }
     int getY() { return circle->y; }
     int getRadius() { return circle->r; }
-
+    void changeXY(int a,int b) {circle->x += a, circle->y += b;}
     Circle* getCircle() const { return circle; }
 
 protected:

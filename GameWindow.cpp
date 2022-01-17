@@ -4,6 +4,7 @@
 using namespace std;
 #define WHITE al_map_rgb(255, 255, 255)
 #define BLACK al_map_rgb(0, 0, 0)
+#define YELLOW al_map_rgb(245,199,26)
 #define min(a, b) ((a) < (b)? (a) : (b))
 #define max(a, b) ((a) > (b)? (a) : (b))
 const int ThumbWidth = 5;
@@ -109,12 +110,10 @@ void GameWindow::game_destroy() {
 void GameWindow::see_cat(int cat_index){
     cout<<"see me\n";
     double start_time = al_get_time(), now_time = start_time;
-    static int number = 0;
     int state = 1;
-//    cout << "time "<< start_time << " "<< now_time<<endl;
+    cats[cat_index]->saw_cat(1);
     while( state && (now_time - start_time)<5.0){
         now_time = al_get_time();
-//        cout << "now time "<< now_time<<endl;
         al_wait_for_event(event_queue, &event);
         if(event.type == ALLEGRO_EVENT_KEY_DOWN) {
             switch(event.keyboard.keycode) {
@@ -131,34 +130,16 @@ void GameWindow::see_cat(int cat_index){
             char tmp[1];
             tmp[0] = count_down + '0';
             al_draw_text(font, BLACK,  window_width/2 , window_height/2+20, ALLEGRO_ALIGN_CENTRE, tmp);
-
-            //cat
-            int frequency = cats[cat_index]->cat_freq();
-
-            switch (cats[cat_index]->cat_breed()) {
-            case 1:
-                al_draw_scaled_bitmap(cats[cat_index]->cat_pic(number/frequency), 0, 0,al_get_bitmap_width(cats[cat_index]->cat_pic(number/frequency)),
-                                      al_get_bitmap_width(cats[cat_index]->cat_pic(number/frequency)),
-                                      window_width/2 - 70 , window_height/2-200, 150, 150, 0);
-
-            break;
-            case 2:
-                al_draw_scaled_bitmap(cats[cat_index]->cat_pic(number/frequency), 0, 0,al_get_bitmap_width(cats[cat_index]->cat_pic(number/frequency)),
-                                      al_get_bitmap_width(cats[cat_index]->cat_pic(number/frequency)),
-                                      window_width/2 - 70 , window_height/2-200, 150, 150, 0);
-            break;
-            }
-            if (number == 4*frequency-1) number = 0;
-            else number++;
+            cats[cat_index]->Draw();
             al_flip_display();
         }
     }
-    cats[cat_index]->change_cat_status(SEEME, 1);
     status->Gain_Score(cats[cat_index]->reward(SEEME));
 
     draw_running_map();
-//    cout <<"fini\n";
+    cats[cat_index]->saw_cat(0);
 }
+
 bool GameWindow::isInRange(int point, int startPos, int length){
     if(point >= startPos - length && point <= startPos + length)
         return true;
@@ -257,8 +238,8 @@ void GameWindow::hungry_cat(int cat_index){
 
                     al_draw_scaled_bitmap(pop_cat_close,0,0,al_get_bitmap_width(pop_cat_open), al_get_bitmap_height(pop_cat_open),
                               0, 0, window_width, window_height, 0);
-                    al_draw_filled_rectangle(window_width/2 - 125 , window_height/2 +170, window_width/2 +125, window_height/2 +320, WHITE);
-                    al_draw_text(Large_font, BLACK,  window_width/2 , window_height/2+180, ALLEGRO_ALIGN_CENTRE, "A T E");
+                    al_draw_filled_rectangle(window_width/2 - 160 , window_height/2 +170, window_width/2 +160, window_height/2 +320, WHITE);
+                    al_draw_text(Large_font, BLACK,  window_width/2 , window_height/2+180, ALLEGRO_ALIGN_CENTRE, "E A T E N");
 
                     char tmp[3];
                     if( feed_count >= 10){
@@ -272,8 +253,8 @@ void GameWindow::hungry_cat(int cat_index){
                     feed_count ++;
                     al_draw_scaled_bitmap(pop_cat_open,0,0,al_get_bitmap_width(pop_cat_open), al_get_bitmap_height(pop_cat_open),
                                       0, 0, window_width, window_height, 0);
-                    al_draw_filled_rectangle(window_width/2 - 125 , window_height/2 +170, window_width/2 +125, window_height/2 +320, WHITE);
-                    al_draw_text(Large_font, BLACK,  window_width/2 , window_height/2+180, ALLEGRO_ALIGN_CENTRE, "A T E");
+                    al_draw_filled_rectangle(window_width/2 - 160 , window_height/2 +170, window_width/2 +160, window_height/2 +320, WHITE);
+                al_draw_text(Large_font, BLACK,  window_width/2 , window_height/2+180, ALLEGRO_ALIGN_CENTRE, "E A T E N");
 
 //                    char tmp[2];
                     if( feed_count >= 10){
@@ -284,13 +265,23 @@ void GameWindow::hungry_cat(int cat_index){
                     if( feed_count<= feed_food) al_draw_text(Large_font, BLACK,  window_width/2 , window_height/2+240, ALLEGRO_ALIGN_CENTRE, tmp);
                 }
             }
+            else if(event.type == ALLEGRO_EVENT_MOUSE_AXES){
+                mouse_x = event.mouse.x;
+                mouse_y = event.mouse.y;
+                al_draw_scaled_bitmap(pop_cat_open,0,0,al_get_bitmap_width(pop_cat_open), al_get_bitmap_height(pop_cat_open),
+                                          0, 0, window_width, window_height, 0);
+                al_draw_filled_rectangle(window_width/2 - 160 , window_height/2 +170, window_width/2 +160, window_height/2 +320, WHITE);
+                al_draw_text(Large_font, BLACK,  window_width/2 , window_height/2+180, ALLEGRO_ALIGN_CENTRE, "E A T E N");
+                al_draw_filled_circle( mouse_x, mouse_y, 25,YELLOW);
+            }
             al_flip_display();
         }
+
         status->Change_Food(feed_food);
         status->Gain_Score(cats[cat_index]->reward(HUNGRY));
     }
     else{
-        al_draw_filled_rectangle(window_width/2 - 125 , window_height/2 - 10, window_width/2 +125, window_height/2 +50, BLACK);
+        al_draw_filled_rectangle(window_width/2 - 125 , window_height/2 - 10, window_width/2 +125, window_height/2 +50, RED);
         al_draw_text(font, WHITE,  window_width/2 , window_height/2, ALLEGRO_ALIGN_CENTRE, "B U Y   F O O D");
         al_flip_display();
         al_rest(1.5);
@@ -325,19 +316,19 @@ void GameWindow::rock_paper_scissors(int cat_index){
         al_draw_text(Large_font, BLACK,  window_width/2 , window_height/2-150, ALLEGRO_ALIGN_CENTRE, "T Y P E");
         int frequency = cats[cat_index]->cat_freq();
         al_flip_display();
-        switch (cats[cat_index]->cat_breed()) {
-        case 1:
-            al_draw_scaled_bitmap(cats[cat_index]->cat_pic(number/frequency), 0, 0,al_get_bitmap_width(cats[cat_index]->cat_pic(number/frequency)),
-                                  al_get_bitmap_width(cats[cat_index]->cat_pic(number/frequency)),
-                                  window_width/2 - 70 , window_height/2-300, 150, 150, 0);
-
-        break;
-        case 2:
-            al_draw_scaled_bitmap(cats[cat_index]->cat_pic(number/frequency), 0, 0,al_get_bitmap_width(cats[cat_index]->cat_pic(number/frequency)),
-                                  al_get_bitmap_width(cats[cat_index]->cat_pic(number/frequency)),
-                                  window_width/2 - 70 , window_height/2-300, 150, 150, 0);
-        break;
-        }
+//        switch (cats[cat_index]->cat_breed()) {
+//        case 1:
+//            al_draw_scaled_bitmap(cats[cat_index]->cat_pic(number/frequency), 0, 0,al_get_bitmap_width(cats[cat_index]->cat_pic(number/frequency)),
+//                                  al_get_bitmap_width(cats[cat_index]->cat_pic(number/frequency)),
+//                                  window_width/2 - 70 , window_height/2-300, 150, 150, 0);
+//
+//        break;
+//        case 2:
+//            al_draw_scaled_bitmap(cats[cat_index]->cat_pic(number/frequency), 0, 0,al_get_bitmap_width(cats[cat_index]->cat_pic(number/frequency)),
+//                                  al_get_bitmap_width(cats[cat_index]->cat_pic(number/frequency)),
+//                                  window_width/2 - 70 , window_height/2-300, 150, 150, 0);
+//        break;
+//        }
         if (number == 4*frequency-1) number = 0;
         else number++;
 
@@ -484,16 +475,33 @@ int GameWindow::process_event() {
                         if( !usermode ) status->Change_Coin( shop->costCoin(buy_item));
                     }
                     else if (buy_item == GET_CAT){
+                        if( shop->Enough_Coin(status->getCoin(), buy_item)){
+                            shop->change_window_open(false);
+                            if (!put_a_cat())
+                                instruction = GAME_EXIT;
+                            status->Change_Coin( shop->costCoin(buy_item));
+
+                        }
+                        else{//not enough coin -> watch ad
+                            al_draw_filled_rectangle(window_width/2 - 160 , window_height/2 - 10, window_width/2 +160, window_height/2 +50, RED);
+                            al_draw_text(font, WHITE,  window_width/2 , window_height/2, ALLEGRO_ALIGN_CENTRE, "M O R E   C O I N  !");
+                            al_flip_display();
+                            al_rest(1.5);
+                        }
                         //create cat object and mouse drag cat to position
-                        shop->change_window_open(false);
-                        if (!put_a_cat())
-                            instruction = GAME_EXIT;
+
                     }
                     else if(buy_item == BUY_FOOD){
 //                        std::cout << "cost "<<shop->costCoin(buy_item)<< std::endl;
                         if( shop->Enough_Coin( status->getCoin(), buy_item)){
                             if( !usermode ) status->Change_Coin( shop->costCoin(buy_item));
                             if( buy_item == BUY_FOOD ) status->Change_Food( ADD_FOOD );
+                        }
+                        else{//not enough coin -> watch ad
+                            al_draw_filled_rectangle(window_width/2 - 160 , window_height/2 - 10, window_width/2 +160, window_height/2 +50, RED);
+                            al_draw_text(font, WHITE,  window_width/2 , window_height/2, ALLEGRO_ALIGN_CENTRE, "M O R E   C O I N  !");
+                            al_flip_display();
+                            al_rest(1.5);
                         }
                     }
                 }
@@ -537,7 +545,25 @@ int GameWindow::process_event() {
         shop->MouseIn(mouse_x, mouse_y);
 
     }
-
+    else if (event.type == ALLEGRO_EVENT_KEY_CHAR) {
+        redraw = true;
+        if (event.keyboard.keycode == ALLEGRO_KEY_UP) {
+            for (auto c : cats)
+                c->changeXY(0,-10);
+        }
+        else if (event.keyboard.keycode == ALLEGRO_KEY_DOWN) {
+            for (auto c : cats)
+                c->changeXY(0,10);
+        }
+        else if (event.keyboard.keycode == ALLEGRO_KEY_LEFT) {
+            for (auto c : cats)
+                c->changeXY(-10,0);
+        }
+        else if (event.keyboard.keycode == ALLEGRO_KEY_RIGHT) {
+            for (auto c : cats)
+                c->changeXY(10,0);
+        }
+    }
     if(redraw) {
         // update each object in game
         instruction = game_update();

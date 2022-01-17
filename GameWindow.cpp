@@ -110,6 +110,13 @@ void GameWindow::game_begin() {
 //    draw_running_map();
     Cat *temp = new Cat();
     delete temp;
+    sample = al_load_sample("bgm.wav");
+    startSound = al_create_sample_instance(sample);
+    al_set_sample_instance_playmode(startSound, ALLEGRO_PLAYMODE_LOOP);
+    al_reserve_samples(1);
+
+    al_attach_sample_instance_to_mixer(startSound, al_get_default_mixer());
+    al_play_sample_instance(startSound);
 }
 
 

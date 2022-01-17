@@ -47,7 +47,9 @@ protected:
     int error_message;
     bool redraw = false;
     std::vector<Cat*> cats;
-
+    ALLEGRO_BITMAP *playbutton;
+    ALLEGRO_SAMPLE *sample;
+    ALLEGRO_SAMPLE_INSTANCE *startSound;
 
 };
 

@@ -37,7 +37,6 @@ int play_h;
 int instruction;
 
 //enum {NOTHING = 0, ENTERNAME, CHOOSEMODE, SETSOUND};
-
 MenuWindow::MenuWindow() {
     correct_return = 1;
     if (!al_init())
@@ -65,11 +64,13 @@ MenuWindow::MenuWindow() {
     Medium_font = al_load_ttf_font("./font/Cute Letters.ttf", 24, 0); //load medium font
     Large_font = al_load_ttf_font("./font/Cute Letters.ttf", 60, 0); //load large font
 
-    sample = al_load_sample("Cat_Republic.wav");
+    sample = al_load_sample("bgm.wav");
     startSound = al_create_sample_instance(sample);
     al_set_sample_instance_playmode(startSound, ALLEGRO_PLAYMODE_LOOP);
-//    al_attach_sample_instance_to_mixer(startSound, al_get_default_mixer());
+    al_reserve_samples(1);
 
+    al_attach_sample_instance_to_mixer(startSound, al_get_default_mixer());
+    al_play_sample_instance(startSound);
     al_register_event_source(event_queue, al_get_display_event_source(display));
     al_register_event_source(event_queue, al_get_keyboard_event_source());
     al_register_event_source(event_queue, al_get_mouse_event_source());
@@ -95,6 +96,7 @@ void MenuWindow::game_init() {
     playbutton = al_load_bitmap("./pictures/start.jpg");
     play_w = al_get_bitmap_width(playbutton);
     play_h = al_get_bitmap_height(playbutton);
+
     button_h = play_h*0.2;
     button_w = play_w*0.2;
     button_x = W-play_w*0.2-15;
@@ -111,6 +113,7 @@ bool MenuWindow::game_play() {
 
     game_reset();
     game_begin();
+
     cout << "sound played" << endl;
     while (msg != GAME_EXIT) {
         msg = game_run();
@@ -145,7 +148,7 @@ void MenuWindow::game_destroy() {
         al_ustr_assign_cstr(username2, "USER");
         username = "USER";
     }
-
+    al_stop_sample_instance(startSound);
 }
 
 // each drawing scene function

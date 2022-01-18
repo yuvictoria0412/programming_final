@@ -72,22 +72,6 @@ EndingWindow::EndingWindow() {
     game_init();
 }
 EndingWindow::~EndingWindow(){
-    al_stop_sample_instance(startSound);
-    al_destroy_display(display);
-    al_destroy_event_queue(event_queue);
-    al_destroy_font(font);
-    al_destroy_font(Medium_font);
-    al_destroy_font(Large_font);
-    al_destroy_timer(timer);
-
-
-    al_destroy_sample_instance(startSound);
-    al_destroy_sample(sample);
-
-    al_destroy_bitmap(gift);
-    al_destroy_bitmap(poop);
-
-
 }
 void EndingWindow::game_init() {
     cout << "Game_init" << endl;
@@ -118,8 +102,10 @@ void EndingWindow::game_begin() {
 
 
 void EndingWindow::game_destroy() {
+    cout << "destroy\n";
     al_stop_sample_instance(startSound);
     al_stop_samples();
+
     al_destroy_display(display);
     al_destroy_event_queue(event_queue);
     al_destroy_font(font);
@@ -127,7 +113,8 @@ void EndingWindow::game_destroy() {
     al_destroy_font(Large_font);
     al_destroy_timer(timer);
 
-
+    al_destroy_bitmap(gift);
+    al_destroy_bitmap(poop);
 }
 
 // each drawing scene function
@@ -241,22 +228,25 @@ int EndingWindow::play_video(){
         if( event.type == ALLEGRO_EVENT_TIMER ) {
             frame = al_get_video_frame(video);
             if ( !frame ){
-        //        std::cout << "find bug bitmap\n";
-                return instruction;
+                std::cout << "find bug bitmap\n";
+//                return instruction;
             }
-        //    else std::cout << "normal\n";
-            if ( !video ){
-        //        std::cout << "find bug video\n";
-                return instruction;
-            }
-            al_draw_scaled_bitmap(frame, 0, 0,al_get_bitmap_width(frame),
+            else{
+                al_draw_scaled_bitmap(frame, 0, 0,al_get_bitmap_width(frame),
                                   al_get_bitmap_height(frame),
                                   // the position of result image
                                   0, 0,
                                   // the width and height of result image
                                   al_get_display_width(display),
                                   al_get_display_height(display), 0);
-            al_flip_display();
+                al_flip_display();
+            }
+        //    else std::cout << "normal\n";
+            if ( !video ){
+        //        std::cout << "find bug video\n";
+                return instruction;
+            }
+
         }
         else if(event.type == ALLEGRO_EVENT_KEY_DOWN) {
             switch(event.keyboard.keycode) {
@@ -267,12 +257,13 @@ int EndingWindow::play_video(){
             }
         }
         else if( event.type == ALLEGRO_EVENT_VIDEO_FINISHED ) {
+//            cout << "video fini\n";
             instruction = GAME_EXIT;
             break;
         }
     }
     al_close_video(video);
-    al_destroy_bitmap(frame);
+//    al_destroy_bitmap(frame);
     return instruction;
 }
 void EndingWindow::game_reset() {

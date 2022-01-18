@@ -72,6 +72,7 @@ Shop::Shop(){
 }
 Shop::~Shop(){
     al_destroy_bitmap(Shop_icon);
+    al_destroy_bitmap(food);
     al_destroy_font(shopFont);
 }
 void Shop::Reset(){
@@ -215,6 +216,7 @@ void Shop::play_video( int index,  ALLEGRO_DISPLAY* video_display  ){
         }
     }
     al_close_video(video);
+    al_destroy_bitmap(frame);
     al_destroy_event_queue(video_event_queue);
     al_destroy_timer(video_timer);
 }

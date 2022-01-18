@@ -35,8 +35,6 @@ struct Poop{
     int appearence; // -1 means cleaned
     int poop_pic_count;
     int x, y;
-//    ALLEGRO_BITMAP *pic_buried;
-//    ALLEGRO_BITMAP *pic_half_buried;
 };
 
 class Literbox : public Object

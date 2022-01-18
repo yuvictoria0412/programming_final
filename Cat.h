@@ -25,6 +25,7 @@ enum {HUNGRY, DIRTY, BORING, TOUCHME, SEEME};
 class Cat : public Object {
 public:
     Cat();
+    ~Cat();
     void setXY(int, int, bool);
     void Draw();    // draw cat itself
     void draw_cat_status(int); // draw the button of cat's condition

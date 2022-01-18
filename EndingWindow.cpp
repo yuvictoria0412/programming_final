@@ -70,7 +70,23 @@ EndingWindow::EndingWindow() {
 
     game_init();
 }
+EndingWindow::~EndingWindow(){
+    al_destroy_display(display);
+    al_destroy_event_queue(event_queue);
+    al_destroy_font(font);
+    al_destroy_font(Medium_font);
+    al_destroy_font(Large_font);
+    al_destroy_timer(timer);
 
+    al_stop_sample_instance(startSound);
+    al_destroy_sample_instance(startSound);
+    al_destroy_sample(sample);
+
+    al_destroy_bitmap(gift);
+    al_destroy_bitmap(poop);
+
+
+}
 void EndingWindow::game_init() {
     cout << "Game_init" << endl;
     al_set_window_position(display, 0, 0);
@@ -252,6 +268,7 @@ int EndingWindow::play_video(){
         }
     }
     al_close_video(video);
+    al_destroy_bitmap(frame);
     return instruction;
 }
 void EndingWindow::game_reset() {

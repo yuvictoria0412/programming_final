@@ -6,7 +6,7 @@
 class Object {
 public:
     Object() {}
-    ~Object() {}
+    virtual ~Object(){};
 
     // pure function for drawing object
     virtual void Draw() = 0;

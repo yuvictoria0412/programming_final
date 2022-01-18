@@ -32,7 +32,7 @@ class Window {
 public:
     // constructor
     Window();
-    ~Window() {}
+    virtual ~Window() {}
     virtual void game_init() = 0;
     virtual void game_reset() = 0;
     virtual bool game_play() = 0;

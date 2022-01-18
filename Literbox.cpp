@@ -1,12 +1,18 @@
 #include "Literbox.h"
 #include <iostream>
+#include <vector>
 using namespace std;
 
 const int ThumbWidth = 5;
 const int ThumbHeight = 5;
 int size_poop[2] = {0};
 float pic_scale = 0.1;
+ALLEGRO_BITMAP *tmp_poop;
+ALLEGRO_BITMAP *tmp_poop_1;
+ALLEGRO_BITMAP *tmp_poop2 ;
+ALLEGRO_BITMAP *tmp_poop2_1;
 ALLEGRO_SAMPLE_ID *ret_id_l;
+ALLEGRO_BITMAP *shovel_tmp;
 Literbox::Literbox(){
     srand(time(NULL));
     al_install_audio( );
@@ -15,10 +21,10 @@ Literbox::Literbox(){
     Font = al_load_ttf_font("./font/Cute Letters.ttf",36,0); // load small font
     LargeFont = al_load_ttf_font("./font/Cute Letters.ttf", 60, 0); //load large font
     box = al_load_bitmap("./literbox/box.png");
-    ALLEGRO_BITMAP *tmp_poop = al_load_bitmap("./literbox/poop1_1.png");
-    ALLEGRO_BITMAP *tmp_poop_1 = al_load_bitmap("./literbox/poop1_2.png");
-    ALLEGRO_BITMAP *tmp_poop2 = al_load_bitmap("./literbox/poop2_1.png");
-    ALLEGRO_BITMAP *tmp_poop2_1 = al_load_bitmap("./literbox/poop2_2.png");
+    tmp_poop = al_load_bitmap("./literbox/poop1_1.png");
+    tmp_poop_1 = al_load_bitmap("./literbox/poop1_2.png");
+    tmp_poop2 = al_load_bitmap("./literbox/poop2_1.png");
+    tmp_poop2_1 = al_load_bitmap("./literbox/poop2_2.png");
     poops_pic.reserve(2);
     poops_pic[0]= new std::vector<ALLEGRO_BITMAP*>(poop_state_num);
     poops_pic[1]= new std::vector<ALLEGRO_BITMAP*>(poop_state_num);
@@ -43,7 +49,7 @@ Literbox::Literbox(){
         if( new_poop.y > window_width - w_bound) new_poop.x = window_width - w_bound - rand() %150;
         poops.push_back(new_poop);
     }
-    ALLEGRO_BITMAP *shovel_tmp = al_load_bitmap("./literbox/shovel.png");
+    shovel_tmp = al_load_bitmap("./literbox/shovel.png");
     shovel.push_back(shovel_tmp);
     shovel.push_back(shovel_tmp);
     sample = al_load_sample("./sound/shovel.wav");
@@ -54,8 +60,28 @@ Literbox::Literbox(){
     al_attach_sample_instance_to_mixer(shuffle_sound, al_get_default_mixer());
 
 
+
 }
 Literbox::~Literbox(){
+    al_destroy_bitmap(box);
+    for(int i = 0; i < 2; i ++){
+        al_destroy_bitmap((shovel[i]));
+    }
+    for(int i = 0; i < 2; i ++){
+        for(int j = 0; j < 2; j ++){
+            al_destroy_bitmap((*poops_pic[i])[j]);
+        }
+    }
+    al_destroy_font(Font);
+    al_destroy_font(LargeFont);
+
+    al_destroy_sample(sample);
+    al_destroy_sample_instance(shuffle_sound);
+    al_destroy_bitmap(shovel_tmp);
+    al_destroy_bitmap(tmp_poop);
+    al_destroy_bitmap(tmp_poop_1);
+    al_destroy_bitmap(tmp_poop2);
+    al_destroy_bitmap(tmp_poop2_1);
 
 }
 void Literbox::Reset(){
@@ -64,8 +90,6 @@ void Literbox::Reset(){
         Poop new_poop;
         new_poop.appearence = rand()%2; // -1 means cleaned
         new_poop.poop_pic_count = 0;
-//        new_poop.pic_buried = tmp_poop;
-//        new_poop.pic_half_buried = tmp_poop2;
         new_poop.x = w_bound + rand() %(window_width - w_bound*2);
         new_poop.y = h_bound + rand() %(200) * ( i + 1 );
         if( new_poop.y > window_height - h_bound) new_poop.y = window_height - h_bound - rand() %150;
@@ -74,11 +98,13 @@ void Literbox::Reset(){
     }
     literbox_window_open = false;
 }
-bool flip = false;
+
 void Literbox::Draw_box(int mouse_x, int mouse_y, int shovel_state){
+    cout << "draw box\n";
     al_clear_to_color(WHITE);
     al_draw_scaled_bitmap(box, 0, 0, al_get_bitmap_width(box), al_get_bitmap_height(box),
                               120, 200, 550,550,0);
+                              cout << "draw box pic\n";
     al_draw_text(LargeFont, BLACK,  window_width/2 , 100, ALLEGRO_ALIGN_CENTRE, "C L E A N   P O O P");
     al_draw_text(Font, BLACK,  window_width-180 , 50, ALLEGRO_ALIGN_CENTRE, "E S C   T O   E X I T");
     for( int i = 0, s = poops.size(); i < s; i ++){
@@ -91,10 +117,13 @@ void Literbox::Draw_box(int mouse_x, int mouse_y, int shovel_state){
         }
 
     }
+    cout << "draw poop pic\n";
     al_draw_scaled_rotated_bitmap( shovel[shovel_state], al_get_bitmap_width(shovel[shovel_state])/4, al_get_bitmap_height(shovel[shovel_state])/4*3,
                               mouse_x, mouse_y, 0.5, 0.5,0,0);
+    cout << "draw shovel pic\n";
     al_flip_display();
 }
+
 bool Literbox::game_play(ALLEGRO_EVENT_QUEUE *event_queue){
     int mouse_x = 0, mouse_y = 0;
     //background
@@ -118,7 +147,6 @@ bool Literbox::game_play(ALLEGRO_EVENT_QUEUE *event_queue){
                             if( poops[i].poop_pic_count == poop_state_num ){
                                 poops[i].appearence = -1;
                                 poops[i].poop_pic_count;
-                                flip = true;
                                 cleaned++;
                             }
                             break;
@@ -150,9 +178,6 @@ bool Literbox::game_play(ALLEGRO_EVENT_QUEUE *event_queue){
         }
         if( redraw ) Draw_box(mouse_x, mouse_y, 0);
     }
-
-//    al_rest(30);
-
     Reset();
     return true;
 }

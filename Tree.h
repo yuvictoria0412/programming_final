@@ -11,6 +11,7 @@
 class Tree : public Object {
 public:
     Tree(int, int);
+    ~Tree();
     void changeXY(int a, int b) {circle->x += a, circle->y += b;}
     void Draw();
 private:

@@ -94,7 +94,39 @@ Cat::Cat() {
     }
     cout << "finished loading" << endl;
 }
+Cat::~Cat() {
 
+    for (int s = cat_touch.size() - 1, i = s; i >= 0; --i) {
+        al_destroy_bitmap(cat_touch[i]);
+    }
+
+    for (int s = r_p_y_game.size() - 1, i = s; i >= 0; --i) {
+        al_destroy_bitmap(r_p_y_game[i]);
+    }
+
+    if (init) {
+        al_destroy_bitmap(cat_status_hungry);
+        al_destroy_bitmap(cat_status_boring);
+        al_destroy_bitmap(cat_status_dirty);
+        al_destroy_bitmap(cat_status_seeme);
+        al_destroy_bitmap(cat_status_touchme);
+
+        for (int i = kind_of_cat - 1; i >= 0; i--) {
+            for (int j = gif_count - 1; j >= 0; j--) {
+                al_destroy_bitmap((*cat_breeds[i])[j]);
+            }
+            delete cat_breeds[i];
+        }
+
+        for (int i = index_i - 1; i >= 0; i--) {
+            for (int j = index_j - 1; j >= 0; j--) {
+                al_destroy_bitmap((*cat_see_cat[i])[j]);
+            }
+            delete cat_see_cat[i];
+        }
+        init = 0;
+    }
+}
 void Cat::setXY(int x, int y, bool put) {
     if (put) {
         already_put = 1;

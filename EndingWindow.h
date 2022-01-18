@@ -20,6 +20,7 @@ const int ThumbHeight = 50;
 class EndingWindow : protected Window {
 public:
     EndingWindow();
+    ~EndingWindow();
     void game_init();
     bool game_play();
     void game_begin();

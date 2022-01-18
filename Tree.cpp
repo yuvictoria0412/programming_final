@@ -26,7 +26,17 @@ Tree::Tree(int a, int b) {
         init2 = 1;
     }
 }
-
+Tree::~Tree() {
+//    cout << "Tree destructor" << endl;
+    if (init2) {
+//            cout << "only destruct once" << endl;
+        for (int i = tree_size - 1; i >= 0; --i) {
+            al_destroy_bitmap(trees[i]);
+        }
+        init2  = 0;
+    }
+//    cout << "Tree destroyed" << endl;
+}
 void Tree::Draw() {
     al_draw_scaled_rotated_bitmap(trees[breed], GETW(trees[breed]), GETH(trees[breed]), circle->x, circle->y, 0.2, 0.2, 0, 0);
 }

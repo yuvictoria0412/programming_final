@@ -16,6 +16,7 @@ const int rec_y1 = 400;
 const int rec_h1 = 50;
 static std::vector<ALLEGRO_BITMAP*> shop_cat;
 int cnt;
+Cat *temp;
 ALLEGRO_SAMPLE *popsample;
 ALLEGRO_SAMPLE_INSTANCE *popSound;
 
@@ -117,6 +118,7 @@ GameWindow::GameWindow() {
 
     game_init();
 }
+
 void GameWindow::game_init() {
     RPY[0] = 'R';
     RPY[1] = 'P';
@@ -168,11 +170,7 @@ void GameWindow::game_begin() {
         trees.push_back(new_tree);
     }
 //    draw_running_map();
-    Cat *temp = new Cat();
-    delete temp;
-
-
-
+    temp = new Cat();
     if(!usersound)al_play_sample_instance(startSound);
 }
 
@@ -181,20 +179,6 @@ int GameWindow::game_update() {
     return GAME_CONTINUE;
 }
 
-
-void GameWindow::game_destroy() {
-    game_reset();
-    al_destroy_display(display);
-    al_destroy_event_queue(event_queue);
-    al_destroy_font(font);
-    al_destroy_font(Medium_font);
-    al_destroy_font(Large_font);
-
-    al_destroy_timer(timer);
-
-    delete status;
-    delete shop;
-}
 void GameWindow::see_cat(int cat_index){
     cout<<"see me\n";
     double start_time = al_get_time(), now_time = start_time;
@@ -235,7 +219,49 @@ void GameWindow::see_cat(int cat_index){
     draw_running_map();
     cats[cat_index]->saw_cat(0);
 }
+void GameWindow::game_destroy() {
+    game_reset();
+    for (int s = shop_cat.size() - 1, i = s; i >= 0; ++i) {
+        al_destroy_bitmap(shop_cat[i]);
+    }
+    al_destroy_display(display);
+    al_destroy_event_queue(event_queue);
+    al_destroy_font(font);
+    al_destroy_font(Medium_font);
+    al_destroy_font(Large_font);
+    al_destroy_timer(timer);
 
+    al_stop_samples();
+    al_destroy_sample(sample);
+    al_destroy_sample_instance(startSound);
+    al_destroy_sample(popsample);
+    al_destroy_sample_instance(popSound);
+    al_destroy_sample(petsample);
+    al_destroy_sample_instance(petSound);
+    al_destroy_sample(gamesample);
+    al_destroy_sample_instance(gameSound);
+    al_destroy_sample(winsample);
+    al_destroy_sample_instance(winSound);
+    al_destroy_sample(losesample);
+    al_destroy_sample_instance(loseSound);
+    al_destroy_sample(meowsample);
+    al_destroy_sample_instance(meowSound);
+
+    al_destroy_bitmap(pop_cat_close);
+    al_destroy_bitmap(pop_cat_open);
+
+    for (int s = cats.size() - 1, i = s; i >= 0; --i) {
+        delete cats[i]; //->~Cat();
+    }
+
+    for (int i = 1; i >= 0; i--) {
+        delete trees[i]; //->~Tree();
+    }
+    delete temp;
+    delete clean_cat;
+    delete status;
+    delete shop;
+}
 bool GameWindow::isInRange(int point, int startPos, int length){
     if(point >= startPos - length && point <= startPos + length)
         return true;

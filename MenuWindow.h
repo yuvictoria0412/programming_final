@@ -6,6 +6,7 @@
 class MenuWindow : protected Window {
 public:
     MenuWindow();
+    ~MenuWindow();
     void game_init();
     bool game_play();
     void game_begin();

@@ -19,6 +19,7 @@
 class GameWindow : protected Window {
 public:
     GameWindow();
+    ~GameWindow(){}
     void game_init();
     void game_reset();
     bool game_play();
@@ -45,7 +46,6 @@ protected:
     int error_message;
     bool redraw = false;
     std::vector<Cat*> cats;
-    ALLEGRO_BITMAP *playbutton;
     ALLEGRO_SAMPLE *sample;
     ALLEGRO_SAMPLE_INSTANCE *startSound;
 

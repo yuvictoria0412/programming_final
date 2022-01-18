@@ -78,7 +78,7 @@ MenuWindow::MenuWindow() {
 
     game_init();
 }
-
+MenuWindow::~MenuWindow() {}
 void MenuWindow::game_init() {
     cout << "Game_init" << endl;
 
@@ -149,6 +149,8 @@ void MenuWindow::game_destroy() {
         username = "USER";
     }
     al_stop_sample_instance(startSound);
+    al_destroy_sample_instance(startSound);
+    al_destroy_sample(sample);
 }
 
 // each drawing scene function

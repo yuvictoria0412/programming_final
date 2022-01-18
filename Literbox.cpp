@@ -64,11 +64,11 @@ Literbox::Literbox(){
 }
 Literbox::~Literbox(){
     al_destroy_bitmap(box);
-    for(int i = 0; i < 2; i ++){
+    for(int i = 0; i >= 0; --i){
         al_destroy_bitmap((shovel[i]));
     }
-    for(int i = 0; i < 2; i ++){
-        for(int j = 0; j < 2; j ++){
+    for(int i = 1; i >= 0; i--){
+        for(int j = 1; j>= 0; j--){
             al_destroy_bitmap((*poops_pic[i])[j]);
         }
     }

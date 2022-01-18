@@ -137,6 +137,7 @@ void GameWindow::game_init() {
 }
 
 void GameWindow::game_reset() {
+//    al_set_window_position(display, 0, 0);
     al_stop_timer(timer);
     status->Reset();
 }
@@ -220,18 +221,19 @@ void GameWindow::see_cat(int cat_index){
     cats[cat_index]->saw_cat(0);
 }
 void GameWindow::game_destroy() {
+    al_stop_samples();
     game_reset();
-    for (int s = shop_cat.size() - 1, i = s; i >= 0; ++i) {
+    for (int s = shop_cat.size() - 1, i = s; i >= 0; --i) {
         al_destroy_bitmap(shop_cat[i]);
     }
-    al_destroy_display(display);
+
     al_destroy_event_queue(event_queue);
     al_destroy_font(font);
     al_destroy_font(Medium_font);
     al_destroy_font(Large_font);
     al_destroy_timer(timer);
 
-    al_stop_samples();
+
     al_destroy_sample(sample);
     al_destroy_sample_instance(startSound);
     al_destroy_sample(popsample);
@@ -258,9 +260,10 @@ void GameWindow::game_destroy() {
         delete trees[i]; //->~Tree();
     }
     delete temp;
-    delete clean_cat;
+//    delete clean_cat;
     delete status;
     delete shop;
+    al_destroy_display(display);
 }
 bool GameWindow::isInRange(int point, int startPos, int length){
     if(point >= startPos - length && point <= startPos + length)
@@ -278,6 +281,7 @@ bool GameWindow::clicked(int mouse_x, int mouse_y, int x, int y, int w, int h){
     }
 }
 // each drawing scene function
+int minus_pt = 0;
 void GameWindow::draw_running_map() {
     cnt++;
     if (cnt == 50) cnt = 0;
@@ -292,9 +296,16 @@ void GameWindow::draw_running_map() {
             meow->Draw();
             if (!meow->cat_queue_empty()) {
                 meow->draw_cat_status(meow->cat_queue_top());
+                minus_pt++;
             }
         }
-//        cout << "cats\n";
+
+        if (minus_pt >= 500){
+            cout << "minus ponit\n";
+            status->Gain_Score(-1);
+            minus_pt = 0;
+        }
+//        cout << "minus"<<minus_pt<< "\n";
         if (error_message > 0) {
             error_message--;
             al_draw_filled_rectangle(rec_x1, rec_y1, window_width-rec_x1, rec_y1 + rec_h1, BLACK);

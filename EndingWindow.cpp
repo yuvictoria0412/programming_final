@@ -25,6 +25,7 @@ EndingWindow::EndingWindow() {
     printf("Ending Game...\n");
 
     display = al_create_display(W, H);
+    al_set_window_position(display, 0, 0);
     event_queue = al_create_event_queue();
     timer = al_create_timer(1.0 / FPS);
 
@@ -71,6 +72,7 @@ EndingWindow::EndingWindow() {
     game_init();
 }
 EndingWindow::~EndingWindow(){
+    al_stop_sample_instance(startSound);
     al_destroy_display(display);
     al_destroy_event_queue(event_queue);
     al_destroy_font(font);
@@ -78,7 +80,7 @@ EndingWindow::~EndingWindow(){
     al_destroy_font(Large_font);
     al_destroy_timer(timer);
 
-    al_stop_sample_instance(startSound);
+
     al_destroy_sample_instance(startSound);
     al_destroy_sample(sample);
 
@@ -116,6 +118,8 @@ void EndingWindow::game_begin() {
 
 
 void EndingWindow::game_destroy() {
+    al_stop_sample_instance(startSound);
+    al_stop_samples();
     al_destroy_display(display);
     al_destroy_event_queue(event_queue);
     al_destroy_font(font);
@@ -272,6 +276,7 @@ int EndingWindow::play_video(){
     return instruction;
 }
 void EndingWindow::game_reset() {
+    al_set_window_position(display, 0, 0);
     return;
 }
 int EndingWindow::game_update() {

@@ -1,0 +1,867 @@
+# depslib dependency file v1.0
+1642250941 source:d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\main.cpp
+	"MenuWindow.h"
+
+1518073262 source:d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\circle.cpp
+	"Circle.h"
+
+1519028628 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\circle.h
+
+1642250072 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\gamewindow.h
+	"Window.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\allegro_audio.h
+	"allegro5/allegro.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\allegro.h
+	"allegro5/base.h"
+	"allegro5/altime.h"
+	"allegro5/bitmap.h"
+	"allegro5/bitmap_draw.h"
+	"allegro5/bitmap_io.h"
+	"allegro5/bitmap_lock.h"
+	"allegro5/blender.h"
+	"allegro5/clipboard.h"
+	"allegro5/color.h"
+	"allegro5/config.h"
+	"allegro5/cpu.h"
+	"allegro5/debug.h"
+	"allegro5/display.h"
+	"allegro5/drawing.h"
+	"allegro5/error.h"
+	"allegro5/events.h"
+	"allegro5/file.h"
+	"allegro5/fixed.h"
+	"allegro5/fmaths.h"
+	"allegro5/fshook.h"
+	"allegro5/fullscreen_mode.h"
+	"allegro5/haptic.h"
+	"allegro5/joystick.h"
+	"allegro5/keyboard.h"
+	"allegro5/memory.h"
+	"allegro5/monitor.h"
+	"allegro5/mouse.h"
+	"allegro5/mouse_cursor.h"
+	"allegro5/path.h"
+	"allegro5/render_state.h"
+	"allegro5/shader.h"
+	"allegro5/system.h"
+	"allegro5/threads.h"
+	"allegro5/timer.h"
+	"allegro5/tls.h"
+	"allegro5/touch_input.h"
+	"allegro5/transformations.h"
+	"allegro5/utf8.h"
+	"allegro5/alcompat.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\base.h
+	<errno.h>
+	<limits.h>
+	<limits.h>
+	<stdarg.h>
+	<stddef.h>
+	<stdlib.h>
+	<time.h>
+	<string.h>
+	<sys/types.h>
+	<fortify/fortify.h>
+	<dmalloc.h>
+	"allegro5/internal/alconfig.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\internal\alconfig.h
+	"allegro5/platform/alplatf.h"
+	"allegro5/platform/alwatcom.h"
+	"allegro5/platform/almngw32.h"
+	"allegro5/platform/albcc32.h"
+	"allegro5/platform/almsvc.h"
+	"allegro5/platform/aliphonecfg.h"
+	"allegro5/platform/alosxcfg.h"
+	"allegro5/platform/alandroidcfg.h"
+	"allegro5/platform/alraspberrypicfg.h"
+	"allegro5/platform/alucfg.h"
+	"allegro5/platform/allegro_sdl_config.h"
+	"allegro5/platform/astdint.h"
+	"allegro5/platform/astdbool.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\platform\alplatf.h
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\platform\alwatcom.h
+	<io.h>
+	<i86.h>
+	<conio.h>
+	<fcntl.h>
+	<direct.h>
+	<malloc.h>
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\platform\almngw32.h
+	<io.h>
+	<fcntl.h>
+	<direct.h>
+	<malloc.h>
+	"allegro5/platform/alplatf.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\platform\albcc32.h
+	<io.h>
+	<fcntl.h>
+	<direct.h>
+	<malloc.h>
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\platform\almsvc.h
+	<io.h>
+	<fcntl.h>
+	<direct.h>
+	<malloc.h>
+	"allegro5/platform/alplatf.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\platform\aliphonecfg.h
+	<fcntl.h>
+	<unistd.h>
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\platform\alosxcfg.h
+	"allegro5/platform/alplatf.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\platform\alandroidcfg.h
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\platform\alraspberrypicfg.h
+	<fcntl.h>
+	<unistd.h>
+	<sys/types.h>
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\platform\alucfg.h
+	<fcntl.h>
+	<unistd.h>
+	"alunix.h"
+	"allegro5/platform/alplatf.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\platform\alunix.h
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\platform\allegro_sdl_config.h
+	<fcntl.h>
+	<unistd.h>
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\platform\astdint.h
+	<inttypes.h>
+	<stdint.h>
+	<limits.h>
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\platform\astdbool.h
+	<stdbool.h>
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\altime.h
+	"allegro5/base.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\bitmap.h
+	"allegro5/color.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\color.h
+	"allegro5/base.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\bitmap_draw.h
+	"allegro5/bitmap.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\bitmap_io.h
+	"allegro5/bitmap.h"
+	"allegro5/file.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\file.h
+	"allegro5/base.h"
+	"allegro5/path.h"
+	"allegro5/utf8.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\path.h
+	"allegro5/base.h"
+	"allegro5/utf8.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\utf8.h
+	"allegro5/base.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\bitmap_lock.h
+	"allegro5/bitmap.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\blender.h
+	"allegro5/base.h"
+	"allegro5/color.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\clipboard.h
+	"allegro5/base.h"
+	"allegro5/display.h"
+	"allegro5/utf8.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\display.h
+	"allegro5/bitmap.h"
+	"allegro5/color.h"
+	"allegro5/events.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\events.h
+	"allegro5/altime.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\config.h
+	"allegro5/file.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\cpu.h
+	"allegro5/base.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\debug.h
+	<assert.h>
+	"allegro5/base.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\drawing.h
+	"allegro5/color.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\error.h
+	"allegro5/base.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\fixed.h
+	"allegro5/base.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\fmaths.h
+	"allegro5/base.h"
+	"allegro5/fixed.h"
+	"allegro5/inline/fmaths.inl"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\inline\fmaths.inl
+	"allegro5/error.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\fshook.h
+	"allegro5/base.h"
+	"allegro5/file.h"
+	"allegro5/path.h"
+	<sys/types.h>
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\fullscreen_mode.h
+	"allegro5/base.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\haptic.h
+	"allegro5/base.h"
+	"allegro5/display.h"
+	"allegro5/events.h"
+	"allegro5/joystick.h"
+	"allegro5/keyboard.h"
+	"allegro5/mouse.h"
+	"allegro5/touch_input.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\joystick.h
+	"allegro5/base.h"
+	"allegro5/events.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\keyboard.h
+	"allegro5/base.h"
+	"allegro5/events.h"
+	"allegro5/keycodes.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\keycodes.h
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\mouse.h
+	"allegro5/base.h"
+	"allegro5/events.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\touch_input.h
+	"allegro5/base.h"
+	"allegro5/events.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\memory.h
+	"allegro5/base.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\monitor.h
+	"allegro5/base.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\mouse_cursor.h
+	"allegro5/base.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\render_state.h
+	"allegro5/base.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\shader.h
+	"allegro5/base.h"
+	"allegro5/transformations.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\transformations.h
+	"allegro5/display.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\system.h
+	"allegro5/config.h"
+	"allegro5/path.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\threads.h
+	"allegro5/altime.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\timer.h
+	"allegro5/base.h"
+	"allegro5/events.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\tls.h
+	"allegro5/base.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\alcompat.h
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\allegro_acodec.h
+	"allegro5/allegro.h"
+	"allegro5/allegro_audio.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\allegro_font.h
+	"allegro5/allegro.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\allegro_ttf.h
+	"allegro5/allegro.h"
+	"allegro5/allegro_font.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\allegro_primitives.h
+	<allegro5/allegro.h>
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\allegro_image.h
+	"allegro5/base.h"
+
+1642255601 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\window.h
+	<allegro5/allegro_audio.h>
+	<allegro5/allegro_acodec.h>
+	<allegro5/allegro.h>
+	<allegro5/allegro_image.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_ttf.h>
+	<allegro5/allegro_primitives.h>
+	<vector>
+	<list>
+	<time.h>
+
+1642255644 source:d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\gamewindow.cpp
+	"GameWindow.h"
+	"global.h"
+	<iostream>
+
+1642255306 source:d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\window.cpp
+	"Window.h"
+	<stdio.h>
+
+1642265210 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\global.h
+	<allegro5/allegro_font.h>
+	<string>
+
+1642246131 source:d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\memuwindow.cpp
+	"MemuWindow.h"
+	<iostream>
+
+1642245772 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\memuwindow.h
+	"Window.h"
+	<stdio.h>
+
+1642270055 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\menuwindow.h
+	"Window.h"
+	<stdio.h>
+
+1642265691 source:d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\menuwindow.cpp
+	"MenuWindow.h"
+	"global.h"
+	<string>
+	<iostream>
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\allegro_video.h
+	"allegro5/allegro5.h"
+	"allegro5/allegro_audio.h"
+
+1615199857 d:\junior_lesson\programming2\final_project_i2p2\final_project_package\meowwwww\allegro\include\allegro5\allegro5.h
+	"allegro.h"
+
+1642492817 source:d:\junior_lesson\programming2\final_project\cat.cpp
+	"Cat.h"
+	"Window.h"
+	<iostream>
+
+1642492817 d:\junior_lesson\programming2\final_project\cat.h
+	"Object.h"
+	<allegro5/allegro.h>
+	<allegro5/allegro_image.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_ttf.h>
+	<allegro5/allegro_primitives.h>
+	<queue>
+
+1642492817 d:\junior_lesson\programming2\final_project\object.h
+	"Circle.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\circle.h
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\allegro.h
+	"allegro5/base.h"
+	"allegro5/altime.h"
+	"allegro5/bitmap.h"
+	"allegro5/bitmap_draw.h"
+	"allegro5/bitmap_io.h"
+	"allegro5/bitmap_lock.h"
+	"allegro5/blender.h"
+	"allegro5/clipboard.h"
+	"allegro5/color.h"
+	"allegro5/config.h"
+	"allegro5/cpu.h"
+	"allegro5/debug.h"
+	"allegro5/display.h"
+	"allegro5/drawing.h"
+	"allegro5/error.h"
+	"allegro5/events.h"
+	"allegro5/file.h"
+	"allegro5/fixed.h"
+	"allegro5/fmaths.h"
+	"allegro5/fshook.h"
+	"allegro5/fullscreen_mode.h"
+	"allegro5/haptic.h"
+	"allegro5/joystick.h"
+	"allegro5/keyboard.h"
+	"allegro5/memory.h"
+	"allegro5/monitor.h"
+	"allegro5/mouse.h"
+	"allegro5/mouse_cursor.h"
+	"allegro5/path.h"
+	"allegro5/render_state.h"
+	"allegro5/shader.h"
+	"allegro5/system.h"
+	"allegro5/threads.h"
+	"allegro5/timer.h"
+	"allegro5/tls.h"
+	"allegro5/touch_input.h"
+	"allegro5/transformations.h"
+	"allegro5/utf8.h"
+	"allegro5/alcompat.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\base.h
+	<errno.h>
+	<limits.h>
+	<limits.h>
+	<stdarg.h>
+	<stddef.h>
+	<stdlib.h>
+	<time.h>
+	<string.h>
+	<sys/types.h>
+	<fortify/fortify.h>
+	<dmalloc.h>
+	"allegro5/internal/alconfig.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\internal\alconfig.h
+	"allegro5/platform/alplatf.h"
+	"allegro5/platform/alwatcom.h"
+	"allegro5/platform/almngw32.h"
+	"allegro5/platform/albcc32.h"
+	"allegro5/platform/almsvc.h"
+	"allegro5/platform/aliphonecfg.h"
+	"allegro5/platform/alosxcfg.h"
+	"allegro5/platform/alandroidcfg.h"
+	"allegro5/platform/alraspberrypicfg.h"
+	"allegro5/platform/alucfg.h"
+	"allegro5/platform/allegro_sdl_config.h"
+	"allegro5/platform/astdint.h"
+	"allegro5/platform/astdbool.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\platform\alplatf.h
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\platform\alwatcom.h
+	<io.h>
+	<i86.h>
+	<conio.h>
+	<fcntl.h>
+	<direct.h>
+	<malloc.h>
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\platform\almngw32.h
+	<io.h>
+	<fcntl.h>
+	<direct.h>
+	<malloc.h>
+	"allegro5/platform/alplatf.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\platform\albcc32.h
+	<io.h>
+	<fcntl.h>
+	<direct.h>
+	<malloc.h>
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\platform\almsvc.h
+	<io.h>
+	<fcntl.h>
+	<direct.h>
+	<malloc.h>
+	"allegro5/platform/alplatf.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\platform\aliphonecfg.h
+	<fcntl.h>
+	<unistd.h>
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\platform\alosxcfg.h
+	"allegro5/platform/alplatf.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\platform\alandroidcfg.h
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\platform\alraspberrypicfg.h
+	<fcntl.h>
+	<unistd.h>
+	<sys/types.h>
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\platform\alucfg.h
+	<fcntl.h>
+	<unistd.h>
+	"alunix.h"
+	"allegro5/platform/alplatf.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\platform\alunix.h
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\platform\allegro_sdl_config.h
+	<fcntl.h>
+	<unistd.h>
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\platform\astdint.h
+	<inttypes.h>
+	<stdint.h>
+	<limits.h>
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\platform\astdbool.h
+	<stdbool.h>
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\altime.h
+	"allegro5/base.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\bitmap.h
+	"allegro5/color.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\color.h
+	"allegro5/base.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\bitmap_draw.h
+	"allegro5/bitmap.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\bitmap_io.h
+	"allegro5/bitmap.h"
+	"allegro5/file.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\file.h
+	"allegro5/base.h"
+	"allegro5/path.h"
+	"allegro5/utf8.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\path.h
+	"allegro5/base.h"
+	"allegro5/utf8.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\utf8.h
+	"allegro5/base.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\bitmap_lock.h
+	"allegro5/bitmap.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\blender.h
+	"allegro5/base.h"
+	"allegro5/color.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\clipboard.h
+	"allegro5/base.h"
+	"allegro5/display.h"
+	"allegro5/utf8.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\display.h
+	"allegro5/bitmap.h"
+	"allegro5/color.h"
+	"allegro5/events.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\events.h
+	"allegro5/altime.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\config.h
+	"allegro5/file.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\cpu.h
+	"allegro5/base.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\debug.h
+	<assert.h>
+	"allegro5/base.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\drawing.h
+	"allegro5/color.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\error.h
+	"allegro5/base.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\fixed.h
+	"allegro5/base.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\fmaths.h
+	"allegro5/base.h"
+	"allegro5/fixed.h"
+	"allegro5/inline/fmaths.inl"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\inline\fmaths.inl
+	"allegro5/error.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\fshook.h
+	"allegro5/base.h"
+	"allegro5/file.h"
+	"allegro5/path.h"
+	<sys/types.h>
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\fullscreen_mode.h
+	"allegro5/base.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\haptic.h
+	"allegro5/base.h"
+	"allegro5/display.h"
+	"allegro5/events.h"
+	"allegro5/joystick.h"
+	"allegro5/keyboard.h"
+	"allegro5/mouse.h"
+	"allegro5/touch_input.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\joystick.h
+	"allegro5/base.h"
+	"allegro5/events.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\keyboard.h
+	"allegro5/base.h"
+	"allegro5/events.h"
+	"allegro5/keycodes.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\keycodes.h
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\mouse.h
+	"allegro5/base.h"
+	"allegro5/events.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\touch_input.h
+	"allegro5/base.h"
+	"allegro5/events.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\memory.h
+	"allegro5/base.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\monitor.h
+	"allegro5/base.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\mouse_cursor.h
+	"allegro5/base.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\render_state.h
+	"allegro5/base.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\shader.h
+	"allegro5/base.h"
+	"allegro5/transformations.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\transformations.h
+	"allegro5/display.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\system.h
+	"allegro5/config.h"
+	"allegro5/path.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\threads.h
+	"allegro5/altime.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\timer.h
+	"allegro5/base.h"
+	"allegro5/events.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\tls.h
+	"allegro5/base.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\alcompat.h
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\allegro_image.h
+	"allegro5/base.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\allegro_font.h
+	"allegro5/allegro.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\allegro_ttf.h
+	"allegro5/allegro.h"
+	"allegro5/allegro_font.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\allegro_primitives.h
+	<allegro5/allegro.h>
+
+1642492817 d:\junior_lesson\programming2\final_project\window.h
+	<allegro5/allegro_audio.h>
+	<allegro5/allegro_acodec.h>
+	<allegro5/allegro.h>
+	<allegro5/allegro_image.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_ttf.h>
+	<allegro5/allegro_primitives.h>
+	<vector>
+	<list>
+	<time.h>
+	"global.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\allegro_audio.h
+	"allegro5/allegro.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\allegro_acodec.h
+	"allegro5/allegro.h"
+	"allegro5/allegro_audio.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\global.h
+	<allegro5/allegro_font.h>
+	<string>
+
+1642492817 source:d:\junior_lesson\programming2\final_project\circle.cpp
+	"Circle.h"
+
+1642492817 source:d:\junior_lesson\programming2\final_project\endingwindow.cpp
+	"EndingWindow.h"
+	"global.h"
+	<string>
+	<iostream>
+	<cstring>
+
+1642492817 d:\junior_lesson\programming2\final_project\endingwindow.h
+	<allegro5/allegro_audio.h>
+	<allegro5/allegro_video.h>
+	<allegro5/allegro_acodec.h>
+	<allegro5/allegro.h>
+	<allegro5/allegro_image.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_ttf.h>
+	<allegro5/allegro_primitives.h>
+	"algif5/src/algif.h"
+	"Window.h"
+	<stdio.h>
+	<math.h>
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\allegro_video.h
+	"allegro5/allegro5.h"
+	"allegro5/allegro_audio.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\allegro\include\allegro5\allegro5.h
+	"allegro.h"
+
+1642492817 source:d:\junior_lesson\programming2\final_project\gamewindow.cpp
+	"GameWindow.h"
+	<iostream>
+	<time.h>
+
+1642492817 d:\junior_lesson\programming2\final_project\gamewindow.h
+	"Window.h"
+	"Status.h"
+	"Shop.h"
+	"Cat.h"
+	"Literbox.h"
+	"Tree.h"
+	<queue>
+	<stdio.h>
+	<string>
+	<vector>
+
+1642492817 d:\junior_lesson\programming2\final_project\status.h
+	<allegro5/allegro_audio.h>
+	<allegro5/allegro_acodec.h>
+	<allegro5/allegro.h>
+	<allegro5/allegro_image.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_ttf.h>
+	<allegro5/allegro_primitives.h>
+	<stdio.h>
+	<stdlib.h>
+	<vector>
+	"Object.h"
+	"Circle.h"
+	"global.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\shop.h
+	<allegro5/allegro_audio.h>
+	<allegro5/allegro_video.h>
+	<allegro5/allegro_acodec.h>
+	<allegro5/allegro.h>
+	<allegro5/allegro_image.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_ttf.h>
+	<allegro5/allegro_primitives.h>
+	"algif5/src/algif.h"
+	<stdio.h>
+	<stdlib.h>
+	<vector>
+	<queue>
+	"Object.h"
+	"Circle.h"
+	"global.h"
+	"Window.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\literbox.h
+	<allegro5/allegro_audio.h>
+	<allegro5/allegro_video.h>
+	<allegro5/allegro_acodec.h>
+	<allegro5/allegro.h>
+	<allegro5/allegro_image.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_ttf.h>
+	<allegro5/allegro_primitives.h>
+	"algif5/src/algif.h"
+	<stdio.h>
+	<stdlib.h>
+	<vector>
+	<iostream>
+	<queue>
+	"Object.h"
+	"Circle.h"
+	"global.h"
+	"Window.h"
+
+1642492817 d:\junior_lesson\programming2\final_project\tree.h
+	"Object.h"
+	"Window.h"
+	<vector>
+	<allegro5/allegro.h>
+	<allegro5/allegro_image.h>
+
+1642492817 source:d:\junior_lesson\programming2\final_project\literbox.cpp
+	"Literbox.h"
+	<iostream>
+	<vector>
+
+1642523517 source:d:\junior_lesson\programming2\final_project\main.cpp
+	"MenuWindow.h"
+	"GameWindow.h"
+	"EndingWindow.h"
+	<iostream>
+
+1642492817 d:\junior_lesson\programming2\final_project\menuwindow.h
+	"Window.h"
+	<stdio.h>
+
+1642492817 source:d:\junior_lesson\programming2\final_project\menuwindow.cpp
+	"MenuWindow.h"
+	"global.h"
+	<string>
+	<allegro5/allegro_audio.h>
+	<allegro5/allegro_acodec.h>
+	<iostream>
+
+1642492817 source:d:\junior_lesson\programming2\final_project\shop.cpp
+	"Shop.h"
+	<iostream>
+
+1642492817 source:d:\junior_lesson\programming2\final_project\status.cpp
+	"Status.h"
+	<iostream>
+
+1642492817 source:d:\junior_lesson\programming2\final_project\tree.cpp
+	"Tree.h"
+	<iostream>
+
+1642492817 source:d:\junior_lesson\programming2\final_project\window.cpp
+	"Window.h"
+	<stdio.h>
+
+1642341520 source:d:\junior_lesson\programming2\final_project\algif5\src\algif.c
+	"algif.h"
+	<allegro5/allegro_primitives.h>
+	<math.h>
+
+1642341520 d:\junior_lesson\programming2\final_project\algif5\src\algif.h
+	<allegro5/allegro5.h>
+
+1642341520 source:d:\junior_lesson\programming2\final_project\algif5\src\bitmap.c
+	"algif.h"
+
+1642341520 source:d:\junior_lesson\programming2\final_project\algif5\src\gif.c
+	"algif.h"
+	<stdlib.h>
+	<string.h>
+
+1642341520 source:d:\junior_lesson\programming2\final_project\algif5\src\lzw.c
+	"algif.h"
+
